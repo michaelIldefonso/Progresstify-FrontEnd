@@ -53,7 +53,7 @@ function LoginPopup({ togglePopup }) {
           <button className="btn green">Sign Up</button>
         </div>
         <p>Or Continue With:</p>
-        <button className="social-btn google" onClick={() => window.location.href = "http://localhost:5000/auth/google"}>Google</button>
+        <button className="social-btn google" onClick={() => window.location.href = "https://progresstify.onrender.com/auth/google"}>Google</button>
         <button className="social-btn facebook">Facebook</button>
       </div>
     </div>
@@ -72,7 +72,7 @@ function App() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/data")
+    fetch("https://progresstify.onrender.com/api/data")
       .then((res) => {
         if (!res.ok) throw new Error(`Server responded with ${res.status}`);
         return res.json();

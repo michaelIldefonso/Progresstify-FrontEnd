@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    background-image: url("/frontend/public/workspace.png");
+    background-image: url("/public/workspace.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -60,9 +60,10 @@ body {
 .project-board {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
-    gap: 50px; /* Space between columns */
+    gap: 65px; /* Space between columns */
     padding: 40px; /* Adds spacing around the board */
     justify-content: center;
+    align-items: start;
 }
 
 .project-column {
@@ -144,6 +145,16 @@ body {
     background-color: #d0d0d0;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.task-input {
+    width: 235px;
+    padding: 8px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    margin-top: 10px;
 }
 
 /* Trash Can */

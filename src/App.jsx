@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./style.css";
 import PropTypes from "prop-types";
+import KanbanBoard from "./Workspace";
+import "./workspace.css";
 
 // 🏠 Home Page
 function HomePage() {
@@ -33,10 +35,11 @@ function Workspace() {
   return (
     <div className="Workspace">
       <h2>📢 Workspace</h2>
-      {/* Add your workspace content here */}
+      <KanbanBoard />
     </div>
   );
 }
+
 
 // 🔑 Login Popup Component
 function LoginPopup({ togglePopup }) {
@@ -63,6 +66,7 @@ function LoginPopup({ togglePopup }) {
 LoginPopup.propTypes = {
   togglePopup: PropTypes.func.isRequired, // Ensures togglePopup is a function
 };
+
 
 // ✨ Main App Component
 function App() {

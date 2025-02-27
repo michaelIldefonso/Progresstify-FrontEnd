@@ -89,10 +89,18 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrolling(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    fetch("https://progresstify.onrender.com/api/data", {
+      credentials: "include",  // ✅ Send session cookie
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        return res.json();
+      })
+      .then((data) => setData(data.message))
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+      });
+}, []);
 
   const togglePopup = () => setShowPopup((prev) => !prev);
 

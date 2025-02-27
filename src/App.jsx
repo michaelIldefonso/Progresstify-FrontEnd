@@ -4,6 +4,8 @@ import "./style.css";
 import PropTypes from "prop-types";
 import KanbanBoard from "./Workspace";
 import "./workspace.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 // 🏠 Home Page
 function HomePage() {
@@ -56,8 +58,7 @@ function LoginPopup({ togglePopup }) {
           <button className="btn green">Sign Up</button>
         </div>
         <p>Or Continue With:</p>
-        <button className="social-btn google" onClick={() => window.location.href = "https://progresstify.onrender.com/auth/google"}>Google</button>
-        <button className="social-btn facebook">Facebook</button>
+        <button className="social-btn google" onClick={() => window.location.href = `${API_BASE_URL}/auth/google`}>Google</button>        <button className="social-btn facebook">Facebook</button>
       </div>
     </div>
   );
@@ -75,31 +76,19 @@ function App() {
   const [scrolling, setScrolling] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    fetch("https://progresstify.onrender.com/api/data")
-      .then((res) => {
-        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-        return res.json();
-      })
-      .then((data) => setData(data.message))
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-        setError("Failed to load data. Please try again later.");
-      });
-  }, []);
 
-  useEffect(() => {
-    fetch("https://progresstify.onrender.com/api/data", {
-      credentials: "include",  // ✅ Send session cookie
+useEffect(() => {
+  fetch(`${API_BASE_URL}/api/data`, {
+    credentials: "include",  // ✅ Send session cookie
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+      return res.json();
     })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-        return res.json();
-      })
-      .then((data) => setData(data.message))
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-      });
+    .then((data) => setData(data.message))
+    .catch((err) => {
+      console.error("Error fetching data:", err);
+    });
 }, []);
 
   const togglePopup = () => setShowPopup((prev) => !prev);

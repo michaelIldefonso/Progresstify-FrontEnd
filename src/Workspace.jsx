@@ -20,14 +20,26 @@ const KanbanBoard = () => {
   };
 
   const updateCardText = (columnId, cardId, text) => {
-    setColumns(columns.map(col => 
-      col.id === columnId ? { 
-        ...col, 
-        cards: col.cards.map(card => 
-          card.id === cardId ? { ...card, text, isEditing: false } : card
-        )
-      } : col
-    ));
+    const debounce = (func, delay) => {
+      let timer;
+      return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => func(...args), delay);
+      };
+    };
+
+    const debouncedUpdate = debounce(() => {
+      setColumns(columns.map(col => 
+        col.id === columnId ? { 
+          ...col, 
+          cards: col.cards.map(card => 
+            card.id === cardId ? { ...card, text, isEditing: false } : card
+          )
+        } : col
+      ));
+    }, 300);
+
+    debouncedUpdate();
   };
 
   const handleKeyDown = (e, columnId, cardId) => {

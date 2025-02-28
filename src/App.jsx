@@ -78,10 +78,12 @@ function App() {
   useEffect(() => {
     fetch("https://progresstify.onrender.com/api/data")
       .then((res) => {
-        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
         return res.json();
       })
-      .then((data) => setData(data.message))
+      .then((data) => setData(data?.message))
       .catch((err) => {
         console.error("Error fetching data:", err);
         setError("Failed to load data. Please try again later.");
@@ -99,14 +101,15 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h1>{error ? error : data}</h1>
+      <h1>{error || data || "Loading..."}</h1>
+
         <nav className={`navbar ${scrolling ? "scrolled" : ""}`}>
           <div className="logo">
-            <img src="/public/final_logo.png" alt="Logo" />
+            <img src="/final_logo.png" alt="Logo" />
           </div>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/workspace">Workspace</Link></li>
+            <li><Link to="/Workspace">Workspace</Link></li>
             <li><a href="#" onClick={(e) => e.preventDefault()}>Pricing</a></li>
             <li><a href="#" onClick={(e) => e.preventDefault()}>Plans</a></li>
           </ul>

@@ -37,7 +37,6 @@ body {
 .sub-navbar {
     display: flex;
     align-items: center;
-    background-color: #444;
     padding: 8px 20px;
 }
 

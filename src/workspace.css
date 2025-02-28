@@ -1,15 +1,20 @@
-/* Light Theme Kanban Board */
 
 body {
     background-color: #f4f4f4; /* Light gray background */
     color: black; /* Dark text for readability */
     font-family: Arial, sans-serif;
-    background-image: url("/workspace.png"); /* Corrected image path */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     margin: 0; /* Remove extra space */
     padding: 0;
+}
+
+.Workspace {
+    background-image: url("/workspace.png");
+    height: 100vh;
+    width: 100%;
+    top: 0;
 }
 
 .kanban-container {

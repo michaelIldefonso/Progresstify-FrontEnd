@@ -101,7 +101,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-      <h1>{error || data || "Loading..."}</h1>
+      {/* <h1>{error || data || "Loading..."}</h1> */}
 
         <nav className={`navbar ${scrolling ? "scrolled" : ""}`}>
           <div className="logo">
@@ -120,7 +120,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/workspace" element={<Workspace />} />
+          <Route path="/Workspace" element={<Workspace />} />
         </Routes>
 
         {/* Show popup when 'showPopup' is true */}

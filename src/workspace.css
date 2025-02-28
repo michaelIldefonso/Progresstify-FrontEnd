@@ -1,10 +1,7 @@
 
 body {
-    background-color: #f4f4f4; /* Light gray background */
-    color: black; /* Dark text for readability */
+    background-color: #f4f4f4;
     font-family: Arial, sans-serif;
-    background-size: cover;
-    background-position: center;
     background-attachment: fixed;
     margin: 0; /* Remove extra space */
     padding: 0;
@@ -12,9 +9,16 @@ body {
 
 .Workspace {
     background-image: url("/workspace.png");
-    height: 100vh;
+    height: 980px;
     width: 100%;
-    top: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h2 {
+    color: white;
+    margin-left: -30px;
 }
 
 .kanban-container {

@@ -73,39 +73,43 @@ body {
 }
 
 .navbar ul li a:hover {
-  background-color: #c2c1c1d2;
+  text-decoration: underline;
   border-radius: 5px;
   padding: 10px 15px;;
 }
 
 /* Style for the login button */
 .navbar .login {
-  margin-right: 30px;
+  margin-right: 50px;
 }
 
 .login .btn {
-  background-color: #007BFF; 
-  color: white;
+  background-color: transparent;
+  color: rgb(0, 0, 0);
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 30px;
+  font-weight: 700;
   cursor: pointer;
   border-radius: 5px;
+  top: 0;
+  margin-top: -20px;
 }
 
 .login .btn:hover {
-  background-color: #0056b3; 
+  text-decoration: underline;
 }
 
 /* Content Section */
 .content1 {
   text-align: center;
   width: 100%;
-  height: 100vh;
+  height: 980px;
   background-image: url("/1bg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  top: -100px;
 }
 
 .content1 h1 {

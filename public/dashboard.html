@@ -33,15 +33,16 @@
         <tbody id="user-table-body">
         </tbody>
     </table>
-    <script>
+    <script type="module">
         document.addEventListener('DOMContentLoaded', function() {
+            const apiUrl = import.meta.env.VITE_API_BASE_URL;
             const token = new URLSearchParams(window.location.search).get('token');
             if (!token) {
                 window.location.href = '/login';
                 return;
             }
 
-            fetch('https://progresstify.onrender.com/api/all-users', {
+            fetch(`${apiUrl}/api/all-users`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

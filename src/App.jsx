@@ -101,9 +101,9 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {error || data ? (
+            {error || data ? (
         <div className="notification">
-        <p>{error || data}</p>
+          <p>{error || data}</p>
         </div>
         ) : null}
   

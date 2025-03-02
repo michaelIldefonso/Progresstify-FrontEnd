@@ -101,7 +101,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-      {/* <h1>{error || data || "Loading..."}</h1> */}
+      <h1>{error || data }</h1>
 
         <nav className={`navbar ${scrolling ? "scrolled" : ""}`}>
           <div className="logo">
@@ -109,7 +109,7 @@ function App() {
           </div>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/Workspace">Workspace</Link></li>
+            <li><Link to="/workspace">Workspace</Link></li>
             <li><a href="#" onClick={(e) => e.preventDefault()}>Pricing</a></li>
             <li><a href="#" onClick={(e) => e.preventDefault()}>Plans</a></li>
           </ul>
@@ -120,7 +120,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/Workspace" element={<Workspace />} />
+          <Route path="/workspace" element={<Workspace />} />
         </Routes>
 
         {/* Show popup when 'showPopup' is true */}

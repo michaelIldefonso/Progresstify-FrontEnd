@@ -4,6 +4,8 @@ import "./style.css";
 import PropTypes from "prop-types";
 import KanbanBoard from "./Workspace";
 import "./workspace.css";
+
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
@@ -39,6 +41,37 @@ function Workspace() {
       <h2>📢 Workspace</h2>
       <KanbanBoard />
     </div>
+  );
+}
+
+function Dashboard() {
+  const users = [
+    { id: 1, email: "user1@example.com" },
+    { id: 2, email: "user2@example.com" },
+    { id: 3, email: "MikoGalitSaBading3@example.com" },
+  ];
+
+  return (
+    <div className="Dashboard">
+    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto", fontFamily: "Arial, sans-serif" }}>
+      <h2>Registered Users</h2>
+      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr style={{ background: "#f4f4f4" }}>
+            <th>ID</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div></div>
   );
 }
 
@@ -109,7 +142,7 @@ useEffect(() => {
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/workspace">Workspace</Link></li>
-            <li><a href="#" onClick={(e) => e.preventDefault()}>Pricing</a></li>
+            <li><Link to="/Dashboard">Dashboard</Link></li>
             <li><a href="#" onClick={(e) => e.preventDefault()}>Plans</a></li>
           </ul>
           <div className="login">
@@ -120,6 +153,7 @@ useEffect(() => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/workspace" element={<Workspace />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
         </Routes>
 
         {/* Show popup when 'showPopup' is true */}

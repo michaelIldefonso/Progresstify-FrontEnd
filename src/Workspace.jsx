@@ -1,9 +1,23 @@
 import { useState } from "react";
 import "./workspace.css";
 
-const KanbanBoard = () => {
+const Workspace = () => {
   const [columns, setColumns] = useState([]);
   const [draggedCard, setDraggedCard] = useState(null);
+  const [members, setMembers] = useState(["Alice", "Bob", "Charlie"]);
+  const [newMember, setNewMember] = useState("");
+
+  const addMember = () => {
+    if (newMember.trim() && !members.includes(newMember)) {
+      setMembers([...members, newMember]);
+      setNewMember("");
+    }
+  };
+
+  const removeMember = (name) => {
+    setMembers(members.filter(member => member !== name));
+  };
+
 
   const addColumn = () => {
     setColumns([...columns, { id: Date.now(), title: "New Column", cards: [] }]);
@@ -90,58 +104,102 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="kanban-container">
-      <button className="add-column-btn" onClick={addColumn}>+ Add Column</button>
-      <div className="kanban-board">
-        {columns.map(column => (
-          <div 
-            key={column.id} 
-            className="kanban-column" 
-            onDragOver={handleDragOver} 
-            onDrop={() => handleDrop(column.id)}
-          >
-            <div className="column-header">
-              <input
-                type="text"
-                value={column.title}
-                onChange={(e) => setColumns(columns.map(col => col.id === column.id ? { ...col, title: e.target.value } : col))}
-              />
-              <button className="remove-column-btn" onClick={() => removeColumn(column.id)}>×</button>
-            </div>
-            <button className="add-card-btn" onClick={() => addCard(column.id)}>+ Add Card</button>
-            <div className="kanban-cards">
-              {column.cards.map(card => (
-                <div 
-                  key={card.id} 
-                  className="kanban-card" 
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, card, column.id)}
-                >
-                  {card.isEditing ? (
-                    <input
-                      type="text"
-                      placeholder="Enter task... (Press Enter to add, Esc to cancel)"
-                      autoFocus
-                      onKeyDown={(e) => handleKeyDown(e, column.id, card.id)}
-                    />
-                  ) : (
-                    <span>{card.text}</span>
-                  )}
-                </div>
-              ))}
-            </div>
+    <div className="workspace">
+      <div className="sidebar-container">
+        <h2 className="sidebar-title">Project Sidebar</h2>
+        <nav className="sidebar-nav">
+          <button className="sidebar-item">
+            <span className="sidebar-icon">📊</span> Dashboard
+          </button>
+          <button className="sidebar-item">
+            <span className="sidebar-icon">📋</span> Board List
+          </button>
+          <button className="sidebar-item">
+            <span className="sidebar-icon">👥</span> Member List
+          </button>
+          <button className="sidebar-item">
+            <span className="sidebar-icon">📁</span> Uploads
+          </button>
+          <button className="sidebar-item">
+            <span className="sidebar-icon">➕</span> Create New Board
+          </button>
+        </nav>
+        <div className="member-management">
+          <h3 className="member-title">Manage Members</h3>
+          <div className="member-input-container">
+            <input
+              type="text"
+              value={newMember}
+              onChange={(e) => setNewMember(e.target.value)}
+              placeholder="Enter member name"
+              className="member-input"
+            />
+            <button onClick={addMember} className="add-member-btn">➕</button>
           </div>
-        ))}
+          <ul className="member-list">
+            {members.map((member) => (
+              <li key={member} className="member-item">
+                {member}
+                <button onClick={() => removeMember(member)} className="remove-member-btn">🗑</button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <div 
-        className="trash-can" 
-        onDragOver={handleDragOver} 
-        onDrop={handleTrashDrop}
-      >
-        🗑️ Delete
+
+      <div className="kanban-container">
+        <button className="add-column-btn" onClick={addColumn}>+ Add Column</button>
+        <div className="kanban-board">
+          {columns.map(column => (
+            <div 
+              key={column.id} 
+              className="kanban-column" 
+              onDragOver={handleDragOver} 
+              onDrop={() => handleDrop(column.id)}
+            >
+              <div className="column-header">
+                <input
+                  type="text"
+                  value={column.title}
+                  onChange={(e) => setColumns(columns.map(col => col.id === column.id ? { ...col, title: e.target.value } : col))}
+                />
+                <button className="remove-column-btn" onClick={() => removeColumn(column.id)}>×</button>
+              </div>
+              <button className="add-card-btn" onClick={() => addCard(column.id)}>+ Add Card</button>
+              <div className="kanban-cards">
+                {column.cards.map(card => (
+                  <div 
+                    key={card.id} 
+                    className="kanban-card" 
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, card, column.id)}
+                  >
+                    {card.isEditing ? (
+                      <input
+                        type="text"
+                        placeholder="Enter task... (Press Enter to add, Esc to cancel)"
+                        autoFocus
+                        onKeyDown={(e) => handleKeyDown(e, column.id, card.id)}
+                      />
+                    ) : (
+                      <span>{card.text}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div 
+          className="trash-can" 
+          onDragOver={handleDragOver} 
+          onDrop={handleTrashDrop}
+        >
+          🗑️ Delete
+        </div>
       </div>
     </div>
   );
 };
 
-export default KanbanBoard;
+export default Workspace;

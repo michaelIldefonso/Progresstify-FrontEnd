@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./style.css";
 import PropTypes from "prop-types";
-import KanbanBoard from "./Workspace";
+import Workspace from "./Workspace";
 import "./workspace.css";
 
 // 🏠 Home Page
@@ -31,11 +31,11 @@ function HomePage() {
 }
 
 // 🛠️ Workspace Component
-function Workspace() {
+function WorkspaceMain() {
   return (
     <div className="Workspace">
       {/* <h2>📢 Workspace</h2> */}
-      <KanbanBoard />
+      <Workspace />
     </div>
   );
 }
@@ -124,7 +124,7 @@ function App() {
   
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/workspace" element={<Workspace />} />
+          <Route path="/workspace" element={<WorkspaceMain />} />
         </Routes>
   
         {showPopup && <LoginPopup togglePopup={togglePopup} />}

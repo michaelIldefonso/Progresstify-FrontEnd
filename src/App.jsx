@@ -45,12 +45,13 @@ function Workspace() {
 }
 
 function Dashboard() {
-  const users = [
-    { id: 1, email: "user1@example.com" },
-    { id: 2, email: "user2@example.com" },
-    { id: 3, email: "MikoGalitSaBading3@example.com" },
-  ];
-
+  React.useEffect(() => {
+    fetch("http://localhost:5000/api/users") // Update with your backend API URL
+      .then((response) => response.json())
+      .then((data) => setUsers(data))
+      .catch((error) => console.error("Error fetching users:", error));
+  }, []);
+  
   return (
     <div className="Dashboard">
     <div style={{ padding: "20px", maxWidth: "600px", margin: "auto", fontFamily: "Arial, sans-serif" }}>

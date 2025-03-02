@@ -34,7 +34,7 @@ function HomePage() {
 function Workspace() {
   return (
     <div className="Workspace">
-      <h2>📢 Workspace</h2>
+      {/* <h2>📢 Workspace</h2> */}
       <KanbanBoard />
     </div>
   );
@@ -102,7 +102,7 @@ function App() {
     <Router>
       <div className="App">
         {error || data ? (
-        <div className="notification">
+        <div className="Error">
         <p>{error || data}</p>
         </div>
         ) : null}

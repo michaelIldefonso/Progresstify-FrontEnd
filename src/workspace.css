@@ -7,6 +7,12 @@ body {
     padding: 0;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ensures full height coverage */
+}
+
 .Workspace {
     background-image: url("/workspace.png");
     height: 980px;
@@ -20,6 +26,8 @@ h2 {
     color: white;
     margin-left: -30px;
 }
+
+
 
 .kanban-container {
     display: flex;

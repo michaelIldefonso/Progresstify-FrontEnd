@@ -79,7 +79,12 @@ function App() {
 
 useEffect(() => {
   fetch(`${API_BASE_URL}/api/data`, {
-    credentials: "include",  // ✅ Send session cookie
+    credentials: "include",
+    method: "GET",
+    headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json"
+    }  // ✅ Send session cookie
   })
     .then((res) => {
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);

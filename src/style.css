@@ -13,6 +13,7 @@ body {
 
 .navbar {
   display: flex;
+  height: 80px;
   align-items: center;
   padding: 10px 20px;
   background-color: rgba(0, 0, 0, 0);
@@ -48,6 +49,7 @@ body {
   color: white;
   text-decoration: none;
   font-size: 16px;
+  margin-top: 30px;
 }
 
 .navbar.scrolled {
@@ -92,7 +94,7 @@ body {
   cursor: pointer;
   border-radius: 5px;
   top: 0;
-  margin-top: -20px;
+  margin-top: 20px;
 }
 
 .login .btn:hover {
@@ -261,7 +263,7 @@ body {
 
 .Error {
   position: fixed;
-  height: 40px;
+  height: 38px;
   font-size: 16px;
   top: 0;
   left: 50%;
@@ -273,5 +275,9 @@ body {
   color: white;
   z-index: 1000; 
   border-radius: 5px;
+}
+
+.Error p {
+  margin-top: 10px;
 }
 

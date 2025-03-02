@@ -101,8 +101,12 @@ function App() {
   return (
     <Router>
       <div className="App">
-      <h1>{error || data }</h1>
-
+        {error || data ? (
+        <div className="notification">
+        <p>{error || data}</p>
+        </div>
+        ) : null}
+  
         <nav className={`navbar ${scrolling ? "scrolled" : ""}`}>
           <div className="logo">
             <img src="/final_logo.png" alt="Logo" />
@@ -117,17 +121,17 @@ function App() {
             <button className="btn" onClick={togglePopup}>Login</button>
           </div>
         </nav>
-
+  
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/workspace" element={<Workspace />} />
         </Routes>
-
-        {/* Show popup when 'showPopup' is true */}
+  
         {showPopup && <LoginPopup togglePopup={togglePopup} />}
       </div>
     </Router>
   );
+  
 }
 
 export default App;

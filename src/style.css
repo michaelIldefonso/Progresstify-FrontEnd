@@ -36,7 +36,6 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
-  margin-left: -150px;
   flex-grow: 1;
   justify-content: center;
 }
@@ -260,5 +259,16 @@ body {
   color: #333;
 }
 
-
+.notification {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  padding: 10px;
+  background-color: #f44336a6; 
+  color: white;
+  z-index: 1000; 
+  border-radius: 5px;
+}
 

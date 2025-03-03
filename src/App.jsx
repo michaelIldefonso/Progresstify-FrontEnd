@@ -22,12 +22,19 @@ function App() {
 
   return (
     <>
+<<<<<<< HEAD
       <AppBar position="static" sx={{ backgroundColor: "rgba(0, 0, 0, 0.3) ", boxShadow: "none" }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             <img src="/final_logo.png" alt="" />
+=======
+      <AppBar position="static"sx={{ backgroundColor: "#767474" }}>
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1, color: "black" }}>
+            Progresstify
+>>>>>>> 5fe08d3d919cb3deba2cab5a54e29f7df1cc3e78
           </Typography>
-          <Button color="inherit" onClick={() => setOpen(true)} sx={{ textTransform: "none" }}>
+          <Button color="inherit" onClick={() => setOpen(true)} sx={{ color: "black",textTransform: "none" }}>
             Login or Sign-up
           </Button>
         </Toolbar>

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
 import "./style.css";
 import PropTypes from "prop-types";
 import KanbanBoard from "./Workspace";
 import "./workspace.css";
 
-
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 
 // 🏠 Home Page
 function HomePage() {
@@ -45,37 +43,55 @@ function Workspace() {
 }
 
 function Dashboard() {
-  React.useEffect(() => {
-    fetch("http://localhost:5000/api/users") // Update with your backend API URL
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
+
+    if (token) {
+      localStorage.setItem("token", token);
+      navigate("/dashboard"); // Remove token from URL after storing it
+    }
+
+    fetch(`${API_BASE_URL}/users/me`, {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      }
+    })
       .then((response) => response.json())
-      .then((data) => setUsers(data))
-      .catch((error) => console.error("Error fetching users:", error));
-  }, []);
-  
+      .then((data) => setUser(data))
+      .catch((error) => console.error("Error fetching user:", error));
+  }, [location.search, navigate]);
+
   return (
     <div className="Dashboard">
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto", fontFamily: "Arial, sans-serif" }}>
-      <h2>Registered Users</h2>
-      <table border="1" cellPadding="8" cellSpacing="0" style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr style={{ background: "#f4f4f4" }}>
-            <th>ID</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div></div>
+      <div style={{ padding: "20px", maxWidth: "600px", margin: "auto", fontFamily: "Arial, sans-serif" }}>
+        <h2>Logged In User</h2>
+        {user ? (
+          <table border="1" cellPadding="8" cellSpacing="0" style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr style={{ background: "#f4f4f4" }}>
+                <th>ID</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{user.id}</td>
+                <td>{user.email}</td>
+              </tr>
+            </tbody>
+          </table>
+        ) : (
+          <p>Loading user data...</p>
+        )}
+      </div>
+    </div>
   );
 }
-
 
 // 🔑 Login Popup Component
 function LoginPopup({ togglePopup }) {
@@ -92,7 +108,8 @@ function LoginPopup({ togglePopup }) {
           <button className="btn green">Sign Up</button>
         </div>
         <p>Or Continue With:</p>
-        <button className="social-btn google" onClick={() => window.location.href = `${API_BASE_URL}/auth/google`}>Google</button>        <button className="social-btn facebook">Facebook</button>
+        <button className="social-btn google" onClick={() => window.location.href = `${API_BASE_URL}/auth/google`}>Google</button>
+        <button className="social-btn facebook">Facebook</button>
       </div>
     </div>
   );
@@ -102,7 +119,6 @@ LoginPopup.propTypes = {
   togglePopup: PropTypes.func.isRequired, // Ensures togglePopup is a function
 };
 
-
 // ✨ Main App Component
 function App() {
   const [data, setData] = useState("");
@@ -110,25 +126,24 @@ function App() {
   const [scrolling, setScrolling] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
 
-
-useEffect(() => {
-  fetch(`${API_BASE_URL}/api/data`, {
-    credentials: "include",
-    method: "GET",
-    headers: {
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/data`, {
+      credentials: "include",
+      method: "GET",
+      headers: {
         "Authorization": `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json"
-    }  // ✅ Send session cookie
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-      return res.json();
+      }  // ✅ Send session cookie
     })
-    .then((data) => setData(data.message))
-    .catch((err) => {
-      console.error("Error fetching data:", err);
-    });
-}, []);
+      .then((res) => {
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        return res.json();
+      })
+      .then((data) => setData(data.message))
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+      });
+  }, []);
 
   const togglePopup = () => setShowPopup((prev) => !prev);
 
@@ -143,7 +158,7 @@ useEffect(() => {
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/workspace">Workspace</Link></li>
-            <li><Link to="/Dashboard">Dashboard</Link></li>
+            <li><Link to="/dashboard">Dashboard</Link></li>
             <li><a href="#" onClick={(e) => e.preventDefault()}>Plans</a></li>
           </ul>
           <div className="login">
@@ -154,7 +169,7 @@ useEffect(() => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/workspace" element={<Workspace />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
 
         {/* Show popup when 'showPopup' is true */}

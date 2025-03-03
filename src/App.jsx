@@ -22,14 +22,14 @@ function App() {
   };
 
   return (
-    <div style={{ backgroundColor: "#0a0f1e", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <div style={{ backgroundColor: "#0a0f1e", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", }}>
       <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             <img src="/final_logo.png" alt="Sitemark" />
           </Typography>
           <Button variant="outlined" onClick={() => setOpen(true)} sx={{ color: "white", borderColor: "white", textTransform: "none" }}>
-            Login or Sign Up
+            Login / Sign Up
           </Button>
         </Toolbar>
       </AppBar>
@@ -47,11 +47,12 @@ function App() {
                 <TextField
                   fullWidth
                   margin="normal"
-                  label="Email"
+                  label="Email" 
                   name="email"
                   type="email"
                   variant="filled"
                   InputProps={{ style: { backgroundColor: "#1f2937", color: "#fff" } }}
+                  InputLabelProps={{ style: { backgroundColor: "#1f2937", color: "#578FCA" } }}
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -64,6 +65,7 @@ function App() {
                   type="password"
                   variant="filled"
                   InputProps={{ style: { backgroundColor: "#1f2937", color: "#fff" } }}
+                  InputLabelProps={{ style: { backgroundColor: "#1f2937", color: "#578FCA" } }}
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -77,6 +79,7 @@ function App() {
                     type="password"
                     variant="filled"
                     InputProps={{ style: { backgroundColor: "#1f2937", color: "#fff" } }}
+                    InputLabelProps={{ style: { backgroundColor: "#1f2937", color: "#578FCA" } }}
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required

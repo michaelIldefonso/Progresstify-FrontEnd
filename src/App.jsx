@@ -28,7 +28,7 @@ function App() {
           <Typography variant="h6" style={{ flexGrow: 1 }}>
             <img src="/final_logo.png" alt="Sitemark" />
           </Typography>
-          <Button variant="outlined" onClick={() => setOpen(true)} sx={{ color: "white", borderColor: "white", textTransform: "none" }}>
+          <Button variant="outlined" onClick={() => setOpen(true)} sx={{ color: "#2196F3", borderColor: "#2196F3", textTransform: "none" }}>
             Login / Sign Up
           </Button>
         </Toolbar>
@@ -89,7 +89,7 @@ function App() {
                   control={<Checkbox style={{ color: "white" }} />}
                   label={<Typography variant="body2" style={{ color: "white" }}>Remember me</Typography>}
                 />
-                <Button fullWidth variant="contained" sx={{ backgroundColor: "#fff", color: "#000", marginTop: "10px" }} type="submit">
+                <Button fullWidth variant="contained" sx={{ backgroundColor: "#578FCA", color: "#000", marginTop: "10px" }} type="submit">
                   {isSignUp ? "Sign Up" : "Sign In"}
                 </Button>
               </form>

@@ -22,12 +22,12 @@ function App() {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static"sx={{ backgroundColor: "#767474" }}>
         <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
+          <Typography variant="h6" style={{ flexGrow: 1, color: "black" }}>
             Progresstify
           </Typography>
-          <Button color="inherit" onClick={() => setOpen(true)} sx={{ textTransform: "none" }}>
+          <Button color="inherit" onClick={() => setOpen(true)} sx={{ color: "black",textTransform: "none" }}>
             Login or Sign-up
           </Button>
         </Toolbar>

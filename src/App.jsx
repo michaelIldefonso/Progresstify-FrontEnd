@@ -28,7 +28,7 @@ function App() {
       <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
-            <img src="/final_logo.png" alt="Sitemark" />
+            <img src="/hahaha.png" alt="Sitemark" />
           </Typography>
           <Button variant="outlined" onClick={() => setOpen(true)} sx={{ color: "#2196F3", borderColor: "#2196F3", textTransform: "none" }}>
             Login / Sign Up

@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-// import axios from "axios";                 useEffect
-// import { useNavigate } from "react-router-dom";
 import { AppBar, Toolbar, Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google"; // Google icon from MUI
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 
 function App() {
   const [open, setOpen] = useState(false); // Controls dialog visibility
@@ -108,7 +105,7 @@ function App() {
 
               <Button
                 fullWidth
-                onClick={() => window.location.href = `${API_BASE_URL}/auth/google`}
+                onClick={() => window.open(`${API_BASE_URL}/auth/google`, "_self")}
                 variant="outlined"
                 startIcon={<GoogleIcon />}
                 sx={{ color: "white", borderColor: "white", textTransform: "none" }}

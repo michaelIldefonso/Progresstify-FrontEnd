@@ -1,72 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+// import axios from "axios";                 useEffect
+// import { useNavigate } from "react-router-dom";
 import { AppBar, Toolbar, Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google"; // MUI icon for Google
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 function App() {
   const [open, setOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "", confirmPassword: "" });
-  const [data, setData] = useState("");
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/api/data`, {
-      credentials: "include",
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json"
-      }  // ✅ Send session cookie
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-        return res.json();
-      })
-      .then((data) => setData(data.message))
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-      });
-  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignUp && formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/${isSignUp ? "signup" : "login"}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
-        setOpen(false);
-        // Navigate to another page if needed
-        // navigate("/dashboard");
-      } else {
-        const errorData = await response.json();
-        alert(errorData.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please try again.");
-    }
+    alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
+    setOpen(false);
   };
 
   return (
-    <div style={{ backgroundColor: "#0a0f1e", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+    <div style={{ backgroundColor: "#0a0f1e", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", }}>
       <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>

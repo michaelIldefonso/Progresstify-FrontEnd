@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { AppBar, Toolbar, Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google"; // MUI icon for Google
+import GoogleIcon from "@mui/icons-material/Google"; // Google icon from MUI
 
 function App() {
-  const [open, setOpen] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [open, setOpen] = useState(false); // Controls dialog visibility
+  const [isSignUp, setIsSignUp] = useState(false); // Toggle between Sign Up and Login
   const [formData, setFormData] = useState({ email: "", password: "", confirmPassword: "" });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value }); // Update form state
   };
 
   const handleSubmit = (e) => {
@@ -22,7 +22,7 @@ function App() {
   };
 
   return (
-    <div style={{ backgroundColor: "#0a0f1e", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", }}>
+    <div style={{ backgroundColor: "#0a0f1e", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
@@ -34,6 +34,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
+      {/* Login / Sign Up Dialog */}
       <Dialog 
         open={open} 
         onClose={() => setOpen(false)}

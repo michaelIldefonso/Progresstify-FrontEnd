@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Button, TextField, Card, CardContent, Typography, IconButton, Box, Grid, Paper } from "@mui/material";
-import { Dashboard, ListAlt, People, CloudUpload, Add, Delete, Close } from "@mui/icons-material";
+import { Dashboard, ListAlt, People, CloudUpload, Add, Delete, Close, DeleteForever } from "@mui/icons-material";
 
 const Workspace = () => {
     const [columns, setColumns] = useState([]);
     const [newMember, setNewMember] = useState("");
     const [members, setMembers] = useState(["Alice", "Bob", "Charlie"]);
+    const [draggingColumn, setDraggingColumn] = useState(null);
 
     const addMember = () => {
         if (newMember.trim() && !members.includes(newMember)) {
@@ -66,29 +67,30 @@ const Workspace = () => {
         }
     };
 
-    const handleDragStart = (event, card, columnId) => {
-        event.dataTransfer.setData("card", JSON.stringify({ card, columnId }));
+    const handleColumnDragStart = (event, columnId) => {
+        setDraggingColumn(columnId);
+        event.dataTransfer.effectAllowed = "move";
     };
 
     const handleDrop = (event, targetColumnId) => {
         event.preventDefault();
-        const { card, columnId } = JSON.parse(event.dataTransfer.getData("card"));
-        
-        if (columnId !== targetColumnId) {
-            setColumns(columns.map(col => {
-                if (col.id === columnId) {
-                    return { ...col, cards: col.cards.filter(c => c.id !== card.id) };
-                }
-                if (col.id === targetColumnId) {
-                    return { ...col, cards: [...col.cards, card] };
-                }
-                return col;
-            }));
+        const columnId = draggingColumn;
+        if (columnId && columnId !== targetColumnId) {
+            setColumns(columns.map(col => col.id === columnId ? { ...col, cards: col.cards.filter(c => c.id !== card.id) } : col));
+            setColumns(columns.map(col => col.id === targetColumnId ? { ...col, cards: [...col.cards, card] } : col));
         }
+        setDraggingColumn(null);
+    };
+
+    const handleTrashDrop = (event) => {
+        event.preventDefault();
+        const columnId = draggingColumn;
+        setColumns(columns.filter(col => col.id !== columnId));
+        setDraggingColumn(null);
     };
 
     return (
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", position: "relative" }}>
             <Drawer variant="permanent" sx={{ width: 240, flexShrink: 0 }}>
                 <List>
                     {["Dashboard", "Board List", "Member List", "Uploads"].map((text, index) => (
@@ -128,7 +130,12 @@ const Workspace = () => {
                 <Button variant="contained" startIcon={<Add />} onClick={addColumn}>Add Column</Button>
                 <Grid container spacing={2} sx={{ marginTop: 2 }}>
                     {columns.map(column => (
-                        <Grid item key={column.id} xs={12} sm={6} md={4} onDrop={(e) => handleDrop(e, column.id)} onDragOver={(e) => e.preventDefault()}>
+                        <Grid 
+                            item key={column.id} xs={12} sm={6} md={4} 
+                            onDrop={(e) => handleDrop(e, column.id)} 
+                            onDragOver={(e) => e.preventDefault()}
+                            draggable onDragStart={(e) => handleColumnDragStart(e, column.id)}
+                        >
                             <Paper sx={{ padding: 2, backgroundColor: "#f4f4f4" }}>
                                 <Box display="flex" justifyContent="space-between" alignItems="center">
                                     {column.isEditing ? (
@@ -181,6 +188,25 @@ const Workspace = () => {
                         </Grid>
                     ))}
                 </Grid>
+                <Box 
+                    sx={{ 
+                        position: "fixed", 
+                        right: 16, 
+                        bottom: 16, 
+                        backgroundColor: "red", 
+                        color: "#fff", 
+                        borderRadius: "50%", 
+                        width: 56, 
+                        height: 56, 
+                        display: "flex", 
+                        justifyContent: "center", 
+                        alignItems: "center" 
+                    }}
+                    onDrop={handleTrashDrop}
+                    onDragOver={(e) => e.preventDefault()}
+                >
+                    <DeleteForever fontSize="large" />
+                </Box>
             </Box>
         </Box>
     );

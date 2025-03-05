@@ -5,7 +5,7 @@ import "./style.css";
 import App from "./App";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "./dashboard";
-import Workspace from "./Workspace"
+import Workspace from "./Workspace";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

@@ -11,7 +11,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/Workspace" element={<PrivateRoute><Workspace /></PrivateRoute>} />
+        
+          <Route path="/Workspace" element={<Workspace />} />
+        
+
       </Routes>
     </Router>
   </React.StrictMode>

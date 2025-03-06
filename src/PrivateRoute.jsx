@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const PrivateRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem("token");
-  return isAuthenticated ? children : <Navigate to="/" />;
+  const isAuthenticated = Boolean(localStorage.getItem("token"));
+  return isAuthenticated ? (children || <Outlet />) : <Navigate to="/Workspace" />;
 };
 
 PrivateRoute.propTypes = {

@@ -21,6 +21,7 @@ function App() {
     }
     alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
     setOpen(false);
+    Navigate("/Workspace");
     
   };
 

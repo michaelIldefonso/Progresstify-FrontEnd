@@ -7,7 +7,7 @@ const Workspace = () => {
     const [darkMode, setDarkMode] = useState(true);
     const [columns, setColumns] = useState([]);
     const [newMember, setNewMember] = useState("");
-    const [members, setMembers] = useState(["Alice", "Bob", "Charlie"]);
+    const [members, setMembers] = useState(["Alsim", "Bobby", "Charlie"]);
     const [draggingColumn, setDraggingColumn] = useState(null);
     const [draggingCard, setDraggingCard] = useState(null);
 

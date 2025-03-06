@@ -21,6 +21,7 @@ function App() {
     }
     alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
     setOpen(false);
+    
   };
 
   return (
@@ -35,6 +36,7 @@ function App() {
           </Button>
         </Toolbar>
       </AppBar>
+      
 
       {/* Login / Sign Up Dialog */}
       <Dialog 

@@ -236,7 +236,7 @@ return (
         <AppBar
         position="fixed"
         sx={{
-            backgroundColor: "transparent",
+            backgroundColor: "transparent", /*otid navbar adjustment*/
             boxShadow: "none",
             zIndex: theme.zIndex.drawer + 1,
         }}
@@ -259,7 +259,7 @@ return (
                 <Button
                 variant="outlined"
                 onClick={handleMenu}
-                sx={{ color: "#2196F3", borderColor: "#2196F3", textTransform: "none" }}
+                sx={{ color: "#2196F3", borderColor: "#2196F3", textTransform: "none" }}  /*account button*/
                 >
                 Account
                 </Button>
@@ -367,8 +367,8 @@ return (
         sx={{
             flexGrow: 1,
             padding: 3,
-            marginLeft: drawerOpen ? "240px" : "0",
-            marginTop: "60px",
+            marginLeft: drawerOpen ? "1px" : "0",
+            marginTop: "80px",
             transition: "margin-left 0.3s",
         }}
         >

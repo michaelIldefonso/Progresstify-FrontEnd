@@ -251,15 +251,20 @@ return (
             >
             <MenuIcon />
             </IconButton>
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
-            <img src="/hahaha.png" alt="Sitemark" />
+            <Typography variant="h6" style={{ flexGrow: 1}}>   
+            <img src="/hahaha.png" alt="Sitemark" /> 
             </Typography>
             {user && (
             <div>
                 <Button
                 variant="outlined"
                 onClick={handleMenu}
-                sx={{ color: "#2196F3", borderColor: "#2196F3", textTransform: "none" }}  /*account button*/
+                sx={{ 
+                    color: "black", 
+                    textTransform: "none",
+                    backgroundColor: "#30A8DB",
+                    boxShadow: 3
+                }}  /*account nigga button*/
                 >
                 Account
                 </Button>
@@ -367,8 +372,8 @@ return (
         sx={{
             flexGrow: 1,
             padding: 3,
-            marginLeft: drawerOpen ? "1px" : "0",
-            marginTop: "80px",
+            marginLeft: drawerOpen ? "0px" : "0",
+            marginTop: "83px",
             transition: "margin-left 0.3s",
         }}
         >

@@ -10,6 +10,9 @@ import {
   CardContent,
   Box,
   IconButton,
+  Modal,
+  TextField,
+  Paper
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,6 +23,10 @@ function Home() {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [workspaceDescription, setWorkspaceDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -53,6 +60,17 @@ function Home() {
   }, [navigate, location.search]);
 
   const handleCreateWorkspace = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = () => {
+    console.log("Workspace Name:", workspaceName);
+    console.log("Workspace Description:", workspaceDescription);
+    setOpen(false);
     navigate("/workspace");
   };
 
@@ -67,6 +85,16 @@ function Home() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
+  };
+
+  const handleDescriptionChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 200) {
+      setWorkspaceDescription(value);
+      setDescriptionError("");
+    } else {
+      setDescriptionError("Description exceeds 200 characters limit.");
+    }
   };
 
   return (
@@ -160,6 +188,53 @@ function Home() {
           </Typography>
         </CardContent>
       </Card>
+
+      <Modal
+        open={open}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Paper
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            maxHeight: "80vh", // Limit the height
+            overflowY: "auto", // Enable scrolling
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Create Workspace
+          </Typography>
+          <TextField
+            fullWidth
+            label="Workspace Name"
+            value={workspaceName}
+            onChange={(e) => setWorkspaceName(e.target.value)}
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            fullWidth
+            multiline
+            label="Workspace Description"
+            value={workspaceDescription}
+            onChange={handleDescriptionChange}
+            sx={{ marginBottom: 2 }}
+            error={!!descriptionError}
+            helperText={descriptionError}
+          />
+          <Button variant="contained" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Paper>
+      </Modal>
     </div>
   );
 }

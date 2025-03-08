@@ -110,7 +110,7 @@ const Workspace = () => {
   const addColumn = () => {
     setColumns([
       ...columns,
-      { id: Date.now(), title: "", isEditing: true, cards: [], newCardText: "" },
+      { id: Date.now(), title: "", isEditing: true, cards: [], newCardText: "", isAddingCard: false },
     ]);
   };
 
@@ -140,6 +140,7 @@ const Workspace = () => {
             ...col,
             cards: [...col.cards, { id: Date.now(), text: col.newCardText, checked: false }],
             newCardText: "",
+            isAddingCard: false,
           };
         }
         return col;
@@ -443,7 +444,6 @@ const Workspace = () => {
                 <Paper
                   sx={{
                     padding: 2,
-                    backgroundColor: "rgba(240, 232, 232, 0.2)", // Making paper transparent with alpha value
                     transition: "transform 0.3s",
                     "&:hover": { transform: "scale(1.02)" },
                     borderRadius: "24px", // Rounded corners for paper
@@ -484,20 +484,25 @@ const Workspace = () => {
                       <Close />
                     </IconButton>
                   </Box>
-                  <TextField
-                    fullWidth
-                    placeholder="Enter card text and press Enter"
-                    value={column.newCardText}
-                    onChange={(e) => handleCardInputChange(column.id, e.target.value)}
-                    onKeyPress={(e) => handleCardInputKeyPress(e, column.id)}
-                    sx={{ marginTop: 1, borderRadius: "24px" }} // Rounded corners for text field
-                  />
                   <Box sx={{ marginTop: 2 }}>
+                    {column.isAddingCard && (
+                      <TextField
+                        fullWidth
+                        placeholder="Enter card text and press Enter"
+                        value={column.newCardText}
+                        onChange={(e) => handleCardInputChange(column.id, e.target.value)}
+                        onKeyPress={(e) => handleCardInputKeyPress(e, column.id)}
+                        onBlur={() => addCard(column.id)}
+                        autoFocus
+                        sx={{ marginBottom: 1, borderRadius: "24px" }} // Rounded corners for text field
+                      />
+                    )}
                     {column.cards.map((card) => (
                       <Card
                         key={card.id}
                         sx={{
                           marginBottom: 1,
+                          backgroundColor: "rgba(240, 232, 232, 0.2)", // Making card transparent
                           transition: "transform 0.3s",
                           "&:hover": { transform: "scale(1.02)" },
                           borderRadius: "24px", // Rounded corners for card
@@ -529,6 +534,18 @@ const Workspace = () => {
                         </CardContent>
                       </Card>
                     ))}
+                    <Button
+                      variant="text"
+                      startIcon={<Add />}
+                      onClick={() => setColumns(
+                        columns.map((col) =>
+                          col.id === column.id ? { ...col, newCardText: "", isAddingCard: true } : col
+                        )
+                      )}
+                      sx={{ borderRadius: "24px", marginTop: 1 }}
+                    >
+                      Add a card
+                    </Button>
                   </Box>
                 </Paper>
               </Grid>

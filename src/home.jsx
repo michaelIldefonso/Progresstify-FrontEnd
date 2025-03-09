@@ -18,7 +18,7 @@ import { Add } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
-function WorkspacesPage() {
+function Workspaces() {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
@@ -87,6 +87,8 @@ function WorkspacesPage() {
       .then((response) => {
         setWorkspaces([...workspaces, response.data]);
         setOpen(false);
+        setWorkspaceName("");
+        setWorkspaceDescription("");
       })
       .catch((error) => console.error("Error creating workspace:", error));
   };
@@ -199,6 +201,48 @@ function WorkspacesPage() {
         </CardContent>
       </Card>
 
+      {/* Modal for Creating Workspace */}
+      <Modal open={open} onClose={handleCloseModal}>
+        <Paper
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h6" component="h2">
+            Create Workspace
+          </Typography>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Workspace Name"
+            fullWidth
+            value={workspaceName}
+            onChange={(e) => setWorkspaceName(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="Workspace Description"
+            fullWidth
+            multiline
+            rows={4}
+            value={workspaceDescription}
+            onChange={handleDescriptionChange}
+            error={descriptionError !== ""}
+            helperText={descriptionError}
+          />
+          <Button onClick={handleSubmit} variant="contained" sx={{ mt: 2 }}>
+            Create
+          </Button>
+        </Paper>
+      </Modal>
+
       {/* Workspaces List */}
       <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
         {workspaces.length > 0 ? (
@@ -233,4 +277,4 @@ function WorkspacesPage() {
   );
 }
 
-export default WorkspacesPage;
+export default Workspaces;

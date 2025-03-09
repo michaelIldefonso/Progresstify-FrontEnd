@@ -8,17 +8,17 @@ import {
   Typography,
   Card,
   CardContent,
-  Box,
   IconButton,
   Modal,
   TextField,
-  Paper
+  Paper,
+  Grid,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
-function Home() {
+function WorkspacesPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
@@ -27,6 +27,7 @@ function Home() {
   const [workspaceName, setWorkspaceName] = useState("");
   const [workspaceDescription, setWorkspaceDescription] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
+  const [workspaces, setWorkspaces] = useState([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -45,14 +46,19 @@ function Home() {
     }
 
     axios
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((response) => setWorkspaces(response.data))
+      .catch((error) => console.error("Error fetching workspaces:", error));
+
+    axios
       .get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, {
         withCredentials: true,
         headers: { Authorization: `Bearer ${storedToken}` },
       })
-      .then((response) => {
-        console.log("API Response:", response.data);
-        setUser(response.data);
-      })
+      .then((response) => setUser(response.data))
       .catch((error) => {
         console.error("Error fetching user data:", error);
         navigate("/");
@@ -68,10 +74,21 @@ function Home() {
   };
 
   const handleSubmit = () => {
-    console.log("Workspace Name:", workspaceName);
-    console.log("Workspace Description:", workspaceDescription);
-    setOpen(false);
-    navigate("/workspace");
+    if (!workspaceName) return;
+
+    axios
+      .post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/workspaces`,
+        { name: workspaceName, description: workspaceDescription },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      .then((response) => {
+        setWorkspaces([...workspaces, response.data]);
+        setOpen(false);
+      })
+      .catch((error) => console.error("Error creating workspace:", error));
   };
 
   const handleMenu = (event) => {
@@ -130,15 +147,9 @@ function Home() {
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
@@ -152,6 +163,7 @@ function Home() {
         </Toolbar>
       </AppBar>
 
+      {/* Create Workspace Card */}
       <Card
         onClick={handleCreateWorkspace}
         sx={{
@@ -180,63 +192,45 @@ function Home() {
           >
             <Add fontSize="large" />
           </IconButton>
-          <Typography variant="h5" component="div">
-            Create Workspace
-          </Typography>
+          <Typography variant="h5">Create Workspace</Typography>
           <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
             Click here to create a new workspace.
           </Typography>
         </CardContent>
       </Card>
 
-      <Modal
-        open={open}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Paper
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            maxHeight: "80vh", // Limit the height
-            overflowY: "auto", // Enable scrolling
-            bgcolor: "background.paper",
-            border: "2px solid #000",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Create Workspace
+      {/* Workspaces List */}
+      <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
+        {workspaces.length > 0 ? (
+          workspaces.map((ws) => (
+            <Grid item key={ws.id} xs={12} sm={6} md={4} lg={3}>
+              <Card
+                sx={{
+                  cursor: "pointer",
+                  backgroundColor: "#2a5298",
+                  color: "white",
+                  transition: "transform 0.2s",
+                  "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
+                }}
+                onClick={() => navigate(`/workspaces/${ws.id}/boards`)}
+              >
+                <CardContent>
+                  <Typography variant="h6">{ws.name}</Typography>
+                  <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.8)" }}>
+                    {ws.description || "No description available"}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="body1" sx={{ color: "white", mt: 4 }}>
+            No workspaces found.
           </Typography>
-          <TextField
-            fullWidth
-            label="Workspace Name"
-            value={workspaceName}
-            onChange={(e) => setWorkspaceName(e.target.value)}
-            sx={{ marginBottom: 2 }}
-          />
-          <TextField
-            fullWidth
-            multiline
-            label="Workspace Description"
-            value={workspaceDescription}
-            onChange={handleDescriptionChange}
-            sx={{ marginBottom: 2 }}
-            error={!!descriptionError}
-            helperText={descriptionError}
-          />
-          <Button variant="contained" onClick={handleSubmit}>
-            Submit
-          </Button>
-        </Paper>
-      </Modal>
+        )}
+      </Grid>
     </div>
   );
 }
 
-export default Home;
+export default WorkspacesPage;

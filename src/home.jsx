@@ -125,6 +125,9 @@ function Workspaces() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        backgroundImage: 'url("/blue.jpg")', // Add background image here
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
@@ -172,7 +175,7 @@ function Workspaces() {
           width: 300,
           cursor: "pointer",
           marginTop: 8,
-          background: "linear-gradient(135deg, #1e3c72 30%, #2a5298 90%)",
+          background: "linear-gradient(135deg, rgb(30, 30, 30) 30%, rgb(30, 30, 30) 90%)",
           color: "white",
           transition: "transform 0.3s, box-shadow 0.3s",
           "&:hover": {
@@ -210,9 +213,10 @@ function Workspaces() {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 400,
-            bgcolor: "background.paper",
+            backgroundColor: "rgb(30, 30, 30)",
             boxShadow: 24,
             p: 4,
+            color: "white",
           }}
         >
           <Typography variant="h6" component="h2">
@@ -225,6 +229,12 @@ function Workspaces() {
             fullWidth
             value={workspaceName}
             onChange={(e) => setWorkspaceName(e.target.value)}
+            InputLabelProps={{
+              style: { color: 'white' }, // Set label color to white
+            }}
+            InputProps={{
+              style: { color: 'white' }, // Set input text color to white
+            }}
           />
           <TextField
             margin="dense"
@@ -236,6 +246,12 @@ function Workspaces() {
             onChange={handleDescriptionChange}
             error={descriptionError !== ""}
             helperText={descriptionError}
+            InputLabelProps={{
+              style: { color: 'white' }, // Set label color to white
+            }}
+            InputProps={{
+              style: { color: 'white' }, // Set input text color to white
+            }}
           />
           <Button onClick={handleSubmit} variant="contained" sx={{ mt: 2 }}>
             Create
@@ -251,7 +267,7 @@ function Workspaces() {
               <Card
                 sx={{
                   cursor: "pointer",
-                  backgroundColor: "#2a5298",
+                  backgroundColor: "rgb(30, 30, 30)",
                   color: "white",
                   transition: "transform 0.2s",
                   "&:hover": { transform: "scale(1.05)", boxShadow: 3 },

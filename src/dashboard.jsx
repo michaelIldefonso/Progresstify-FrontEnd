@@ -122,13 +122,16 @@ const Dashboard = () => {
             },
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", pt: 15 }}>
-            <IconButton onClick={toggleDarkMode} color="inherit">
-              {darkMode ? <Brightness4 /> : <Brightness7 />}
-            </IconButton>
-            <Typography variant="h6" sx={{ marginLeft: 1 }}>
-              {darkMode ? "Dark Mode" : "Light Mode"}
-            </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", pt: 2 }}>
+            <img src="/hahaha.png" alt="Sitemark" style={{ width: '100px', height: '100px' }} />
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton onClick={toggleDarkMode} color="inherit">
+                {darkMode ? <Brightness4 /> : <Brightness7 />}
+              </IconButton>
+              <Typography variant="h6" sx={{ }}>
+                {darkMode ? "Dark Mode" : "Light Mode"}
+              </Typography>
+            </Box>
           </Box>
           <List>
             {dashboards.map((dashboard) => (
@@ -181,7 +184,6 @@ const Dashboard = () => {
             flexGrow: 1,
             p: 3,
             mt: 8,
-            backgroundColor: theme.palette.background.default,
             minHeight: "100vh",
           }}
         >

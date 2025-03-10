@@ -342,6 +342,7 @@ const Workspace = () => {
             },
           }}
         >
+          
           <Box sx={{ display: "flex", alignItems: "center", pt: 15 }}>
             <IconButton onClick={toggleDarkMode} color="inherit">
               {darkMode ? <Brightness4 /> : <Brightness7 />}
@@ -358,7 +359,7 @@ const Workspace = () => {
           sx={{
             flexGrow: 1,
             padding: 3,
-            marginLeft: drawerOpen ? "240px" : "0",
+            marginLeft: drawerOpen ? "0px" : "0", /*column*/
             marginTop: "83px",
             transition: "margin-left 0.3s",
           }}
@@ -441,7 +442,7 @@ const Workspace = () => {
                         key={card.id}
                         sx={{
                           marginBottom: 1,
-                          backgroundColor: "rgba(240, 232, 232, 0.2)", // Making card transparent
+                          backgroundColor: "rgba(240, 232, 232, 0.1)", // Making card transparent
                           transition: "transform 0.3s",
                           "&:hover": { transform: "scale(1.02)" },
                           borderRadius: "24px", // Rounded corners for card

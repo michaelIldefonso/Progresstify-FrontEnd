@@ -256,7 +256,7 @@ function Workspaces() {
                   transition: "transform 0.2s",
                   "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
                 }}
-                onClick={() => navigate(`/workspaces/${ws.id}/boards`)}
+                onClick={() => navigate(`/dashboard`)} // Updated to navigate to Dashboard
               >
                 <CardContent>
                   <Typography variant="h6">{ws.name}</Typography>

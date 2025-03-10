@@ -8,10 +8,11 @@ import {
   Brightness7, Menu as MenuIcon
 } from "@mui/icons-material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 const Workspace = () => {
+  const { id } = useParams(); // Get the id from the route parameters
   const [darkMode, setDarkMode] = useState(true);
   const [columns, setColumns] = useState([]);
   const [newMember, setNewMember] = useState("");
@@ -94,17 +95,6 @@ const Workspace = () => {
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-  };
-
-  const addMember = () => {
-    if (newMember.trim() && !members.includes(newMember)) {
-      setMembers([...members, newMember]);
-      setNewMember("");
-    }
-  };
-
-  const removeMember = (name) => {
-    setMembers(members.filter((member) => member !== name));
   };
 
   const addColumn = () => {
@@ -361,70 +351,19 @@ const Workspace = () => {
             </Typography>
           </Box>
           <List>
-            {["Dashboard", "Board List", "Member List", "Uploads"].map((text, index) => (
-              <ListItem
-                button
-                key={text}
-                sx={{
-                  transition: "background-color 0.3s",
-                  "&:hover": { backgroundColor: "rgba(29, 167, 222, 0.2)" },
-                }}
-              >
-                <ListItemIcon>
-                  {[<Dashboard />, <ListAlt />, <People />, <CloudUpload />][index]}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            {/* Add any additional navigation items here */}
           </List>
-          <Box sx={{ padding: 2 }}>
-            <Typography variant="h6">Manage Members</Typography>
-            <TextField
-              fullWidth
-              label="New Member"
-              value={newMember}
-              onChange={(e) => setNewMember(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  addMember();
-                }
-              }}
-              size="small"
-              sx={{ marginBottom: 1, borderRadius: "24px" }} // Rounded corners for text field
-            />
-            <Button variant="contained" fullWidth startIcon={<Add />} onClick={addMember} sx={{ borderRadius: "24px" }}>
-              Add
-            </Button>
-            <List>
-              {members.map((member) => (
-                <ListItem
-                  key={member}
-                  secondaryAction={
-                    <IconButton edge="end" onClick={() => removeMember(member)}>
-                      <Delete />
-                    </IconButton>
-                  }
-                  sx={{
-                    transition: "background-color 0.3s",
-                    "&:hover": { backgroundColor: "rgba(255, 64, 129, 0.2)" },
-                    borderRadius: "24px", // Rounded corners for list items
-                  }}
-                >
-                  <ListItemText primary={member} />
-                </ListItem>
-              ))}
-            </List>
-          </Box>
         </Drawer>
         <Box
           sx={{
             flexGrow: 1,
             padding: 3,
-            marginLeft: drawerOpen ? "0px" : "0",
+            marginLeft: drawerOpen ? "240px" : "0",
             marginTop: "83px",
             transition: "margin-left 0.3s",
           }}
         >
+          
           <Button variant="contained" startIcon={<Add />} onClick={addColumn} sx={{ borderRadius: "24px" }}>
             Add Column
           </Button>

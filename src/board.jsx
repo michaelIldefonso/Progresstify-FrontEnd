@@ -13,23 +13,23 @@ import axios from "axios";
 
 const Workspace = () => {
   const { id } = useParams(); // Get the id from the route parameters
-  const [darkMode, setDarkMode] = useState(true);
-  const [columns, setColumns] = useState([]);
+  const [darkMode, setDarkMode] = useState(true); // Dark mode state
+  const [columns, setColumns] = useState([]); // For columns and cards
   const [newMember, setNewMember] = useState("");
   const [members, setMembers] = useState(["Alsim", "Bobby", "Charlie"]);
-  const [draggingColumn, setDraggingColumn] = useState(null);
-  const [draggingCard, setDraggingCard] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [user, setUser] = useState({
+  const [draggingColumn, setDraggingColumn] = useState(null); // For drag and drop
+  const [draggingCard, setDraggingCard] = useState(null); // For drag and drop
+  const [anchorEl, setAnchorEl] = useState(null); // For account menu
+  const [user, setUser] = useState({ // User data
     userEmail: "user@example.com",
     userId: "12345",
     userOauth_id: "oauth12345",
   });
-  const [drawerOpen, setDrawerOpen] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [drawerOpen, setDrawerOpen] = useState(true); // For drawer visibility or list
+  const navigate = useNavigate(); // Navigation hook
+  const location = useLocation();// Location hook
 
-  const theme = createTheme({
+  const theme = createTheme({ // Custom theme
     palette: {
       mode: darkMode ? "dark" : "light",
       primary: {
@@ -62,7 +62,7 @@ const Workspace = () => {
     },
   });
 
-  useEffect(() => {
+  useEffect(() => { // Fetch user data 
     const urlParams = new URLSearchParams(location.search);
     const token = urlParams.get("token");
 
@@ -78,8 +78,8 @@ const Workspace = () => {
       return;
     }
 
-    axios
-      .get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, {
+    axios // fetch user data
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, { 
         withCredentials: true,
         headers: { Authorization: `Bearer ${storedToken}` },
       })
@@ -93,18 +93,18 @@ const Workspace = () => {
       });
   }, [navigate, location.search]);
 
-  const toggleDarkMode = () => {
+  const toggleDarkMode = () => { // Toggle dark mode
     setDarkMode(!darkMode);
   };
 
-  const addColumn = () => {
+  const addColumn = () => { // Add a new column
     setColumns([
       ...columns,
       { id: Date.now(), title: "", isEditing: true, cards: [], newCardText: "", isAddingCard: false },
     ]);
   };
 
-  const renameColumn = (columnId, newTitle) => {
+  const renameColumn = (columnId, newTitle) => { // Rename a column
     setColumns(
       columns.map((col) =>
         col.id === columnId ? { ...col, title: newTitle } : col
@@ -112,7 +112,7 @@ const Workspace = () => {
     );
   };
 
-  const finalizeColumnTitle = (columnId) => {
+  const finalizeColumnTitle = (columnId) => { // Finalize column title
     setColumns(
       columns.map((col) =>
         col.id === columnId && col.title.trim()
@@ -122,7 +122,7 @@ const Workspace = () => {
     );
   };
 
-  const addCard = (columnId) => {
+  const addCard = (columnId) => {   // Add a new card
     setColumns(
       columns.map((col) => {
         if (col.id === columnId && col.newCardText.trim()) {
@@ -138,7 +138,7 @@ const Workspace = () => {
     );
   };
 
-  const removeCard = (columnId, cardId) => {
+  const removeCard = (columnId, cardId) => { // Remove a card
     setColumns(
       columns.map((col) => {
         if (col.id === columnId) {
@@ -149,31 +149,31 @@ const Workspace = () => {
     );
   };
 
-  const handleCardInputChange = (columnId, text) => {
+  const handleCardInputChange = (columnId, text) => { // Handle card input change
     setColumns(
       columns.map((col) => (col.id === columnId ? { ...col, newCardText: text } : col))
     );
   };
 
-  const handleCardInputKeyPress = (event, columnId) => {
+  const handleCardInputKeyPress = (event, columnId) => { // Handle card input key press
     if (event.key === "Enter") {
       addCard(columnId);
     }
   };
 
-  const handleColumnDragStart = (event, columnId) => {
+  const handleColumnDragStart = (event, columnId) => { // Handle column drag start
     setDraggingColumn(columnId);
     event.dataTransfer.effectAllowed = "move";
   };
 
-  const handleCardDragStart = (event, cardId, columnId) => {
+  const handleCardDragStart = (event, cardId, columnId) => { // Handle card drag start
     setDraggingCard({ cardId, columnId });
     event.dataTransfer.effectAllowed = "move";
   };
 
-  const handleDrop = (event, targetColumnId) => {
-    event.preventDefault();
-    const { cardId, columnId } = draggingCard;
+  const handleDrop = (event, targetColumnId) => { // Handle drop
+    event.preventDefault(); // Prevent default behavior
+    const { cardId, columnId } = draggingCard; // Get dragging card and column
     if (cardId && columnId !== targetColumnId) {
       setColumns(
         columns.map((col) => {
@@ -190,10 +190,10 @@ const Workspace = () => {
         })
       );
     }
-    setDraggingCard(null);
+    setDraggingCard(null); // Reset dragging card
   };
 
-  const handleTrashDrop = (event) => {
+  const handleTrashDrop = (event) => { // Handle trash drop
     event.preventDefault();
     const { cardId, columnId } = draggingCard;
     if (cardId && columnId) {
@@ -206,31 +206,31 @@ const Workspace = () => {
         })
       );
     }
-    setDraggingCard(null);
+    setDraggingCard(null); // Reset dragging card
   };
 
-  const handleMenu = (event) => {
+  const handleMenu = (event) => { // Handle menu
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () => { // Handle close
     setAnchorEl(null);
   };
 
-  const toggleDrawer = () => {
+  const toggleDrawer = () => { // Toggle drawer
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleLogout = () => {
+  const handleLogout = () => { // Handle logout
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/"); // Navigate to login
   };
 
   const navigateHome = () => {
-    navigate("/home");
+    navigate("/home"); // Navigate to home
   };
 
-  const handleCheckboxChange = (columnId, cardId, checked) => {
+  const handleCheckboxChange = (columnId, cardId, checked) => { // Handle checkbox change
     setColumns((prevColumns) =>
       prevColumns.map((col) =>
         col.id === columnId
@@ -247,7 +247,7 @@ const Workspace = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
+      <Box // Main container
         sx={{
           display: "flex",
           position: "relative",
@@ -257,7 +257,7 @@ const Workspace = () => {
           minHeight: "100vh",
         }}
       >
-        <AppBar
+        <AppBar 
           position="fixed"
           sx={{
             backgroundColor: "transparent",

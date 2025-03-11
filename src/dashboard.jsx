@@ -8,15 +8,15 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const Dashboard = () => {
   const { id } = useParams(); // Get the id from the route parameters
-  const [darkMode, setDarkMode] = useState(true);
-  const [drawerOpen, setDrawerOpen] = useState(true);
-  const [dashboards, setDashboards] = useState([]);
-  const [activeDashboard, setActiveDashboard] = useState(null);
-  const [editingDashboardId, setEditingDashboardId] = useState(null);
-  const [dashboardName, setDashboardName] = useState("");
+  const [darkMode, setDarkMode] = useState(true); // Dark mode state
+  const [drawerOpen, setDrawerOpen] = useState(true); // Drawer state
+  const [dashboards, setDashboards] = useState([]); // Dashboards state
+  const [activeDashboard, setActiveDashboard] = useState(null); // Active dashboard state
+  const [editingDashboardId, setEditingDashboardId] = useState(null); // Editing dashboard state
+  const [dashboardName, setDashboardName] = useState(""); // Added name state
   const [dashboardDescription, setDashboardDescription] = useState(""); // Added description state
   const [modalOpen, setModalOpen] = useState(false); // Modal state
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Navigation hook
 
   useEffect(() => {
     // Load dashboards from localStorage on component mount
@@ -35,7 +35,7 @@ const Dashboard = () => {
     localStorage.setItem("dashboards", JSON.stringify(dashboards));
   }, [dashboards]);
 
-  const theme = createTheme({
+  const theme = createTheme({ // set theme 
     palette: {
       mode: darkMode ? "dark" : "light",
       primary: {
@@ -51,50 +51,50 @@ const Dashboard = () => {
     },
   });
 
-  const toggleDarkMode = () => {
+  const toggleDarkMode = () => { // for dark mode
     setDarkMode(!darkMode);
   };
 
-  const toggleDrawer = () => {
+  const toggleDrawer = () => { // for drawer
     setDrawerOpen(!drawerOpen);
   };
 
-  const createDashboard = () => {
-    const newDashboard = { id: Date.now(), name: dashboardName, description: dashboardDescription };
-    setDashboards(prevDashboards => {
-      const updatedDashboards = [newDashboard, ...prevDashboards];
+  const createDashboard = () => { // for creating dashboard
+    const newDashboard = { id: Date.now(), name: dashboardName, description: dashboardDescription }; // Create a new dashboard object
+    setDashboards(prevDashboards => { // Update the dashboards state
+      const updatedDashboards = [newDashboard, ...prevDashboards]; // Add the new dashboard to the beginning of the array
       localStorage.setItem("dashboards", JSON.stringify(updatedDashboards)); // Save immediately to localStorage
-      return updatedDashboards;
+      return updatedDashboards; // Return the updated dashboards array
     });
-    setDashboardName("");
-    setDashboardDescription("");
+    setDashboardName(""); // Clear the name input
+    setDashboardDescription(""); // Clear the description input
     setModalOpen(false); // Close modal after creating dashboard
-     // Redirect to the specific dashboard
+    
   };
 
-  const selectDashboard = (dashboard) => {
-    setActiveDashboard(dashboard);
-    setEditingDashboardId(null);
-    navigate(`/dashboard/${dashboard.id}`); // Redirect to the specific dashboard
+  const selectDashboard = (dashboard) => { // for selecting dashboard
+    setActiveDashboard(dashboard); // Set the active dashboard
+    setEditingDashboardId(null); // Reset the editing dashboard id
+    navigate(`/dashboard/${dashboard.id}`); // Redirect to the specific dashboard after clicking
   };
 
-  const handleEditClick = (dashboard) => {
-    setEditingDashboardId(dashboard.id);
-    setDashboardName(dashboard.name);
-    setDashboardDescription(dashboard.description);
+  const handleEditClick = (dashboard) => { // for editing dashboard
+    setEditingDashboardId(dashboard.id); // Set the editing dashboard id
+    setDashboardName(dashboard.name); // Set the name input to the dashboard name
+    setDashboardDescription(dashboard.description); // Set the description input to the dashboard description
   };
 
-  const handleNameChange = (e) => {
-    setDashboardName(e.target.value);
+  const handleNameChange = (e) => { // for changing name
+    setDashboardName(e.target.value); // Update the dashboard name state
   };
 
-  const handleDescriptionChange = (e) => {
-    setDashboardDescription(e.target.value);
+  const handleDescriptionChange = (e) => { // for changing description
+    setDashboardDescription(e.target.value); // Update the dashboard description state
   };
 
-  const handleNameSave = (dashboard) => {
-    setDashboards(dashboards.map(d => d.id === dashboard.id ? { ...d, name: dashboardName, description: dashboardDescription } : d));
-    setEditingDashboardId(null);
+  const handleNameSave = (dashboard) => { // for saving name
+    setDashboards(dashboards.map(d => d.id === dashboard.id ? { ...d, name: dashboardName, description: dashboardDescription } : d)); // Update the dashboard name and description
+    setEditingDashboardId(null); // Reset the editing dashboard id
   };
 
   return (

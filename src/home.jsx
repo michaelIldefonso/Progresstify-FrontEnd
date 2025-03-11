@@ -19,33 +19,36 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 function Workspaces() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [user, setUser] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [workspaceName, setWorkspaceName] = useState("");
-  const [workspaceDescription, setWorkspaceDescription] = useState("");
-  const [descriptionError, setDescriptionError] = useState("");
-  const [workspaces, setWorkspaces] = useState([]);
+  const navigate = useNavigate(); // Navigation hook
+  const location = useLocation(); // Location hook
+  const [user, setUser] = useState(null); // User state
+  const [anchorEl, setAnchorEl] = useState(null); // Anchor element for menu
+  const [open, setOpen] = useState(false); // Modal state
+  const [workspaceName, setWorkspaceName] = useState(""); // Workspace name state
+  const [workspaceDescription, setWorkspaceDescription] = useState(""); // Workspace description state
+  const [descriptionError, setDescriptionError] = useState(""); // Description error state
+  const [workspaces, setWorkspaces] = useState([]); //  Workspaces state
 
   useEffect(() => {
+    // Check if token is present in the URL and store it in localStorage
     const urlParams = new URLSearchParams(location.search);
-    const token = urlParams.get("token");
+    const token = urlParams.get("token"); // Get token from URL
 
     if (token) {
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", token); // Store token in localStorage
     }
 
-    const storedToken = localStorage.getItem("token");
+    const storedToken = localStorage.getItem("token"); // Get token from localStorage
 
-    if (!storedToken) {
+    if (!storedToken) { 
+      // If no token is found, redirect to the login page
       console.error("No token found, redirecting...");
       navigate("/");
       return;
     }
 
     axios
+      // Fetch workspaces and user data using the stored token
       .get(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces`, {
         withCredentials: true,
         headers: { Authorization: `Bearer ${storedToken}` },
@@ -54,6 +57,7 @@ function Workspaces() {
       .catch((error) => console.error("Error fetching workspaces:", error));
 
     axios
+      // fetch user data
       .get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, {
         withCredentials: true,
         headers: { Authorization: `Bearer ${storedToken}` },
@@ -61,58 +65,61 @@ function Workspaces() {
       .then((response) => setUser(response.data))
       .catch((error) => {
         console.error("Error fetching user data:", error);
-        navigate("/");
+        navigate("/"); // Redirect to login page if user data fetch fails
       });
-  }, [navigate, location.search]);
+  }, [navigate, location.search]); 
 
   const handleCreateWorkspace = () => {
+    // Open the modal to create a new workspace
     setOpen(true);
   };
 
   const handleCloseModal = () => {
+    // Close the modal
     setOpen(false);
   };
 
   const handleSubmit = () => {
+    // Create a new workspace
     if (!workspaceName) return;
 
     axios
-      .post(
+      .post( // Post request to create a new workspace
         `${import.meta.env.VITE_API_BASE_URL}/api/workspaces`,
         { name: workspaceName, description: workspaceDescription },
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Send token in the headers
         }
       )
-      .then((response) => {
-        setWorkspaces([...workspaces, response.data]);
-        setOpen(false);
-        setWorkspaceName("");
-        setWorkspaceDescription("");
+      .then((response) => { // Update the workspaces state
+        setWorkspaces([...workspaces, response.data]); // Add the new workspace to the workspaces array
+        setOpen(false); // Close the modal
+        setWorkspaceName(""); // Clear the workspace name
+        setWorkspaceDescription(""); //  Clear the workspace description
       })
-      .catch((error) => console.error("Error creating workspace:", error));
+      .catch((error) => console.error("Error creating workspace:", error)); // Log error if workspace creation fails
   };
 
-  const handleMenu = (event) => {
+  const handleMenu = (event) => { // for handling menu
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () => { // for handling close
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
+  const handleLogout = () => { // for handling logout
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/"); // Redirect to login page after logout
   };
 
-  const handleDescriptionChange = (e) => {
+  const handleDescriptionChange = (e) => { // for handling description change
     const value = e.target.value;
-    if (value.length <= 200) {
-      setWorkspaceDescription(value);
-      setDescriptionError("");
+    if (value.length <= 200) {// Check if description is less than or equal to 200 characters
+      setWorkspaceDescription(value); // Update the workspace description state
+      setDescriptionError(""); // Clear the description error
     } else {
-      setDescriptionError("Description exceeds 200 characters limit.");
+      setDescriptionError("Description exceeds 200 characters limit."); // Set description error
     }
   };
 

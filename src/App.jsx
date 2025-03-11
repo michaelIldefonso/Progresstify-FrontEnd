@@ -13,7 +13,7 @@ function App() {
     setFormData({ ...formData, [e.target.name]: e.target.value }); // Update form state
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => { // Form submission handler
     e.preventDefault();
     if (isSignUp && formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
@@ -21,11 +21,12 @@ function App() {
     }
     alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
     setOpen(false);
-    Navigate("/Workspace");
+    Navigate("/home"); // Redirect to home page after sign up / login
     
   };
 
   return (
+    // Main page container
     <div style={{ backgroundColor: "#0a0f1e", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
         <Toolbar>
@@ -91,7 +92,7 @@ function App() {
                     required
                   />
                 )}
-                <FormControlLabel
+                <FormControlLabel // Remember me checkbox
                   control={<Checkbox style={{ color: "white" }} />}
                   label={<Typography variant="body2" style={{ color: "white" }}>Remember me</Typography>}
                 />
@@ -99,14 +100,14 @@ function App() {
                   {isSignUp ? "Sign Up" : "Sign In"}
                 </Button>
               </form>
-
+              
               <Typography variant="body2" sx={{ marginTop: "10px", color: "#9ca3af" }}>
                 Forgot your password?
               </Typography>
 
               <Typography variant="body2" sx={{ marginY: "10px", color: "#9ca3af" }}>or</Typography>
 
-              <Button
+              <Button // Google Sign In button
                 fullWidth
                 onClick={() => window.open(`${API_BASE_URL}/auth/google`, "_self")}
                 variant="outlined"
@@ -116,7 +117,7 @@ function App() {
                 Sign in with Google
               </Button>
 
-              <Button
+              <Button // Toggle between Sign Up and Login
                 fullWidth
                 color="secondary"
                 onClick={() => setIsSignUp(!isSignUp)}

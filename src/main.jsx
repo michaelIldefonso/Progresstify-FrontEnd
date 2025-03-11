@@ -5,7 +5,7 @@ import "./style.css";
 import App from "./App";
 import PrivateRoute from "./PrivateRoute";
 import Board from "./board";
-import Home from "./home";
+import Workspace from "./workspace";
 import Dashboard from "./dashboard"; 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/workspace" element={<Workspace />} />
         <Route path="/workspaces/:workspaceId/boards" element={<Board />} /> {/* Route for specific board */}
         <Route path="/dashboard/:id" element={<Board />} />{/* Route for specific dashboard */}
         <Route path="/dashboard" element={<Dashboard />} /> {/* Route for Dashboard */}

@@ -227,7 +227,7 @@ const Workspace = () => {
   };
 
   const navigateHome = () => {
-    navigate("/home"); // Navigate to home
+    navigate("/workspace"); // Navigate to home
   };
 
   const handleCheckboxChange = (columnId, cardId, checked) => { // Handle checkbox change

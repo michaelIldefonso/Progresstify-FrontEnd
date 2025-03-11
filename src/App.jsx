@@ -21,7 +21,7 @@ function App() {
     }
     alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
     setOpen(false);
-    Navigate("/home"); // Redirect to home page after sign up / login
+    Navigate("/workspace"); // Redirect to home page after sign up / login
     
   };
 

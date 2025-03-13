@@ -47,7 +47,7 @@ function App() {
         PaperProps={{ style: { backgroundColor: "#111827", color: "#fff", padding: "20px", borderRadius: "10px" } }}
       >
         <DialogTitle align="center">{isSignUp ? "Sign Up" : "Sign In"}</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ maxHeight: "80vh", overflow: "hidden" }}>
           <Container maxWidth="xs">
             <Paper elevation={0} style={{ padding: "20px", textAlign: "center", backgroundColor: "transparent" }}>
               <form onSubmit={handleSubmit}>

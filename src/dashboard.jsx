@@ -3,8 +3,9 @@ import {
   Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal
 } from "@mui/material";
 import { Add, Dashboard as DashboardIcon, Brightness4, Brightness7, Edit } from "@mui/icons-material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
+import { createCustomTheme } from "./Functions/themeFunctions";
 
 const Dashboard = () => {
   const { id } = useParams(); // Get the id from the route parameters
@@ -35,28 +36,10 @@ const Dashboard = () => {
     localStorage.setItem("dashboards", JSON.stringify(dashboards));
   }, [dashboards]);
 
-  const theme = createTheme({ // set theme 
-    palette: {
-      mode: darkMode ? "dark" : "light",
-      primary: {
-        main: "#1da7de",
-      },
-      secondary: {
-        main: "#ff4081",
-      },
-      background: {
-        default: darkMode ? "#121212" : "#ffffff",
-        paper: darkMode ? "#1e1e1e" : "#f5f5f5",
-      },
-    },
-  });
+  const theme = createCustomTheme(darkMode);
 
   const toggleDarkMode = () => { // for dark mode
     setDarkMode(!darkMode);
-  };
-
-  const toggleDrawer = () => { // for drawer
-    setDrawerOpen(!drawerOpen);
   };
 
   const createDashboard = () => { // for creating dashboard
@@ -141,7 +124,7 @@ const Dashboard = () => {
                 onClick={() => selectDashboard(dashboard)}
               >
                 <ListItemIcon>
-                  <DashboardIcon />
+                  <DashboardIcon /> 
                 </ListItemIcon>
                 {editingDashboardId === dashboard.id ? (
                   <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>

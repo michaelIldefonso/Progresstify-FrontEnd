@@ -10,6 +10,8 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import { addColumn, renameColumn, finalizeColumnTitle, handleColumnDragStart, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCardDragStart, handleDrop, handleTrashDrop, handleCheckboxChange } from "./Functions/cardColumnFunctions";
+import { createCustomTheme } from "./Functions/themeFunctions";
 
 const Workspace = () => {
   const { id } = useParams(); // Get the id from the route parameters
@@ -29,38 +31,7 @@ const Workspace = () => {
   const navigate = useNavigate(); // Navigation hook
   const location = useLocation();// Location hook
 
-  const theme = createTheme({ // Custom theme
-    palette: {
-      mode: darkMode ? "dark" : "light",
-      primary: {
-        main: "#1da7de",
-      },
-      secondary: {
-        main: "#ff4081",
-      },
-      background: {
-        default: darkMode ? "#121212" : "#ffffff",
-        paper: darkMode ? "#1e1e1e" : "#f5f5f5",
-      },
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            margin: "8px 0",
-            borderRadius: "24px", // Making buttons rounder
-          },
-        },
-      },
-      MuiCheckbox: {
-        styleOverrides: {
-          root: {
-            borderRadius: "50%", // Making checkboxes round
-          },
-        },
-      },
-    },
-  });
+  const theme = createCustomTheme(darkMode);
 
   useEffect(() => { // Fetch user data 
     const urlParams = new URLSearchParams(location.search);
@@ -97,118 +68,6 @@ const Workspace = () => {
     setDarkMode(!darkMode);
   };
 
-  const addColumn = () => { // Add a new column
-    setColumns([
-      ...columns,
-      { id: Date.now(), title: "", isEditing: true, cards: [], newCardText: "", isAddingCard: false },
-    ]);
-  };
-
-  const renameColumn = (columnId, newTitle) => { // Rename a column
-    setColumns(
-      columns.map((col) =>
-        col.id === columnId ? { ...col, title: newTitle } : col
-      )
-    );
-  };
-
-  const finalizeColumnTitle = (columnId) => { // Finalize column title
-    setColumns(
-      columns.map((col) =>
-        col.id === columnId && col.title.trim()
-          ? { ...col, isEditing: false }
-          : col
-      )
-    );
-  };
-
-  const addCard = (columnId) => {   // Add a new card
-    setColumns(
-      columns.map((col) => {
-        if (col.id === columnId && col.newCardText.trim()) {
-          return {
-            ...col,
-            cards: [...col.cards, { id: Date.now(), text: col.newCardText, checked: false }],
-            newCardText: "",
-            isAddingCard: false,
-          };
-        }
-        return col;
-      })
-    );
-  };
-
-  const removeCard = (columnId, cardId) => { // Remove a card
-    setColumns(
-      columns.map((col) => {
-        if (col.id === columnId) {
-          return { ...col, cards: col.cards.filter((card) => card.id !== cardId) };
-        }
-        return col;
-      })
-    );
-  };
-
-  const handleCardInputChange = (columnId, text) => { // Handle card input change
-    setColumns(
-      columns.map((col) => (col.id === columnId ? { ...col, newCardText: text } : col))
-    );
-  };
-
-  const handleCardInputKeyPress = (event, columnId) => { // Handle card input key press
-    if (event.key === "Enter") {
-      addCard(columnId);
-    }
-  };
-
-  const handleColumnDragStart = (event, columnId) => { // Handle column drag start
-    setDraggingColumn(columnId);
-    event.dataTransfer.effectAllowed = "move";
-  };
-
-  const handleCardDragStart = (event, cardId, columnId) => { // Handle card drag start
-    setDraggingCard({ cardId, columnId });
-    event.dataTransfer.effectAllowed = "move";
-  };
-
-  const handleDrop = (event, targetColumnId) => { // Handle drop
-    event.preventDefault(); // Prevent default behavior
-    const { cardId, columnId } = draggingCard; // Get dragging card and column
-    if (cardId && columnId !== targetColumnId) {
-      setColumns(
-        columns.map((col) => {
-          if (col.id === columnId) {
-            return { ...col, cards: col.cards.filter((card) => card.id !== cardId) };
-          }
-          if (col.id === targetColumnId) {
-            const movedCard = columns
-              .find((col) => col.id === columnId)
-              .cards.find((card) => card.id === cardId);
-            return { ...col, cards: [...col.cards, movedCard] };
-          }
-          return col;
-        })
-      );
-    }
-    setDraggingCard(null); // Reset dragging card
-  };
-
-  const handleTrashDrop = (event) => { // Handle trash drop
-    event.preventDefault();
-    const { cardId, columnId } = draggingCard;
-    if (cardId && columnId) {
-      setColumns(
-        columns.map((col) => {
-          if (col.id === columnId) {
-            return { ...col, cards: col.cards.filter((card) => card.id !== cardId) };
-          }
-          return col;
-        })
-      );
-    }
-    setDraggingCard(null); // Reset dragging card
-  };
-
   const handleMenu = (event) => { // Handle menu
     setAnchorEl(event.currentTarget);
   };
@@ -228,21 +87,6 @@ const Workspace = () => {
 
   const navigateHome = () => {
     navigate("/workspace"); // Navigate to home
-  };
-
-  const handleCheckboxChange = (columnId, cardId, checked) => { // Handle checkbox change
-    setColumns((prevColumns) =>
-      prevColumns.map((col) =>
-        col.id === columnId
-          ? {
-              ...col,
-              cards: col.cards.map((card) =>
-                card.id === cardId ? { ...card, checked: checked } : card
-              ),
-            }
-          : col
-      )
-    );
   };
 
   return (
@@ -355,7 +199,9 @@ const Workspace = () => {
             {/* Add any additional navigation items here */}
           </List>
         </Drawer>
-        <Box
+        
+        {/* COLUMN DITO MICHAEL YUNG ADD COLUMN NA LUMILIPAD */}
+        <Box 
           sx={{
             flexGrow: 1,
             padding: 3,

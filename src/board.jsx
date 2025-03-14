@@ -10,8 +10,10 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { addColumn, renameColumn, finalizeColumnTitle, handleColumnDragStart, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCardDragStart, handleDrop, handleTrashDrop, handleCheckboxChange } from "./Functions/cardColumnFunctions";
-import { createCustomTheme } from "./Functions/themeFunctions";
+import { addColumn, renameColumn, finalizeColumnTitle, handleColumnDragStart, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCardDragStart, handleDrop, handleTrashDrop, handleCheckboxChange } from "./Components/Functions/cardColumnFunctions";
+import { createCustomTheme } from "./Components/Functions/themeFunctions";
+import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
+import { navigateHome, handleLogout } from "./Components/Functions/navigationFunctions";
 
 const Workspace = () => {
   const { id } = useParams(); // Get the id from the route parameters
@@ -68,27 +70,6 @@ const Workspace = () => {
     setDarkMode(!darkMode);
   };
 
-  const handleMenu = (event) => { // Handle menu
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => { // Handle close
-    setAnchorEl(null);
-  };
-
-  const toggleDrawer = () => { // Toggle drawer
-    setDrawerOpen(!drawerOpen);
-  };
-
-  const handleLogout = () => { // Handle logout
-    localStorage.removeItem("token");
-    navigate("/"); // Navigate to login
-  };
-
-  const navigateHome = () => {
-    navigate("/workspace"); // Navigate to home
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Box // Main container
@@ -114,7 +95,7 @@ const Workspace = () => {
               edge="start"
               color="inherit"
               aria-label="menu"
-              onClick={toggleDrawer}
+              onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
               sx={{ mr: 2 }}
             >
               <MenuIcon />
@@ -124,7 +105,7 @@ const Workspace = () => {
             </Typography>
             <Button
               variant="outlined"
-              onClick={navigateHome}
+              onClick={() => navigateHome(navigate)} // Use the navigateHome function
               sx={{
                 color: "black",
                 textTransform: "none",
@@ -139,7 +120,7 @@ const Workspace = () => {
               <div>
                 <Button
                   variant="outlined"
-                  onClick={handleMenu}
+                  onClick={(e) => handleMenu(e, setAnchorEl)}
                   sx={{
                     color: "black",
                     textTransform: "none",
@@ -162,12 +143,12 @@ const Workspace = () => {
                     horizontal: "right",
                   }}
                   open={Boolean(anchorEl)}
-                  onClose={handleClose}
+                  onClose={() => handleClose(setAnchorEl)}
                 >
                   <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
                   <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
                   <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
                 </Menu>
               </div>
             )}
@@ -211,7 +192,7 @@ const Workspace = () => {
           }}
         >
           
-          <Button variant="contained" startIcon={<Add />} onClick={addColumn} sx={{ borderRadius: "24px" }}>
+          <Button variant="contained" startIcon={<Add />} onClick={() => addColumn(columns, setColumns)} sx={{ borderRadius: "24px" }}>
             Add Column
           </Button>
           <Grid container spacing={2} sx={{ marginTop: 2 }}>
@@ -222,10 +203,10 @@ const Workspace = () => {
                 xs={12}
                 sm={6}
                 md={4}
-                onDrop={(e) => handleDrop(e, column.id)}
+                onDrop={(e) => handleDrop(e, column.id, draggingCard, columns, setColumns, setDraggingCard)}
                 onDragOver={(e) => e.preventDefault()}
                 draggable
-                onDragStart={(e) => handleColumnDragStart(e, column.id)}
+                onDragStart={(e) => handleColumnDragStart(e, column.id, setDraggingColumn)}
               >
                 <Paper
                   sx={{
@@ -241,11 +222,11 @@ const Workspace = () => {
                         fullWidth
                         placeholder="Enter column name"
                         value={column.title}
-                        onChange={(e) => renameColumn(column.id, e.target.value)}
-                        onBlur={() => finalizeColumnTitle(column.id)}
+                        onChange={(e) => renameColumn(columns, setColumns, column.id, e.target.value)}
+                        onBlur={() => finalizeColumnTitle(columns, setColumns, column.id)}
                         onKeyPress={(e) => {
                           if (e.key === "Enter") {
-                            finalizeColumnTitle(column.id);
+                            finalizeColumnTitle(columns, setColumns, column.id);
                             e.preventDefault();
                           }
                         }}
@@ -276,9 +257,9 @@ const Workspace = () => {
                         fullWidth
                         placeholder="Enter card text and press Enter"
                         value={column.newCardText}
-                        onChange={(e) => handleCardInputChange(column.id, e.target.value)}
-                        onKeyPress={(e) => handleCardInputKeyPress(e, column.id)}
-                        onBlur={() => addCard(column.id)}
+                        onChange={(e) => handleCardInputChange(columns, setColumns, column.id, e.target.value)}
+                        onKeyPress={(e) => handleCardInputKeyPress(e, column.id, columns, setColumns)}
+                        onBlur={() => addCard(columns, setColumns, column.id)}
                         autoFocus
                         sx={{ marginBottom: 1, borderRadius: "24px" }} // Rounded corners for text field
                       />
@@ -294,7 +275,7 @@ const Workspace = () => {
                           borderRadius: "24px", // Rounded corners for card
                         }}
                         draggable
-                        onDragStart={(e) => handleCardDragStart(e, card.id, column.id)}
+                        onDragStart={(e) => handleCardDragStart(e, card.id, column.id, setDraggingCard)}
                       >
                         <CardContent
                           sx={{
@@ -308,13 +289,13 @@ const Workspace = () => {
                             control={
                               <Checkbox
                                 checked={card.checked}
-                                onChange={(e) => handleCheckboxChange(column.id, card.id, e.target.checked)}
+                                onChange={(e) => handleCheckboxChange(column.id, card.id, e.target.checked, setColumns)}
                                 sx={{ borderRadius: "50%" }} // Making checkbox round
                               />
                             }
                             label={<Typography>{card.text}</Typography>}
                           />
-                          <IconButton edge="end" onClick={() => removeCard(column.id, card.id)}>
+                          <IconButton edge="end" onClick={() => removeCard(columns, setColumns, column.id, card.id)}>
                             <Delete />
                           </IconButton>
                         </CardContent>
@@ -351,7 +332,7 @@ const Workspace = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            onDrop={handleTrashDrop}
+            onDrop={(e) => handleTrashDrop(e, draggingCard, columns, setColumns, setDraggingCard)}
             onDragOver={(e) => e.preventDefault()}
           >
             <DeleteForever fontSize="large" />

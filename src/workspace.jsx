@@ -17,6 +17,9 @@ import {
 import { Add } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { handleMenu, handleClose } from "./Components/Functions/eventHandlerFunctions";
+import { handleLogout } from "./Components/Functions/navigationFunctions";
+import { handleCreateWorkspace, handleCloseModal, handleSubmit, handleDescriptionChange } from "./Components/Functions/createWorkspaceFunctions";
 
 function Workspaces() {
   const navigate = useNavigate(); // Navigation hook
@@ -69,60 +72,6 @@ function Workspaces() {
       });
   }, [navigate, location.search]); 
 
-  const handleCreateWorkspace = () => {
-    // Open the modal to create a new workspace
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    // Close the modal
-    setOpen(false);
-  };
-
-  const handleSubmit = () => {
-    // Create a new workspace
-    if (!workspaceName) return;
-
-    axios
-      .post( // Post request to create a new workspace
-        `${import.meta.env.VITE_API_BASE_URL}/api/workspaces`,
-        { name: workspaceName, description: workspaceDescription },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Send token in the headers
-        }
-      )
-      .then((response) => { // Update the workspaces state
-        setWorkspaces([...workspaces, response.data]); // Add the new workspace to the workspaces array
-        setOpen(false); // Close the modal
-        setWorkspaceName(""); // Clear the workspace name
-        setWorkspaceDescription(""); //  Clear the workspace description
-      })
-      .catch((error) => console.error("Error creating workspace:", error)); // Log error if workspace creation fails
-  };
-
-  const handleMenu = (event) => { // for handling menu
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => { // for handling close
-    setAnchorEl(null);
-  };
-
-  const handleLogout = () => { // for handling logout
-    localStorage.removeItem("token");
-    navigate("/"); // Redirect to login page after logout
-  };
-
-  const handleDescriptionChange = (e) => { // for handling description change
-    const value = e.target.value;
-    if (value.length <= 200) {// Check if description is less than or equal to 200 characters
-      setWorkspaceDescription(value); // Update the workspace description state
-      setDescriptionError(""); // Clear the description error
-    } else {
-      setDescriptionError("Description exceeds 200 characters limit."); // Set description error
-    }
-  };
-
   return (
     <div
       style={{
@@ -146,7 +95,7 @@ function Workspaces() {
             <div>
               <Button
                 variant="outlined"
-                onClick={handleMenu}
+                onClick={(event) => handleMenu(event, setAnchorEl)}
                 sx={{
                   color: "black",
                   textTransform: "none",
@@ -163,12 +112,12 @@ function Workspaces() {
                 keepMounted
                 transformOrigin={{ vertical: "top", horizontal: "right" }}
                 open={Boolean(anchorEl)}
-                onClose={handleClose}
+                onClose={() => handleClose(setAnchorEl)}
               >
                 <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
                 <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
                 <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
               </Menu>
             </div>
           )}
@@ -177,7 +126,7 @@ function Workspaces() {
 
       {/* Create Workspace Card */}
       <Card
-        onClick={handleCreateWorkspace}
+        onClick={() => handleCreateWorkspace(setOpen)}
         sx={{
           width: 300,
           cursor: "pointer",
@@ -212,7 +161,7 @@ function Workspaces() {
       </Card>
 
       {/* Modal for Creating Workspace */}
-      <Modal open={open} onClose={handleCloseModal}>
+      <Modal open={open} onClose={() => handleCloseModal(setOpen)}>
         <Paper
           sx={{
             position: "absolute",
@@ -250,7 +199,7 @@ function Workspaces() {
             multiline
             rows={4}
             value={workspaceDescription}
-            onChange={handleDescriptionChange}
+            onChange={(e) => handleDescriptionChange(e, setWorkspaceDescription, setDescriptionError)}
             error={descriptionError !== ""}
             helperText={descriptionError}
             InputLabelProps={{
@@ -260,7 +209,21 @@ function Workspaces() {
               style: { color: 'white' }, // Set input text color to white
             }}
           />
-          <Button onClick={handleSubmit} variant="contained" sx={{ mt: 2 }}>
+          <Button
+            onClick={() =>
+              handleSubmit(
+                workspaceName,
+                workspaceDescription,
+                setWorkspaces,
+                workspaces,
+                setOpen,
+                setWorkspaceName,
+                setWorkspaceDescription
+              )
+            }
+            variant="contained"
+            sx={{ mt: 2 }}
+          >
             Create
           </Button>
         </Paper>

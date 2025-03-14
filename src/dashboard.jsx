@@ -1,83 +1,46 @@
 import React, { useState, useEffect } from "react";
 import {
-  Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal
+  Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal, AppBar, Toolbar, Menu, MenuItem
 } from "@mui/material";
-import { Add, Dashboard as DashboardIcon, Brightness4, Brightness7, Edit } from "@mui/icons-material";
+import { Add, Dashboard as DashboardIcon, Brightness4, Brightness7, Edit, Menu as MenuIcon } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
-import { createCustomTheme } from "./Functions/themeFunctions";
+import { createCustomTheme } from "./Components/Functions/themeFunctions";
+import {
+  loadBoards, saveBoards, createBoard, selectBoard, handleEditClick, handleNameChange, handleNameSave
+} from "./Components/Functions/dashboardFunctions";
+import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
+import { handleLogout } from "./Components/Functions/navigationFunctions";
 
 const Dashboard = () => {
   const { id } = useParams(); // Get the id from the route parameters
   const [darkMode, setDarkMode] = useState(true); // Dark mode state
   const [drawerOpen, setDrawerOpen] = useState(true); // Drawer state
-  const [dashboards, setDashboards] = useState([]); // Dashboards state
-  const [activeDashboard, setActiveDashboard] = useState(null); // Active dashboard state
-  const [editingDashboardId, setEditingDashboardId] = useState(null); // Editing dashboard state
-  const [dashboardName, setDashboardName] = useState(""); // Added name state
-  const [dashboardDescription, setDashboardDescription] = useState(""); // Added description state
+  const [boards, setBoards] = useState([]); // Boards state
+  const [activeBoard, setActiveBoard] = useState(null); // Active board state
+  const [editingBoardId, setEditingBoardId] = useState(null); // Editing board state
+  const [boardName, setBoardName] = useState(""); // Added name state
   const [modalOpen, setModalOpen] = useState(false); // Modal state
+  const [user, setUser] = useState({ // User data state
+    userEmail: "user@example.com",
+    userId: "12345",
+    userOauth_id: "oauth12345",
+  });
+  const [anchorEl, setAnchorEl] = useState(null); // Anchor element for menu
   const navigate = useNavigate(); // Navigation hook
 
   useEffect(() => {
-    // Load dashboards from localStorage on component mount
-    const savedDashboards = JSON.parse(localStorage.getItem("dashboards")) || [];
-    setDashboards(savedDashboards);
-
-    // Set the active dashboard if id is present in the route
-    if (id) {
-      const active = savedDashboards.find(d => d.id === parseInt(id));
-      setActiveDashboard(active);
-    }
+    loadBoards(setBoards, setActiveBoard, id);
   }, [id]);
 
   useEffect(() => {
-    // Save dashboards to localStorage whenever the dashboards state changes
-    localStorage.setItem("dashboards", JSON.stringify(dashboards));
-  }, [dashboards]);
+    saveBoards(boards);
+  }, [boards]);
 
   const theme = createCustomTheme(darkMode);
 
   const toggleDarkMode = () => { // for dark mode
     setDarkMode(!darkMode);
-  };
-
-  const createDashboard = () => { // for creating dashboard
-    const newDashboard = { id: Date.now(), name: dashboardName, description: dashboardDescription }; // Create a new dashboard object
-    setDashboards(prevDashboards => { // Update the dashboards state
-      const updatedDashboards = [newDashboard, ...prevDashboards]; // Add the new dashboard to the beginning of the array
-      localStorage.setItem("dashboards", JSON.stringify(updatedDashboards)); // Save immediately to localStorage
-      return updatedDashboards; // Return the updated dashboards array
-    });
-    setDashboardName(""); // Clear the name input
-    setDashboardDescription(""); // Clear the description input
-    setModalOpen(false); // Close modal after creating dashboard
-    
-  };
-
-  const selectDashboard = (dashboard) => { // for selecting dashboard
-    setActiveDashboard(dashboard); // Set the active dashboard
-    setEditingDashboardId(null); // Reset the editing dashboard id
-    navigate(`/dashboard/${dashboard.id}`); // Redirect to the specific dashboard after clicking
-  };
-
-  const handleEditClick = (dashboard) => { // for editing dashboard
-    setEditingDashboardId(dashboard.id); // Set the editing dashboard id
-    setDashboardName(dashboard.name); // Set the name input to the dashboard name
-    setDashboardDescription(dashboard.description); // Set the description input to the dashboard description
-  };
-
-  const handleNameChange = (e) => { // for changing name
-    setDashboardName(e.target.value); // Update the dashboard name state
-  };
-
-  const handleDescriptionChange = (e) => { // for changing description
-    setDashboardDescription(e.target.value); // Update the dashboard description state
-  };
-
-  const handleNameSave = (dashboard) => { // for saving name
-    setDashboards(dashboards.map(d => d.id === dashboard.id ? { ...d, name: dashboardName, description: dashboardDescription } : d)); // Update the dashboard name and description
-    setEditingDashboardId(null); // Reset the editing dashboard id
   };
 
   return (
@@ -92,6 +55,78 @@ const Dashboard = () => {
           minHeight: "100vh",
         }}
       >
+        <AppBar 
+          position="fixed"
+          sx={{
+            backgroundColor: "transparent",
+            boxShadow: "none",
+            zIndex: theme.zIndex.drawer + 1,
+          }}
+        >
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" style={{ flexGrow: 1 }}>
+              <img src="/hahaha.png" alt="Sitemark" />
+            </Typography>
+            <Button
+              variant="outlined"
+              onClick={() => navigate("/workspace")} // Use the navigate function
+              sx={{
+                color: "black",
+                textTransform: "none",
+                backgroundColor: "#30A8DB",
+                boxShadow: 3,
+                mr: 2,
+              }}
+            >
+              Home
+            </Button>
+            {user && (
+              <div>
+                <Button
+                  variant="outlined"
+                  onClick={(e) => handleMenu(e, setAnchorEl)}
+                  sx={{
+                    color: "black",
+                    textTransform: "none",
+                    backgroundColor: "#30A8DB",
+                    boxShadow: 3,
+                  }}
+                >
+                  Account
+                </Button>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={() => handleClose(setAnchorEl)}
+                >
+                  <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
+                  <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
+                  <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
+                  <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
+                </Menu>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
         <Drawer
           variant="persistent"
           anchor="left"
@@ -117,38 +152,30 @@ const Dashboard = () => {
             </Box>
           </Box>
           <List>
-            {dashboards.map((dashboard) => (
+            {boards.map((board) => (
               <ListItem
                 button
-                key={dashboard.id}
-                onClick={() => selectDashboard(dashboard)}
+                key={board.id}
+                onClick={() => selectBoard(board, setActiveBoard, setEditingBoardId, navigate)}
               >
                 <ListItemIcon>
                   <DashboardIcon /> 
                 </ListItemIcon>
-                {editingDashboardId === dashboard.id ? (
+                {editingBoardId === board.id ? (
                   <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
                     <TextField
-                      value={dashboardName}
-                      onChange={handleNameChange}
-                      onBlur={() => handleNameSave(dashboard)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleNameSave(dashboard)}
+                      value={boardName}
+                      onChange={(e) => handleNameChange(e, setBoardName)}
+                      onBlur={() => handleNameSave(board, boards, setBoards, boardName, setEditingBoardId)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleNameSave(board, boards, setBoards, boardName, setEditingBoardId)}
                       autoFocus
                       sx={{ mb: 1 }}
                     />
-                    <TextField
-                      value={dashboardDescription}
-                      onChange={handleDescriptionChange}
-                      onBlur={() => handleNameSave(dashboard)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleNameSave(dashboard)}
-                      multiline
-                      rows={2}
-                    />
                   </Box>
                 ) : (
-                  <ListItemText primary={dashboard.name} secondary={dashboard.description} />
+                  <ListItemText primary={board.name} />
                 )}
-                <IconButton onClick={() => handleEditClick(dashboard)}>
+                <IconButton onClick={() => handleEditClick(board, setEditingBoardId, setBoardName)}>
                   <Edit />
                 </IconButton>
               </ListItem>
@@ -157,7 +184,7 @@ const Dashboard = () => {
               <ListItemIcon>
                 <Add />
               </ListItemIcon>
-              <ListItemText primary="Create Dashboard" />
+              <ListItemText primary="Create Board" />
             </ListItem>
           </List>
         </Drawer>
@@ -170,8 +197,8 @@ const Dashboard = () => {
             minHeight: "100vh",
           }}
         >
-          {activeDashboard ? (
-            <Typography variant="h4">Dashboard: {activeDashboard.name}</Typography>
+          {activeBoard ? (
+            <Typography variant="h4">Board: {activeBoard.name}</Typography>
           ) : (
             <Paper
               elevation={3}
@@ -182,7 +209,7 @@ const Dashboard = () => {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h4">Select or Create a Dashboard</Typography>
+              <Typography variant="h4">Select or Create a Board</Typography>
               <Button
                 variant="contained"
                 color="primary"
@@ -190,7 +217,7 @@ const Dashboard = () => {
                 onClick={() => setModalOpen(true)}
                 sx={{ mt: 2 }}
               >
-                Create Dashboard
+                Create Board
               </Button>
             </Paper>
           )}
@@ -207,27 +234,18 @@ const Dashboard = () => {
               padding: 4,
             }}
           >
-            <Typography variant="h6">Create Dashboard</Typography>
+            <Typography variant="h6">Board</Typography>
             <TextField
-              label="Dashboard Name"
+              label="Board Name"
               fullWidth
-              value={dashboardName}
-              onChange={handleNameChange}
-              sx={{ mt: 2 }}
-            />
-            <TextField
-              label="Description"
-              fullWidth
-              multiline
-              rows={4}
-              value={dashboardDescription}
-              onChange={handleDescriptionChange}
+              value={boardName}
+              onChange={(e) => handleNameChange(e, setBoardName)}
               sx={{ mt: 2 }}
             />
             <Button
               variant="contained"
               color="primary"
-              onClick={createDashboard}
+              onClick={() => createBoard(boards, setBoards, boardName, setBoardName, setModalOpen)}
               sx={{ mt: 2 }}
             >
               Create

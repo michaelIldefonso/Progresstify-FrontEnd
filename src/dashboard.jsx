@@ -11,6 +11,7 @@ import {
 } from "./Components/Functions/dashboardFunctions";
 import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
 import { handleLogout } from "./Components/Functions/navigationFunctions";
+import axios from "axios";
 
 const Dashboard = () => {
   const { workspaceId } = useParams(); // Extract workspaceId from URL
@@ -21,11 +22,7 @@ const Dashboard = () => {
   const [editingBoardId, setEditingBoardId] = useState(null); // Editing board state
   const [boardName, setBoardName] = useState(""); // Added name state
   const [modalOpen, setModalOpen] = useState(false); // Modal state
-  const [user, setUser] = useState({ // User data state
-    userEmail: "user@example.com",
-    userId: "12345",
-    userOauth_id: "oauth12345",
-  });
+  const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null); // Anchor element for menu
   const navigate = useNavigate(); // Navigation hook
 
@@ -37,7 +34,31 @@ const Dashboard = () => {
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
+    
   };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+    if (!storedToken) {
+      navigate("/"); // Redirect to the home page if no token is found
+      return;
+    }
+    axios // fetch user data
+          .get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, { 
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${storedToken}` },
+          })
+          .then((response) => {
+            console.log("API Response:", response.data);
+            setUser(response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+            navigate("/");
+          });
+      }, [navigate, location.search]);
+    
 
   return (
     <ThemeProvider theme={theme}>

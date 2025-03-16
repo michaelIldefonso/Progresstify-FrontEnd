@@ -1,9 +1,28 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Base URL for the API
 
+const getAuthToken = () => {
+  return localStorage.getItem('token'); // Adjust this based on where you store your token
+};
+
+const authFetch = async (url, options = {}) => {
+  const token = getAuthToken();
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+    'Authorization': `Bearer ${token}`
+  };
+
+  const response = await fetch(url, { ...options, headers });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Network response was not ok: ${errorText}`);
+  }
+  return response.json();
+};
+
 export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`);
-    const savedBoards = await response.json();
+    const savedBoards = await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`);
     if (Array.isArray(savedBoards)) {
       setBoards(savedBoards);
       if (id) {
@@ -25,33 +44,12 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
     }
 
     console.log(`Sending request to create board in workspace ${workspaceId} with name ${boardName}`);
-    const response = await fetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`, {
+    const newBoard = await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({ name: boardName }),
     });
 
-    console.log(`Response status: ${response.status}`);
-    console.log(`Response status text: ${response.statusText}`);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Network response was not ok: ${response.status} ${response.statusText}`);
-      console.error(`Response body: ${errorText}`);
-      throw new Error(`Network response was not ok: ${errorText}`);
-    }
-
-    let newBoard;
-    try {
-      newBoard = await response.json();
-      console.log('Board created successfully:', newBoard);
-    } catch (error) {
-      console.error('Failed to parse JSON response:', error);
-      throw new Error('Failed to parse JSON response');
-    }
-
+    console.log('Board created successfully:', newBoard);
     setBoards([...boards, newBoard]);
     setBoardName('');
     setModalOpen(false);
@@ -78,19 +76,13 @@ export const handleNameChange = (e, setBoardName) => {
 
 export const handleNameSave = async (workspaceId, board, boards, setBoards, boardName, setEditingBoardId) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${board.id}`, {
+    await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${board.id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
       body: JSON.stringify({ name: boardName })
     });
-    if (response.ok) {
-      setBoards(boards.map(d => d.id === board.id ? { ...d, name: boardName } : d));
-      setEditingBoardId(null);
-    } else {
-      console.error("Failed to save board name:", await response.text());
-    }
+
+    setBoards(boards.map(d => d.id === board.id ? { ...d, name: boardName } : d));
+    setEditingBoardId(null);
   } catch (error) {
     console.error("Failed to save board name:", error);
   }

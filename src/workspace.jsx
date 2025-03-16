@@ -30,7 +30,7 @@ function Workspaces() {
   const [workspaceName, setWorkspaceName] = useState(""); // Workspace name state
   const [workspaceDescription, setWorkspaceDescription] = useState(""); // Workspace description state
   const [descriptionError, setDescriptionError] = useState(""); // Description error state
-  const [workspaces, setWorkspaces] = useState([]); //  Workspaces state
+  const [workspaces, setWorkspaces] = useState([]); // Workspaces state
 
   useEffect(() => {
     // Check if token is present in the URL and store it in localStorage
@@ -71,6 +71,10 @@ function Workspaces() {
         navigate("/"); // Redirect to login page if user data fetch fails
       });
   }, [navigate, location.search]); 
+
+  const handleSelectWorkspace = (id) => {
+    navigate(`/dashboard/${id}`); // Navigate to Dashboard with workspaceId
+  };
 
   return (
     <div
@@ -242,7 +246,7 @@ function Workspaces() {
                   transition: "transform 0.2s",
                   "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
                 }}
-                onClick={() => navigate(`/dashboard`)} // Updated to navigate to Dashboard
+                onClick={() => handleSelectWorkspace(ws.id)} // Updated to navigate to Dashboard
               >
                 <CardContent>
                   <Typography variant="h6">{ws.name}</Typography>

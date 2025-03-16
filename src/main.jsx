@@ -16,8 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/workspace" element={<Workspace />} />
         <Route path="/workspaces/:workspaceId/boards" element={<Board />} /> {/* Route for specific board */}
         <Route path="/board/:id" element={<Board />} />{/* Route for specific dashboard */}
-        <Route path="/dashboard" element={<Dashboard />} /> {/* Route for Dashboard */}
-        
+        <Route path="/dashboard/:workspaceId" element={<Dashboard />} />        
         
       </Routes>
     </Router>

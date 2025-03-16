@@ -7,13 +7,13 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import {
-  loadBoards, saveBoards, createBoard, selectBoard, handleEditClick, handleNameChange, handleNameSave
+  loadBoards, createBoard, selectBoard, handleEditClick, handleNameChange, handleNameSave
 } from "./Components/Functions/dashboardFunctions";
 import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
 import { handleLogout } from "./Components/Functions/navigationFunctions";
 
 const Dashboard = () => {
-  const { id } = useParams(); // Get the id from the route parameters
+  const { workspaceId } = useParams();  // Get the id from the route parameters
   const [darkMode, setDarkMode] = useState(true); // Dark mode state
   const [drawerOpen, setDrawerOpen] = useState(true); // Drawer state
   const [boards, setBoards] = useState([]); // Boards state
@@ -30,8 +30,8 @@ const Dashboard = () => {
   const navigate = useNavigate(); // Navigation hook
 
   useEffect(() => {
-    loadBoards(setBoards, setActiveBoard, id);
-  }, [id]);
+    loadBoards(setBoards, setActiveBoard);
+  }, []);
 
   useEffect(() => {
     saveBoards(boards);
@@ -197,6 +197,7 @@ const Dashboard = () => {
             minHeight: "100vh",
           }}
         >
+           <Typography variant="h4">Workspace ID: {workspaceId}</Typography> {/* Display workspace ID */}
           {activeBoard ? (
             <Typography variant="h4">Board: {activeBoard.name}</Typography>
           ) : (

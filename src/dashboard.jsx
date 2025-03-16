@@ -138,15 +138,15 @@ const Dashboard = () => {
               width: 240,
               boxSizing: "border-box",
             },
-          }}
+          }} //line 144 niremove ung image line 145 dun inudjust location nung darkmode sa margintop
         >
           <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", pt: 2 }}>
-            <img src="/hahaha.png" alt="Sitemark" style={{ width: '100px', height: '100px' }} />
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            
+            <Box sx={{ display: "flex", alignItems: "center", marginTop: 14 }}>  
               <IconButton onClick={toggleDarkMode} color="inherit">
                 {darkMode ? <Brightness4 /> : <Brightness7 />}
               </IconButton>
-              <Typography variant="h6" sx={{ }}>
+              <Typography variant="h6" sx={{  }}>
                 {darkMode ? "Dark Mode" : "Light Mode"}
               </Typography>
             </Box>
@@ -193,7 +193,7 @@ const Dashboard = () => {
           sx={{
             flexGrow: 1,
             p: 3,
-            mt: 8,
+            mt: 11, // dito inudjust mtop
             minHeight: "100vh",
           }}
         >

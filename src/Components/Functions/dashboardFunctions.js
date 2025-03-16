@@ -1,17 +1,22 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Base URL for the API
+
 export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => {
   try {
-    const response = await fetch(`/api/workspaces/${workspaceId}/boards`);
+    const response = await fetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`);
     const savedBoards = await response.json();
-    setBoards(savedBoards);
-    if (id) {
-      const active = savedBoards.find(d => d.id === parseInt(id));
-      setActiveBoard(active);
+    if (Array.isArray(savedBoards)) {
+      setBoards(savedBoards);
+      if (id) {
+        const active = savedBoards.find(d => d.id === parseInt(id));
+        setActiveBoard(active);
+      }
+    } else {
+      console.error("Failed to load boards: response is not an array");
     }
   } catch (error) {
     console.error("Failed to load boards:", error);
   }
 };
-
 
 export const createBoard = async (workspaceId, boards, setBoards, boardName, setBoardName, setModalOpen) => {
   try {
@@ -20,7 +25,7 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
     }
 
     console.log(`Sending request to create board in workspace ${workspaceId} with name ${boardName}`);
-    const response = await fetch(`/api/workspaces/${workspaceId}/boards`, {
+    const response = await fetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +61,6 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
   }
 };
 
-
 export const selectBoard = (board, setActiveBoard, setEditingBoardId, navigate) => {
   setActiveBoard(board);
   setEditingBoardId(null);
@@ -74,7 +78,7 @@ export const handleNameChange = (e, setBoardName) => {
 
 export const handleNameSave = async (workspaceId, board, boards, setBoards, boardName, setEditingBoardId) => {
   try {
-    const response = await fetch(`/api/workspaces/${workspaceId}/boards/${board.id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${board.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

@@ -13,7 +13,7 @@ import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/ev
 import { handleLogout } from "./Components/Functions/navigationFunctions";
 
 const Dashboard = () => {
-  const { workspaceId } = useParams();  // Get the id from the route parameters
+  const { workspaceId } = useParams(); // Extract workspaceId from URL
   const [darkMode, setDarkMode] = useState(true); // Dark mode state
   const [drawerOpen, setDrawerOpen] = useState(true); // Drawer state
   const [boards, setBoards] = useState([]); // Boards state
@@ -30,16 +30,12 @@ const Dashboard = () => {
   const navigate = useNavigate(); // Navigation hook
 
   useEffect(() => {
-    loadBoards(setBoards, setActiveBoard);
-  }, []);
-
-  useEffect(() => {
-    saveBoards(boards);
-  }, [boards]);
+    loadBoards(workspaceId, setBoards, setActiveBoard);
+  }, [workspaceId]);
 
   const theme = createCustomTheme(darkMode);
 
-  const toggleDarkMode = () => { // for dark mode
+  const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
@@ -142,11 +138,11 @@ const Dashboard = () => {
         >
           <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", pt: 2 }}>
             
-            <Box sx={{ display: "flex", alignItems: "center", marginTop: 14 }}>  
+            <Box sx={{ display: "flex", alignItems: "center", marginTop: 14 }}>
               <IconButton onClick={toggleDarkMode} color="inherit">
                 {darkMode ? <Brightness4 /> : <Brightness7 />}
               </IconButton>
-              <Typography variant="h6" sx={{  }}>
+              <Typography variant="h6" sx={{ }}>
                 {darkMode ? "Dark Mode" : "Light Mode"}
               </Typography>
             </Box>
@@ -166,8 +162,8 @@ const Dashboard = () => {
                     <TextField
                       value={boardName}
                       onChange={(e) => handleNameChange(e, setBoardName)}
-                      onBlur={() => handleNameSave(board, boards, setBoards, boardName, setEditingBoardId)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleNameSave(board, boards, setBoards, boardName, setEditingBoardId)}
+                      onBlur={() => handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
                       autoFocus
                       sx={{ mb: 1 }}
                     />
@@ -193,11 +189,11 @@ const Dashboard = () => {
           sx={{
             flexGrow: 1,
             p: 3,
-            mt: 11, // dito inudjust mtop
+            mt: 8,
             minHeight: "100vh",
           }}
         >
-           <Typography variant="h4">Workspace ID: {workspaceId}</Typography> {/* Display workspace ID */}
+          <Typography variant="h4">Workspace ID: {workspaceId}</Typography> {/* Display workspace ID */}
           {activeBoard ? (
             <Typography variant="h4">Board: {activeBoard.name}</Typography>
           ) : (
@@ -246,7 +242,7 @@ const Dashboard = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => createBoard(boards, setBoards, boardName, setBoardName, setModalOpen)}
+              onClick={() => createBoard(workspaceId, boards, setBoards, boardName, setBoardName, setModalOpen)}
               sx={{ mt: 2 }}
             >
               Create

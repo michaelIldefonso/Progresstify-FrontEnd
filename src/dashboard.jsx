@@ -125,7 +125,7 @@ const Dashboard = () => {
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
-                    vertical: "top",
+                    vertical: "bottom",
                     horizontal: "right",
                   }}
                   keepMounted
@@ -219,26 +219,29 @@ const Dashboard = () => {
           {activeBoard ? (
             <Typography variant="h4">Board: {activeBoard.name}</Typography>
           ) : (
-            <Paper
-              elevation={3}
-              sx={{
-                p: 5,
+          <div
+              style={{
+                padding: "40px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                backgroundColor: "transparent",
+                borderRadius: "8px", // Optional: To mimic Paper's rounded corners
+                
               }}
             >
-              <Typography variant="h4">Select or Create a Board</Typography>
+              <Typography variant="h4" sx={{color: "white"}}>Select or Create a Board</Typography>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<Add />}
                 onClick={() => setModalOpen(true)}
-                sx={{ mt: 2 }}
+                sx={{ mt: 2, backgroundColor: "transparent", color: "#30A8DB", border: "1px solid" , fontWeight: "700" }}
               >
                 Create Board
               </Button>
-            </Paper>
+          </div>
+
           )}
         </Box>
 

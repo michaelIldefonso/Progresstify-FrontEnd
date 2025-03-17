@@ -82,78 +82,81 @@ const Workspace = () => {
           minHeight: "100vh",
         }}
       >
-        <AppBar 
-          position="fixed"
-          sx={{
-            backgroundColor: "transparent",
-            boxShadow: "none",
-            zIndex: theme.zIndex.drawer + 1,
-          }}
-        >
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
-              <img src="/hahaha.png" alt="Sitemark" />
-            </Typography>
-            <Button
-              variant="outlined"
-              onClick={() => navigateHome(navigate)} // Use the navigateHome function
-              sx={{
-                color: "black",
-                textTransform: "none",
-                backgroundColor: "#30A8DB",
-                boxShadow: 3,
-                mr: 2,
-              }}
-            >
-              Home
-            </Button>
-            {user && (
-              <div>
-                <Button
-                  variant="outlined"
-                  onClick={(e) => handleMenu(e, setAnchorEl)}
-                  sx={{
-                    color: "black",
-                    textTransform: "none",
-                    backgroundColor: "#30A8DB",
-                    boxShadow: 3,
-                  }}
-                >
-                  Account
-                </Button>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={() => handleClose(setAnchorEl)}
-                >
-                  <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
-                  <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
-                  <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
-                  <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
+        <div style={{ 
+                  position: "absolute", 
+                  top: 0, 
+                  width: "100%", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  padding: "10px 20px",
+                  backgroundColor: "transparent",
+                  zIndex: 1301
+                }}>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
+                    sx={{ mr: 2 , color: "white"}}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                  <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                    <img src="/hahaha.png" alt="Sitemark" />
+                  </Typography>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => navigate("/workspace")} // Use the navigate function
+                      sx={{
+                        color: "black",
+                        textTransform: "none",
+                        backgroundColor: "#30A8DB",
+                        boxShadow: 3,
+                        mr: 2,
+                      }}
+                    >
+                      Home
+                    </Button>
+                    {user && (
+                      <div>
+                        <Button
+                          variant="outlined"
+                          onClick={(e) => handleMenu(e, setAnchorEl)}
+                          sx={{
+                            color: "black",
+                            textTransform: "none",
+                            backgroundColor: "#30A8DB",
+                            boxShadow: 3,
+                            marginRight: "40px"
+                          }}
+                        >
+                          Account
+                        </Button>
+                        <Menu
+                          id="menu-appbar"
+                          anchorEl={anchorEl}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right",
+                          }}
+                          keepMounted
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          open={Boolean(anchorEl)}
+                          onClose={() => handleClose(setAnchorEl)}
+                        >
+                          <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
+                          <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
+                          <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
+                          <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
+                        </Menu>
+                      </div>
+                    )}
+                  </div>
+                </div>
         <Drawer
           variant="persistent"
           anchor="left"

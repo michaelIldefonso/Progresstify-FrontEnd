@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel, IconButton, } from "@mui/material";
+import { Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel, IconButton, } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google"; // Google icon from MUI
-import Brightness4Icon from '@mui/icons-material/Brightness4';//moon inconm
+import Brightness4Icon from '@mui/icons-material/Brightness4';//moon icon
 import Brightness7Icon from '@mui/icons-material/Brightness7';// sun icon
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -43,12 +43,21 @@ function App() {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      flexDirection: "column",
     }}>
-      <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            <img src="/hahaha.png" alt="Sitemark" />
-          </Typography>
+      <div style={{ 
+        position: "absolute", 
+        top: 0, 
+        width: "100%", 
+        display: "flex", 
+        alignItems: "center", 
+        padding: "10px 20px",
+        backgroundColor: "transparent"
+      }}>
+        <Typography variant="h6" sx={{marginLeft: "20px",}}>
+          <img src="/hahaha.png" alt="Sitemark" />
+        </Typography>
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
           {/* IconButton to toggle between light and dark mode */}
           <IconButton onClick={toggleDarkMode} sx={{ color: darkMode ? "#fff" : "#000" }}>
             {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
@@ -56,13 +65,14 @@ function App() {
           <Button variant="outlined" onClick={() => setOpen(true)} sx={{
             color: darkMode ? "#2196F3" : "#000",
             borderColor: darkMode ? "#2196F3" : "#000",
-            textTransform: "none"
+            textTransform: "none",
+            marginLeft: "10px",
+            marginRight: "20px"
           }}>
             Login / Sign Up
           </Button>
-        </Toolbar>
-      </AppBar>
-      
+        </div>
+      </div>
 
       {/* Login / Sign Up Dialog */}
       <Dialog 

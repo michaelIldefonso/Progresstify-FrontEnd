@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal, AppBar, Toolbar, Menu, MenuItem
+  Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal, Menu, MenuItem
 } from "@mui/material";
 import { Add, Dashboard as DashboardIcon, Brightness4, Brightness7, Edit, Menu as MenuIcon } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -34,7 +34,6 @@ const Dashboard = () => {
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    
   };
 
   useEffect(() => {
@@ -45,20 +44,19 @@ const Dashboard = () => {
       return;
     }
     axios // fetch user data
-          .get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, { 
-            withCredentials: true,
-            headers: { Authorization: `Bearer ${storedToken}` },
-          })
-          .then((response) => {
-            console.log("API Response:", response.data);
-            setUser(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-            navigate("/");
-          });
-      }, [navigate, location.search]);
-    
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, { 
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((response) => {
+        console.log("API Response:", response.data);
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        navigate("/");
+      });
+  }, [navigate, location.search]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,27 +70,29 @@ const Dashboard = () => {
           minHeight: "100vh",
         }}
       >
-        <AppBar 
-          position="fixed"
-          sx={{
-            backgroundColor: "transparent",
-            boxShadow: "none",
-            zIndex: theme.zIndex.drawer + 1,
-          }}
-        >
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
-              <img src="/hahaha.png" alt="Sitemark" />
-            </Typography>
+        <div style={{ 
+          position: "absolute", 
+          top: 0, 
+          width: "100%", 
+          display: "flex", 
+          alignItems: "center", 
+          padding: "10px 20px",
+          backgroundColor: "transparent",
+          zIndex: 1301
+        }}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
+            sx={{ mr: 2 , color: "white"}}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            <img src="/hahaha.png" alt="Sitemark" />
+          </Typography>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Button
               variant="outlined"
               onClick={() => navigate("/workspace")} // Use the navigate function
@@ -116,6 +116,7 @@ const Dashboard = () => {
                     textTransform: "none",
                     backgroundColor: "#30A8DB",
                     boxShadow: 3,
+                    marginRight: "40px"
                   }}
                 >
                   Account
@@ -142,8 +143,9 @@ const Dashboard = () => {
                 </Menu>
               </div>
             )}
-          </Toolbar>
-        </AppBar>
+          </div>
+        </div>
+
         <Drawer
           variant="persistent"
           anchor="left"
@@ -155,15 +157,14 @@ const Dashboard = () => {
               width: 240,
               boxSizing: "border-box",
             },
-          }} //line 144 niremove ung image line 145 dun inudjust location nung darkmode sa margintop
+          }}
         >
           <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", pt: 2 }}>
-            
             <Box sx={{ display: "flex", alignItems: "center", marginTop: 14 }}>
               <IconButton onClick={toggleDarkMode} color="inherit">
                 {darkMode ? <Brightness4 /> : <Brightness7 />}
               </IconButton>
-              <Typography variant="h6" sx={{ }}>
+              <Typography variant="h6">
                 {darkMode ? "Dark Mode" : "Light Mode"}
               </Typography>
             </Box>

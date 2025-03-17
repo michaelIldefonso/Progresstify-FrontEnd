@@ -236,7 +236,7 @@ const Dashboard = () => {
                 color="primary"
                 startIcon={<Add />}
                 onClick={() => setModalOpen(true)}
-                sx={{ mt: 2, backgroundColor: "transparent", color: "#30A8DB", border: "1px solid" , fontWeight: "700" }}
+                sx={{ mt: 2, backgroundColor: "transparent", color: "white", border: "1px solid" , fontWeight: "700" }}
               >
                 Create Board
               </Button>

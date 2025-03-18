@@ -42,105 +42,101 @@ function App() {
   };
 
   return (
-    // Main page container
-    <div style={{
-      backgroundColor: darkMode ? "#0a0f1e" : "#f0f0f0",
-      backgroundImage: darkMode ? 'url("/ladida1.jpg")' : 'url("/ladida2.jpg")', // Add background images for l and d mode
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      minHeight: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "column",
-    }}>
-      <div style={{ 
-        position: "absolute", 
-        top: 0, 
-        width: "100%", 
-        display: "flex", 
-        alignItems: "center", 
-        padding: "10px 20px",
-        backgroundColor: "transparent"
-      }}>
-        <Typography variant="h6" sx={{marginLeft: "20px",}}>
-          <img src="/hahaha.png" alt="Sitemark" />
-        </Typography>
-        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
-          {/* IconButton to toggle between light and dark mode */}
-          <IconButton onClick={toggleDarkMode} sx={{ color: darkMode ? "#fff" : "#000" }}>
-            {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
-          </IconButton>
-          <Button variant="outlined" onClick={() => setOpen(true)} sx={{
-            color: darkMode ? "#2196F3" : "#000",
-            borderColor: darkMode ? "#2196F3" : "#000",
-            textTransform: "none",
-            marginLeft: "10px",
-            marginRight: "20px"
-          }}>
-            Login / Sign Up
-          </Button>
-        </div>
-      </div>
+    <div>
+      {/* Global style to hide overflow */}
+      <style>
+        {`
+          body, html {
+            overflow: hidden;
+            margin: 0;
+          }
+        `}
+      </style>
 
-      {/* Login / Sign Up Dialog */}
-      <Dialog 
-        open={open} 
-        onClose={() => setOpen(false)}
-        PaperProps={{ style: {
-          backgroundColor: darkMode ? "#111827" : "#fff",
-          color: darkMode ? "#fff" : "#000",
-          padding: "20px",
-          borderRadius: "10px"
-        }}}
-      >
-        <DialogTitle align="center">{isSignUp ? "Sign Up" : "Sign In"}</DialogTitle>
-        <DialogContent style={{ maxHeight: "80vh", overflow: "hidden" }}>
-          <Container maxWidth="xs">
-            <Paper elevation={0} style={{
-              padding: "20px",
-              textAlign: "center",
-              backgroundColor: "transparent"
+      {/* Main page container */}
+      <div style={{
+        backgroundColor: darkMode ? "#0a0f1e" : "#f0f0f0",
+        backgroundImage: darkMode ? 'url("/ladida1.jpg")' : 'url("/ladida2.jpg")', // Add background images for l and d mode
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: "100vh",
+        width: "100vw", // Ensure full width
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        overflow: 'hidden', // Add this line to remove the scrollbar from the right side
+      }}>
+        <div style={{ 
+          position: "absolute", 
+          top: 0, 
+          width: "100%", 
+          display: "flex", 
+          alignItems: "center", 
+          padding: "10px 20px",
+          backgroundColor: "transparent"
+        }}>
+          <Typography variant="h6" sx={{marginLeft: "20px",}}>
+            <img src="/hahaha.png" alt="Sitemark" />
+          </Typography>
+          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
+            {/* IconButton to toggle between light and dark mode */}
+            <IconButton onClick={toggleDarkMode} sx={{ color: darkMode ? "#fff" : "#000" }}>
+              {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+            </IconButton>
+            <Button variant="outlined" onClick={() => setOpen(true)} sx={{
+              color: darkMode ? "#2196F3" : "#000",
+              borderColor: darkMode ? "#2196F3" : "#000",
+              textTransform: "none",
+              marginLeft: "10px",
+              marginRight: "20px"
             }}>
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  fullWidth
-                  margin="normal"
-                  label="Email" 
-                  name="email"
-                  type="email"
-                  variant="filled"
-                  InputProps={{ style: {
-                    backgroundColor: darkMode ? "#1f2937" : "#e0e0e0",
-                    color: darkMode ? "#fff" : "#000"
-                  }}}
-                  InputLabelProps={{ style: { color: "#578FCA" } }}
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-                <TextField
-                  fullWidth
-                  margin="normal"
-                  label="Password"
-                  name="password"
-                  type="password"
-                  variant="filled"
-                  InputProps={{ style: {
-                    backgroundColor: darkMode ? "#1f2937" : "#e0e0e0",
-                    color: darkMode ? "#fff" : "#000"
-                  }}}
-                  InputLabelProps={{ style: { color: "#578FCA" } }}
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-                {isSignUp && (
+              Login / Sign Up
+            </Button>
+          </div>
+        </div>
+
+        {/* Login / Sign Up Dialog */}
+        <Dialog 
+          open={open} 
+          onClose={() => setOpen(false)}
+          PaperProps={{ style: {
+            backgroundColor: darkMode ? "#111827" : "#fff",
+            color: darkMode ? "#fff" : "#000",
+            padding: "20px",
+            borderRadius: "10px"
+          }}}
+        >
+          <DialogTitle align="center">{isSignUp ? "Sign Up" : "Sign In"}</DialogTitle>
+          <DialogContent style={{ maxHeight: "80vh", overflow: "hidden" }}>
+            <Container maxWidth="xs">
+              <Paper elevation={0} style={{
+                padding: "20px",
+                textAlign: "center",
+                backgroundColor: "transparent"
+              }}>
+                <form onSubmit={handleSubmit}>
                   <TextField
                     fullWidth
                     margin="normal"
-                    label="Confirm Password"
-                    name="confirmPassword"
+                    label="Email" 
+                    name="email"
+                    type="email"
+                    variant="filled"
+                    InputProps={{ style: {
+                      backgroundColor: darkMode ? "#1f2937" : "#e0e0e0",
+                      color: darkMode ? "#fff" : "#000"
+                    }}}
+                    InputLabelProps={{ style: { color: "#578FCA" } }}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                  <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Password"
+                    name="password"
                     type="password"
                     variant="filled"
                     InputProps={{ style: {
@@ -148,56 +144,74 @@ function App() {
                       color: darkMode ? "#fff" : "#000"
                     }}}
                     InputLabelProps={{ style: { color: "#578FCA" } }}
-                    value={formData.confirmPassword}
+                    value={formData.password}
                     onChange={handleChange}
                     required
                   />
-                )}
-                <FormControlLabel // Remember me checkbox
-                  control={<Checkbox style={{ color: darkMode ? "white" : "black" }} />}
-                  label={<Typography variant="body2" style={{ color: darkMode ? "white" : "black" }}>Remember me</Typography>}
-                />
-                <Button fullWidth variant="contained" sx={{
-                  backgroundColor: "#578FCA",
-                  color: darkMode ? "#000" : "#fff",
-                  marginTop: "10px"
-                }} type="submit">
-                  {isSignUp ? "Sign Up" : "Sign In"}
+                  {isSignUp && (
+                    <TextField
+                      fullWidth
+                      margin="normal"
+                      label="Confirm Password"
+                      name="confirmPassword"
+                      type="password"
+                      variant="filled"
+                      InputProps={{ style: {
+                        backgroundColor: darkMode ? "#1f2937" : "#e0e0e0",
+                        color: darkMode ? "#fff" : "#000"
+                      }}}
+                      InputLabelProps={{ style: { color: "#578FCA" } }}
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                    />
+                  )}
+                  <FormControlLabel // Remember me checkbox
+                    control={<Checkbox style={{ color: darkMode ? "white" : "black" }} />}
+                    label={<Typography variant="body2" style={{ color: darkMode ? "white" : "black" }}>Remember me</Typography>}
+                  />
+                  <Button fullWidth variant="contained" sx={{
+                    backgroundColor: "#578FCA",
+                    color: darkMode ? "#000" : "#fff",
+                    marginTop: "10px"
+                  }} type="submit">
+                    {isSignUp ? "Sign Up" : "Sign In"}
+                  </Button>
+                </form>
+                
+                <Typography variant="body2" sx={{ marginTop: "10px", color: darkMode ? "#9ca3af" : "#757575" }}>
+                  Forgot your password?
+                </Typography>
+
+                <Typography variant="body2" sx={{ marginY: "10px", color: darkMode ? "#9ca3af" : "#757575" }}>or</Typography>
+
+                <Button // Google Sign In button
+                  fullWidth
+                  onClick={() => window.open(`${API_BASE_URL}/auth/google`, "_self")}
+                  variant="outlined"
+                  startIcon={<GoogleIcon />}
+                  sx={{
+                    color: darkMode ? "white" : "black",
+                    borderColor: darkMode ? "white" : "black",
+                    textTransform: "none"
+                  }}
+                >
+                  Sign in with Google
                 </Button>
-              </form>
-              
-              <Typography variant="body2" sx={{ marginTop: "10px", color: darkMode ? "#9ca3af" : "#757575" }}>
-                Forgot your password?
-              </Typography>
 
-              <Typography variant="body2" sx={{ marginY: "10px", color: darkMode ? "#9ca3af" : "#757575" }}>or</Typography>
-
-              <Button // Google Sign In button
-                fullWidth
-                onClick={() => window.open(`${API_BASE_URL}/auth/google`, "_self")}
-                variant="outlined"
-                startIcon={<GoogleIcon />}
-                sx={{
-                  color: darkMode ? "white" : "black",
-                  borderColor: darkMode ? "white" : "black",
-                  textTransform: "none"
-                }}
-              >
-                Sign in with Google
-              </Button>
-
-              <Button // Toggle between Sign Up and Login
-                fullWidth
-                color="secondary"
-                onClick={() => setIsSignUp(!isSignUp)}
-                sx={{ marginTop: "10px", textTransform: "none", color: darkMode ? "#fff" : "#000" }}
-              >
-                {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
-              </Button>
-            </Paper>
-          </Container>
-        </DialogContent>
-      </Dialog>
+                <Button // Toggle between Sign Up and Login
+                  fullWidth
+                  color="secondary"
+                  onClick={() => setIsSignUp(!isSignUp)}
+                  sx={{ marginTop: "10px", textTransform: "none", color: darkMode ? "#fff" : "#000" }}
+                >
+                  {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+                </Button>
+              </Paper>
+            </Container>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 }

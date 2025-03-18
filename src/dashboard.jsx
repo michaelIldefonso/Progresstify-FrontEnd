@@ -15,7 +15,11 @@ import axios from "axios";
 
 const Dashboard = () => {
   const { workspaceId } = useParams(); // Extract workspaceId from URL
-  const [darkMode, setDarkMode] = useState(true); // Dark mode state
+  // Initialize darkMode state from local storage, or default to true if not set
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode ? JSON.parse(savedMode) : true; // Initialize from local storage
+  });
   const [drawerOpen, setDrawerOpen] = useState(true); // Drawer state
   const [boards, setBoards] = useState([]); // Boards state
   const [activeBoard, setActiveBoard] = useState(null); // Active board state
@@ -32,8 +36,13 @@ const Dashboard = () => {
 
   const theme = createCustomTheme(darkMode);
 
+  // Use useEffect to update local storage whenever darkMode changes
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode)); // Save mode to local storage
+  }, [darkMode]);
+
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    setDarkMode(!darkMode); // Toggle dark mode state
   };
 
   useEffect(() => {

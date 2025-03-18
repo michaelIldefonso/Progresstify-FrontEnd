@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel, IconButton, } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google"; // Google icon from MUI
 import Brightness4Icon from '@mui/icons-material/Brightness4';//moon icon
@@ -10,7 +10,16 @@ function App() {
   const [open, setOpen] = useState(false); // Controls dialog visibility
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between Sign Up and Login
   const [formData, setFormData] = useState({ email: "", password: "", confirmPassword: "" });
-  const [darkMode, setDarkMode] = useState(true); // Toggle between dark mode and light mode
+  // Initialize darkMode state from local storage, or default to true if not set
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode ? JSON.parse(savedMode) : true; // Initialize from local storage
+  });
+
+  // Use useEffect to update local storage whenever darkMode changes
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode)); // Save mode to local storage
+  }, [darkMode]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value }); // Update form state

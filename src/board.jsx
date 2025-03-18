@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  AppBar, Toolbar, Button, Menu, MenuItem, Drawer, List, ListItem, ListItemIcon, ListItemText,
+  AppBar, Toolbar, Button, Menu, MenuItem, Drawer, List, ListItemIcon, ListItemText,
   IconButton, Box, Grid, Paper, TextField, Typography, Card, CardContent, Checkbox, FormControlLabel
 } from "@mui/material";
 import {
@@ -17,8 +17,16 @@ import { navigateHome, handleLogout } from "./Components/Functions/navigationFun
 
 const Workspace = () => {
   const { id } = useParams(); // Get the id from the route parameters
-  const [darkMode, setDarkMode] = useState(true); // Dark mode state
-  const [columns, setColumns] = useState([]); // For columns and cards
+  // Initialize darkMode state from local storage, or default to true if not set
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode ? JSON.parse(savedMode) : true; // Initialize from local storage
+  });
+  // Initialize columns state from local storage, or default to an empty array if not set
+  const [columns, setColumns] = useState(() => {
+    const savedColumns = localStorage.getItem("columns");
+    return savedColumns ? JSON.parse(savedColumns) : []; // Initialize from local storage
+  });
   const [newMember, setNewMember] = useState("");
   const [members, setMembers] = useState(["Alsim", "Bobby", "Charlie"]);
   const [draggingColumn, setDraggingColumn] = useState(null); // For drag and drop
@@ -34,6 +42,16 @@ const Workspace = () => {
   const location = useLocation();// Location hook
 
   const theme = createCustomTheme(darkMode);
+
+  // Use useEffect to update local storage whenever darkMode changes
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode)); // Save mode to local storage
+  }, [darkMode]);
+
+  // Use useEffect to update local storage whenever columns change
+  useEffect(() => {
+    localStorage.setItem("columns", JSON.stringify(columns)); // Save columns to local storage
+  }, [columns]);
 
   useEffect(() => { // Fetch user data 
     const urlParams = new URLSearchParams(location.search);

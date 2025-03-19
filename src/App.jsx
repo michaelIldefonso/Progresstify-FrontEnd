@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel, IconButton, } from "@mui/material";
+import { CssBaseline, GlobalStyles, Button, Dialog, DialogTitle, DialogContent, TextField, Container, Typography, Paper, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google"; // Google icon from MUI
 import Brightness4Icon from '@mui/icons-material/Brightness4';//moon icon
 import Brightness7Icon from '@mui/icons-material/Brightness7';// sun icon
@@ -43,15 +43,8 @@ function App() {
 
   return (
     <div>
-      {/* Global style to hide overflow */}
-      <style>
-        {`
-          body, html {
-            overflow: hidden;
-            margin: 0;
-          }
-        `}
-      </style>
+      <CssBaseline />
+      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
 
       {/* Main page container */}
       <div style={{
@@ -65,7 +58,7 @@ function App() {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        overflow: 'hidden', // Add this line to remove the scrollbar from the right side
+        overflow: 'hidden', // remove the scroll fucking bar
       }}>
         <div style={{ 
           position: "absolute", 

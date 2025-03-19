@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
+  CssBaseline,
+  GlobalStyles,
   AppBar,
   Toolbar,
   Button,
@@ -78,15 +80,8 @@ function Workspaces() {
 
   return (
     <div>
-      {/* Global style to hide overflow */}
-      <style>
-        {`
-          body, html {
-            overflow: hidden;
-            margin: 0;
-          }
-        `}
-      </style>
+      <CssBaseline />
+      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
 
       <div
         style={{

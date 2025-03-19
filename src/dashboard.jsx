@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
-  Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal, Menu, MenuItem
+  CssBaseline, GlobalStyles, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal, Menu, MenuItem
 } from "@mui/material";
 import { Add, Dashboard as DashboardIcon, Brightness4, Brightness7, Edit, Menu as MenuIcon } from "@mui/icons-material";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import {
@@ -69,17 +69,9 @@ const Dashboard = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} /> 
       <div>
-        {/* Global style to hide overflow */}
-        <style>
-          {`
-            body, html {
-              overflow: hidden;
-              margin: 0;
-            }
-          `}
-        </style>
-
         <Box
           sx={{
             display: "flex",
@@ -88,8 +80,8 @@ const Dashboard = () => {
             backgroundSize: "cover",
             backgroundPosition: "center",
             minHeight: "100vh",
-            width: "100vw", // Ensure full width
-            overflow: 'hidden', // Add this line to remove the scrollbar from the right side
+            width: "100vw",
+            overflow: 'hidden', //to hide the damn scroll bar
           }}
         >
           <div style={{ 
@@ -234,10 +226,10 @@ const Dashboard = () => {
               flexGrow: 1,
               p: 3,
               mt: 8,
-              minHeight: "100vh",//error Workspace ID: is on line 228 removed
+              minHeight: "100vh",
             }}
           >
-            <Typography variant="h4"> {workspaceId}</Typography> {/* Display workspace ID */}
+            <Typography variant="h4"> </Typography> {/* Display workspace ID */}
             {activeBoard ? (
               <Typography variant="h4">Board: {activeBoard.name}</Typography>
             ) : (

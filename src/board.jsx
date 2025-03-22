@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   AppBar, Toolbar, Button, Menu, MenuItem, Drawer, List, ListItemIcon, ListItemText,
-  IconButton, Box, Grid, Paper, TextField, Typography, Card, CardContent, Checkbox, FormControlLabel
+  IconButton, Box, Paper, TextField, Typography, Card, CardContent, Checkbox, FormControlLabel
 } from "@mui/material";
 import {
   Dashboard, ListAlt, People, CloudUpload, Add, Delete, Close, DeleteForever, Brightness4,
@@ -38,6 +38,7 @@ const Workspace = () => {
     userOauth_id: "oauth12345",
   });
   const [drawerOpen, setDrawerOpen] = useState(true); // For drawer visibility or list
+
   const navigate = useNavigate(); // Navigation hook
   const location = useLocation();// Location hook
 
@@ -86,6 +87,11 @@ const Workspace = () => {
 
   const toggleDarkMode = () => { // Toggle dark mode
     setDarkMode(!darkMode);
+  };
+
+  // Function to add a new column and enable horizontal scrolling
+  const handleAddColumn = () => {
+    addColumn(columns, setColumns);
   };
 
   return (
@@ -218,140 +224,136 @@ const Workspace = () => {
           {/* COLUMN DITO MICHAEL YUNG ADD COLUMN NA LUMILIPAD */}
           <Box 
             sx={{
-              flexGrow: 1,
-              padding: 3,
-              marginLeft: drawerOpen ? "0px" : "0", /*column*/
+              flexGrow: 0,
+              padding: 1,
+              marginLeft: drawerOpen ? "0" : "0", /* Adjust for drawer */
               marginTop: "83px",
               transition: "margin-left 0.3s",
+              flexDirection: 'column',
+              overflowX: 'auto', // Enable horizontal scrolling
             }}
           >
             
-            <Button variant="contained" startIcon={<Add />} onClick={() => addColumn(columns, setColumns)} sx={{ borderRadius: "24px" }}>
+            <Button variant="contained" startIcon={<Add />} onClick={handleAddColumn} sx={{ borderRadius: "24px", marginBottom: 2 }}>
               Add Column
             </Button>
-            <Grid container spacing={2} sx={{ marginTop: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
               {columns.map((column) => (
-                <Grid
-                  item
+                <Paper
                   key={column.id}
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  onDrop={(e) => handleDrop(e, column.id, draggingCard, columns, setColumns, setDraggingCard)}
-                  onDragOver={(e) => e.preventDefault()}
+                  sx={{
+                    padding: 2,
+                    transition: "transform 0.3s",
+                    "&:hover": { transform: "scale(1.02)" },
+                    borderRadius: "24px", // Rounded corners for paper
+                    minWidth: "300px", // Ensure columns have a fixed width for horizontal scrolling
+                  }}
                   draggable
                   onDragStart={(e) => handleColumnDragStart(e, column.id, setDraggingColumn)}
+                  onDrop={(e) => handleDrop(e, column.id, draggingCard, columns, setColumns, setDraggingCard)}
+                  onDragOver={(e) => e.preventDefault()}
                 >
-                  <Paper
-                    sx={{
-                      padding: 2,
-                      transition: "transform 0.3s",
-                      "&:hover": { transform: "scale(1.02)" },
-                      borderRadius: "24px", // Rounded corners for paper
-                    }}
-                  >
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
-                      {column.isEditing ? (
-                        <TextField
-                          fullWidth
-                          placeholder="Enter column name"
-                          value={column.title}
-                          onChange={(e) => renameColumn(columns, setColumns, column.id, e.target.value)}
-                          onBlur={() => finalizeColumnTitle(columns, setColumns, column.id)}
-                          onKeyPress={(e) => {
-                            if (e.key === "Enter") {
-                              finalizeColumnTitle(columns, setColumns, column.id);
-                              e.preventDefault();
-                            }
-                          }}
-                          autoFocus
-                          sx={{ borderRadius: "24px" }} // Rounded corners for text field
-                        />
-                      ) : (
-                        <Typography
-                          variant="h6"
-                          onClick={() =>
-                            setColumns(
-                              columns.map((col) =>
-                                col.id === column.id ? { ...col, isEditing: true } : col
-                              )
-                            )
+                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                    {column.isEditing ? (
+                      <TextField
+                        fullWidth
+                        placeholder="Enter column name"
+                        value={column.title}
+                        onChange={(e) => renameColumn(columns, setColumns, column.id, e.target.value)}
+                        onBlur={() => finalizeColumnTitle(columns, setColumns, column.id)}
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            finalizeColumnTitle(columns, setColumns, column.id);
+                            e.preventDefault();
                           }
-                        >
-                          {column.title || "Untitled Column"}
-                        </Typography>
-                      )}
-                      <IconButton onClick={() => setColumns(columns.filter((col) => col.id !== column.id))} sx={{ borderRadius: "24px" }}>
-                        <Close />
-                      </IconButton>
-                    </Box>
-                    <Box sx={{ marginTop: 2 }}>
-                      {column.isAddingCard && (
-                        <TextField
-                          fullWidth
-                          placeholder="Enter card text and press Enter"
-                          value={column.newCardText}
-                          onChange={(e) => handleCardInputChange(columns, setColumns, column.id, e.target.value)}
-                          onKeyPress={(e) => handleCardInputKeyPress(e, column.id, columns, setColumns)}
-                          onBlur={() => addCard(columns, setColumns, column.id)}
-                          autoFocus
-                          sx={{ marginBottom: 1, borderRadius: "24px" }} // Rounded corners for text field
-                        />
-                      )}
-                      {column.cards.map((card) => (
-                        <Card
-                          key={card.id}
-                          sx={{
-                            marginBottom: 1,
-                            backgroundColor: "rgba(240, 232, 232, 0.1)", // Making card transparent
-                            transition: "transform 0.3s",
-                            "&:hover": { transform: "scale(1.02)" },
-                            borderRadius: "24px", // Rounded corners for card
-                          }}
-                          draggable
-                          onDragStart={(e) => handleCardDragStart(e, card.id, column.id, setDraggingCard)}
-                        >
-                          <CardContent
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              borderRadius: "24px", // Rounded corners for card content
-                            }}
-                          >
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={card.checked}
-                                  onChange={(e) => handleCheckboxChange(column.id, card.id, e.target.checked, setColumns)}
-                                  sx={{ borderRadius: "50%" }} // Making checkbox round
-                                />
-                              }
-                              label={<Typography>{card.text}</Typography>}
-                            />
-                            <IconButton edge="end" onClick={() => removeCard(columns, setColumns, column.id, card.id)}>
-                              <Delete />
-                            </IconButton>
-                          </CardContent>
-                        </Card>
-                      ))}
-                      <Button
-                        variant="text"
-                        startIcon={<Add />}
-                        onClick={() => setColumns(
-                          columns.map((col) =>
-                            col.id === column.id ? { ...col, newCardText: "", isAddingCard: true } : col
+                        }}
+                        autoFocus
+                        sx={{ borderRadius: "24px" }} // Rounded corners for text field
+                      />
+                    ) : (
+                      <Typography
+                        variant="h6"
+                        onClick={() =>
+                          setColumns(
+                            columns.map((col) =>
+                              col.id === column.id ? { ...col, isEditing: true } : col
+                            )
                           )
-                        )}
-                        sx={{ borderRadius: "24px", marginTop: 1 }}
+                        }
                       >
-                        Add a card
-                      </Button>
-                    </Box>
-                  </Paper>
-                </Grid>
+                        {column.title || "Untitled Column"}
+                      </Typography>
+                    )}
+                    <IconButton onClick={() => setColumns(columns.filter((col) => col.id !== column.id))} sx={{ borderRadius: "24px" }}>
+                      <Close />
+                    </IconButton>
+                  </Box>
+                  <Box sx={{ marginTop: 2 }}>
+                    {column.isAddingCard && (
+                      <TextField
+                        fullWidth
+                        placeholder="Enter card text and press Enter"
+                        value={column.newCardText}
+                        onChange={(e) => handleCardInputChange(columns, setColumns, column.id, e.target.value)}
+                        onKeyPress={(e) => handleCardInputKeyPress(e, column.id, columns, setColumns)}
+                        onBlur={() => addCard(columns, setColumns, column.id)}
+                        autoFocus
+                        sx={{ marginBottom: 1, borderRadius: "24px" }} // Rounded corners for text field
+                      />
+                    )}
+                    {column.cards.map((card) => (
+                      <Card
+                        key={card.id}
+                        sx={{
+                          marginBottom: 1,
+                          backgroundColor: "rgba(240, 232, 232, 0.1)", // Making card transparent
+                          transition: "transform 0.3s",
+                          "&:hover": { transform: "scale(1.02)" },
+                          borderRadius: "24px", // Rounded corners for card
+                        }}
+                        draggable
+                        onDragStart={(e) => handleCardDragStart(e, card.id, column.id, setDraggingCard)}
+                      >
+                        <CardContent
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            borderRadius: "24px", // Rounded corners for card content
+                          }}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={card.checked}
+                                onChange={(e) => handleCheckboxChange(column.id, card.id, e.target.checked, setColumns)}
+                                sx={{ borderRadius: "50%" }} // Making checkbox round
+                              />
+                            }
+                            label={<Typography>{card.text}</Typography>}
+                          />
+                          <IconButton edge="end" onClick={() => removeCard(columns, setColumns, column.id, card.id)}>
+                            <Delete />
+                          </IconButton>
+                        </CardContent>
+                      </Card>
+                    ))}
+                    <Button
+                      variant="text"
+                      startIcon={<Add />}
+                      onClick={() => setColumns(
+                        columns.map((col) =>
+                          col.id === column.id ? { ...col, newCardText: "", isAddingCard: true } : col
+                        )
+                      )}
+                      sx={{ borderRadius: "24px", marginTop: 1 }}
+                    >
+                      Add a card
+                    </Button>
+                  </Box>
+                </Paper>
               ))}
-            </Grid>
+            </Box>
             <Box
               sx={{
                 position: "fixed",
@@ -372,6 +374,23 @@ const Workspace = () => {
               <DeleteForever fontSize="large" />
             </Box>
           </Box>
+        </Box>
+        <Box // Scrollbar container
+          sx={{
+            position: "fixed",
+                right: 16,
+                bottom: 16,
+                backgroundColor: "red",
+                color: "#fff",
+                borderRadius: "50%",
+                width: 56,
+                height: 56,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+          }}
+        >
+          <div style={{ width: columns.length * 320 }} /> {/* Dummy div to create scrollbar */}
         </Box>
       </div>
     </ThemeProvider>

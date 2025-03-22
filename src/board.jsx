@@ -32,21 +32,24 @@ const Workspace = () => {
     userOauth_id: "oauth12345",
   });
   const [drawerOpen, setDrawerOpen] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const columnsContainerRef = useRef(null);
-  const scrollbarRef = useRef(null);
+  const navigate = useNavigate(); // Navigation hook
+  const location = useLocation(); // Location hook
+  const columnsContainerRef = useRef(null); // Reference for columns container (for horizontal scrolling)
+  const scrollbarRef = useRef(null); // Reference for custom scrollbar
 
-  const theme = createCustomTheme(darkMode);
+  const theme = createCustomTheme(darkMode); // Create custom theme based on dark mode
 
+  // Save dark mode preference to local storage whenever it changes
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
 
+  // Save columns state to local storage whenever it changes
   useEffect(() => {
     localStorage.setItem("columns", JSON.stringify(columns));
   }, [columns]);
 
+  // Fetch user data and handle authentication on component mount
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const token = urlParams.get("token");
@@ -77,10 +80,12 @@ const Workspace = () => {
       });
   }, [navigate, location.search]);
 
+  // Toggle dark mode
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
+  // Add a new column and scroll to the end of the columns container
   const handleAddColumn = () => {
     addColumn(columns, setColumns);
     if (columnsContainerRef.current) {
@@ -114,7 +119,7 @@ const Workspace = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div onWheel={handleWheelScroll}>
+      <div onWheel={handleWheelScroll}> {/* Handle wheel scroll to move columns and scrollbar */}
         <Box // Main container
           sx={{
             display: "flex",

@@ -395,7 +395,7 @@ const Workspace = () => {
                                     sx={{ borderRadius: "50%" }}
                                   />
                                 }
-                                label={<Typography>{card.text}</Typography>}
+                                label={<Typography sx={{ wordBreak: "break-word" }}>{card.text}</Typography>}
                               />
                               <IconButton edge="end" onClick={() => removeCard(columns, setColumns, column.id, card.id)}>
                                 <Delete />

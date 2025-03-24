@@ -10,7 +10,7 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { addColumn, renameColumn, finalizeColumnTitle, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCheckboxChange } from "./Components/Functions/cardColumnFunctions";
+import { showColumn, renameColumn, finalizeColumnTitle, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCheckboxChange } from "./Components/Functions/cardColumnFunctions";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
 import { navigateHome, handleLogout } from "./Components/Functions/navigationFunctions";
@@ -146,8 +146,8 @@ const Workspace = () => {
   };
 
   // Add a new column and scroll to the end of the columns container
-  const handleAddColumn = () => {
-    addColumn(columns, setColumns);
+  const handleAddColumn = async () => {
+    await showColumn(id, columns, setColumns);
     if (columnsContainerRef.current) {
       columnsContainerRef.current.scrollLeft = columnsContainerRef.current.scrollWidth;
     }
@@ -377,7 +377,7 @@ const Workspace = () => {
                             fullWidth
                             placeholder="Enter column name"
                             value={column.title}
-                            onChange={(e) => renameColumn(columns, setColumns, column.id, e.target.value)}
+                            onChange={(e) => renameColumn(id, columns, setColumns, column.id, e.target.value)} // Pass boardId (id)
                             onBlur={() => finalizeColumnTitle(columns, setColumns, column.id)}
                             onKeyPress={(e) => {
                               if (e.key === "Enter") {

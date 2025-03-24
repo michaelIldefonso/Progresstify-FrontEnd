@@ -1,18 +1,56 @@
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+export const showColumn = async (boardId, columns, setColumns) => { // Add a new column
+  try {
+    const token = localStorage.getItem('token'); // Get the token from localStorage
+    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns`, { // Adjusted URL
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Include the token in the headers
+      },
+      body: JSON.stringify({ title: "", order: columns.length })
+    });
 
-export const addColumn = (columns, setColumns) => { // Add a new column
-  setColumns([
-    ...columns,
-    { id: Date.now(), title: "", isEditing: true, cards: [], newCardText: "", isAddingCard: false },
-  ]);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Failed to create column: ${errorText}`);
+      throw new Error(`Failed to create column: ${errorText}`);
+    }
+
+    const newColumn = await response.json();
+    setColumns([...columns, { ...newColumn, isEditing: true, cards: [], newCardText: "", isAddingCard: false }]);
+  } catch (error) {
+    console.error('Failed to create column:', error);
+  }
 };
 
-export const renameColumn = (columns, setColumns, columnId, newTitle) => { // Rename a column
+export const renameColumn = async (boardId, columns, setColumns, columnId, newTitle) => { // Rename a column
   setColumns(
     columns.map((col) =>
       col.id === columnId ? { ...col, title: newTitle } : col
     )
   );
+
+  try {
+    const token = localStorage.getItem('token'); // Get the token from localStorage
+    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns/${columnId}`, { // Adjusted URL
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Include the token in the headers
+      },
+      body: JSON.stringify({ title: newTitle })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Failed to rename column: ${errorText}`);
+      throw new Error(`Failed to rename column: ${errorText}`);
+    }
+  } catch (error) {
+    console.error('Failed to rename column:', error);
+  }
 };
 
 export const finalizeColumnTitle = (columns, setColumns, columnId) => { // Finalize column title

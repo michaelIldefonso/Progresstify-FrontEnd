@@ -1,87 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  AppBar, Toolbar, Button, Menu, MenuItem, Drawer, List, ListItemIcon, ListItemText,
-  IconButton, Box, Paper, TextField, Typography, Card, CardContent, Checkbox, FormControlLabel
-} from "@mui/material";
-import {
-  Dashboard, ListAlt, People, CloudUpload, Add, Delete, Close, DeleteForever, Brightness4,
-  Brightness7, Menu as MenuIcon
-} from "@mui/icons-material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React, { useState, useRef } from "react";
+import { Box, Drawer, List, Typography, IconButton, ThemeProvider } from "@mui/material";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import axios from "axios";
-import { showColumn, renameColumn, finalizeColumnTitle, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCheckboxChange, getColumns, removeColumn } from "./Components/Functions/cardColumnFunctions";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
-import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
-import { navigateHome, handleLogout } from "./Components/Functions/navigationFunctions";
-
-const handleColumnDragStart = (e, columnId, setDraggingColumn) => {
-  setDraggingColumn(columnId);
-  e.dataTransfer.effectAllowed = "move";
-};
-
-const handleCardDragStart = (e, cardId, columnId, setDraggingCard) => {
-  setDraggingCard({ cardId, columnId });
-  e.dataTransfer.effectAllowed = "move";
-};
-
-const handleDrop = (e, targetColumnId, draggingCard, columns, setColumns, setDraggingCard) => {
-  e.preventDefault();
-  if (!draggingCard) return;
-
-  const { cardId, columnId } = draggingCard;
-
-  // Check if the source column and target column are the same
-  if (columnId === targetColumnId) {
-    setDraggingCard(null);
-    return;
-  }
-
-  const sourceColumn = columns.find((col) => col.id === columnId);
-  const targetColumn = columns.find((col) => col.id === targetColumnId);
-
-  const card = sourceColumn.cards.find((c) => c.id === cardId);
-
-  const updatedSourceCards = sourceColumn.cards.filter((c) => c.id !== cardId);
-  const updatedTargetCards = [...targetColumn.cards, card];
-
-  const updatedColumns = columns.map((col) => {
-    if (col.id === columnId) {
-      return { ...col, cards: updatedSourceCards };
-    } else if (col.id === targetColumnId) {
-      return { ...col, cards: updatedTargetCards };
-    } else {
-      return col;
-    }
-  });
-
-  setColumns(updatedColumns);
-  setDraggingCard(null);
-};
-
-const handleTrashDrop = (e, draggingCard, columns, setColumns, setDraggingCard) => {
-  e.preventDefault();
-  if (!draggingCard) return;
-
-  const { cardId, columnId } = draggingCard;
-  const sourceColumn = columns.find((col) => col.id === columnId);
-
-  const updatedSourceCards = sourceColumn.cards.filter((c) => c.id !== cardId);
-
-  const updatedColumns = columns.map((col) => {
-    if (col.id === columnId) {
-      return { ...col, cards: updatedSourceCards };
-    } else {
-      return col;
-    }
-  });
-
-  setColumns(updatedColumns);
-  setDraggingCard(null);
-};
+import { useDarkModeEffect, useColumnsEffect, useFetchUserEffect, useFetchColumnsEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
+import AppBarWithMenu from "./Components/Board/BoardComponents/AppbarWithMenu";
+import ColumnList from "./Components/Board/BoardComponents/Columnlist";
+import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar";
 
 const Board = () => {
-  const { id } = useParams(); // Get the id from the route parameters
+  const { id } = useParams();
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : true;
@@ -91,213 +19,27 @@ const Board = () => {
     return savedColumns ? JSON.parse(savedColumns) : [];
   });
   const [anchorEl, setAnchorEl] = useState(null);
-  const [user, setUser] = useState({
-    userEmail: "user@example.com",
-    userId: "12345",
-    userOauth_id: "oauth12345",
-  });
+  const [user, setUser] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [draggingColumn, setDraggingColumn] = useState(null);
   const [draggingCard, setDraggingCard] = useState(null);
-  const navigate = useNavigate(); // Navigation hook
-  const location = useLocation(); // Location hook
-  const columnsContainerRef = useRef(null); // Reference for columns container (for horizontal scrolling)
-  const scrollbarRef = useRef(null); // Reference for custom scrollbar
+  const navigate = useNavigate();
+  const location = useLocation();
+  const theme = createCustomTheme(darkMode);
 
-  const theme = createCustomTheme(darkMode); // Create custom theme based on dark mode
-
-  // Save dark mode preference to local storage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("darkMode", JSON.stringify(darkMode));
-  }, [darkMode]);
-
-  // Save columns state to local storage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("columns", JSON.stringify(columns));
-  }, [columns]);
-
-  // Fetch user data and handle authentication on component mount
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const token = urlParams.get("token");
-
-    if (token) {
-      localStorage.setItem("token", token);
-    }
-
-    const storedToken = localStorage.getItem("token");
-
-    if (!storedToken) {
-      console.error("No token found, redirecting...");
-      navigate("/");
-      return;
-    }
-
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, { 
-      withCredentials: true,
-      headers: { Authorization: `Bearer ${storedToken}` },
-    })
-      .then((response) => {
-        console.log("API Response:", response.data);
-        setUser(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-        navigate("/");
-      });
-  }, [navigate, location.search]);
-
-  // Fetch columns from the API on component mount
-  useEffect(() => {
-    getColumns(id, setColumns); // Fetch columns using the board ID
-  }, [id]);
-
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
-  // Add a new column and scroll to the end of the columns container
-  const handleAddColumn = async () => {
-    await showColumn(id, columns, setColumns);
-    if (columnsContainerRef.current) {
-      columnsContainerRef.current.scrollLeft = columnsContainerRef.current.scrollWidth;
-    }
-  };
-
-  // Handle wheel scroll to move columns and scrollbar simultaneously
-  const handleWheelScroll = (e) => {
-    if (!e.target.closest('.column')) {
-      if (columnsContainerRef.current && scrollbarRef.current) {
-        columnsContainerRef.current.scrollLeft += e.deltaY;
-        scrollbarRef.current.scrollLeft += e.deltaY;
-      }
-    }
-  };
-
-  // Handle scroll event for the custom scrollbar
-  const handleScrollbarScroll = (e) => {
-    if (columnsContainerRef.current) {
-      columnsContainerRef.current.scrollLeft = e.target.scrollLeft;
-    }
-  };
-
-  // Handle scroll event for columns to move scrollbar simultaneously
-  const handleColumnsScroll = (e) => {
-    if (scrollbarRef.current) {
-      scrollbarRef.current.scrollLeft = e.target.scrollLeft;
-    }
-  };
+  useDarkModeEffect(darkMode, setDarkMode);
+  useColumnsEffect(columns, setColumns);
+  useFetchUserEffect(location, navigate, setUser);
+  useFetchColumnsEffect(id, setColumns);
 
   return (
     <ThemeProvider theme={theme}>
-      <div onWheel={handleWheelScroll}> {/* Handle wheel scroll to move columns and scrollbar */}
-        <Box // Main container
-          sx={{
-            display: "flex",
-            position: "relative",
-            backgroundImage: darkMode ? 'url("/stary.jpg")' : 'url("/cloud.jpg")',
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            minHeight: "100vh",
-            width: "100vw",
-            overflow: "hidden",
-          }}
-        >
-          <div style={{
-            position: "fixed",
-            top: 0,
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            padding: "10px 20px",
-            backgroundColor: "transparent",
-            zIndex: 1301,
-          }}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
-              sx={{ mr: 2, color: "white" }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              <img src="/hahaha.png" alt="Sitemark" />
-            </Typography>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Button
-                variant="outlined"
-                onClick={() => navigate("/workspace")}
-                sx={{
-                  color: "black",
-                  textTransform: "none",
-                  backgroundColor: "#30A8DB",
-                  boxShadow: 3,
-                  mr: 2,
-                }}
-              >
-                Home
-              </Button>
-              {user && (
-                <div>
-                  <Button
-                    variant="outlined"
-                    onClick={(e) => handleMenu(e, setAnchorEl)}
-                    sx={{
-                      color: "black",
-                      textTransform: "none",
-                      backgroundColor: "#30A8DB",
-                      boxShadow: 3,
-                      marginRight: "40px"
-                    }}
-                  >
-                    Account
-                  </Button>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    open={Boolean(anchorEl)}
-                    onClose={() => handleClose(setAnchorEl)}
-                  >
-                    <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
-                    <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
-                    <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
-                    <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
-                  </Menu>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <Drawer
-            variant="persistent"
-            anchor="left"
-            open={drawerOpen}
-            sx={{
-              position: "fixed",
-              width: 240,
-              flexShrink: 0,
-              zIndex: 1300,
-              "& .MuiDrawer-paper": {
-                width: 240,
-                boxSizing: "border-box",
-                zIndex: 1300,
-              },
-            }}
-          >
+      <div onWheel={(e) => handleWheelScroll(e, columnsContainerRef, scrollbarRef)}>
+        <Box sx={{ display: "flex", position: "relative", backgroundImage: darkMode ? 'url("/stary.jpg")' : 'url("/cloud.jpg")', backgroundSize: "cover", backgroundPosition: "center", minHeight: "100vh", width: "100vw", overflow: "hidden" }}>
+          <AppBarWithMenu darkMode={darkMode} setDarkMode={setDarkMode} anchorEl={anchorEl} setAnchorEl={setAnchorEl} user={user} drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+          <Drawer variant="persistent" anchor="left" open={drawerOpen} sx={{ position: "fixed", width: 240, flexShrink: 0, zIndex: 1300, "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", zIndex: 1300 } }}>
             <Box sx={{ display: "flex", alignItems: "center", pt: 15 }}>
-              <IconButton onClick={toggleDarkMode} color="inherit">
+              <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
                 {darkMode ? <Brightness4 /> : <Brightness7 />}
               </IconButton>
               <Typography variant="h6" sx={{ marginLeft: 1 }}>

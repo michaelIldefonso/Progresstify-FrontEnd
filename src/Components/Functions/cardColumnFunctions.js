@@ -187,30 +187,35 @@ export const removeColumn = async (boardId, columnId, columns, setColumns) => {
   }
 };
 
-// export const getColumns = async (boardId, setColumns) => { // Get columns in a board
-//   try {
-//     const token = localStorage.getItem('token'); // Get the token from localStorage
-//     const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns`, { // Adjusted URL
-//       method: 'GET',
-//       headers: {
-//         'Authorization': `Bearer ${token}` // Include the token in the headers
-//       }
-//     });
+export const getColumns = async (boardId, setColumns) => {
+  try {
+    const token = localStorage.getItem('token'); // Get the token from localStorage
+    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}` // Include the token in the headers
+      }
+    });
 
-//     if (!response.ok) {
-//       const errorText = await response.text();
-//       console.error(`Failed to fetch columns: ${errorText}`);
-//       throw new Error(`Failed to fetch columns: ${errorText}`);
-//     }
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Failed to load columns: ${errorText}`);
+      throw new Error(`Failed to load columns: ${errorText}`);
+    }
 
-//     const columns = await response.json();
-//     setColumns(columns || []); // Ensure columns is defined even if fetching fails
-//   } catch (error) {
-//     console.error('Failed to fetch columns:', error);
-//     if (error.message.includes("Unauthorized")) {
-//       throw new Error("Unauthorized");
-//     } else {
-//       setColumns([]); // Ensure columns is defined even if fetching fails
-//     }
-//   }
-// };
+    const columns = await response.json();
+    if (Array.isArray(columns)) {
+      setColumns(columns.map(col => ({
+        ...col,
+        isEditing: false,
+        cards: col.cards || [],
+        newCardText: "",
+        isAddingCard: false
+      })));
+    } else {
+      console.error("Failed to load columns: response is not an array");
+    }
+  } catch (error) {
+    console.error("Failed to load columns:", error);
+  }
+};

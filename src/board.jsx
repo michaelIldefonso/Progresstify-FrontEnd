@@ -80,7 +80,7 @@ const handleTrashDrop = (e, draggingCard, columns, setColumns, setDraggingCard) 
   setDraggingCard(null);
 };
 
-const Workspace = () => {
+const Board = () => {
   const { id } = useParams(); // Get the id from the route parameters
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
@@ -542,4 +542,4 @@ const Workspace = () => {
   );
 };
 
-export default Workspace;
+export default Board;

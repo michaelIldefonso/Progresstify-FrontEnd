@@ -164,3 +164,53 @@ export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
     )
   );
 };
+
+export const removeColumn = async (boardId, columnId, columns, setColumns) => {
+  setColumns(columns.filter((col) => col.id !== columnId));
+
+  try {
+    const token = localStorage.getItem('token'); // Get the token from localStorage
+    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns/${columnId}`, { // Adjusted URL
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}` // Include the token in the headers
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Failed to delete column: ${errorText}`);
+      throw new Error(`Failed to delete column: ${errorText}`);
+    }
+  } catch (error) {
+    console.error('Failed to delete column:', error);
+  }
+};
+
+// export const getColumns = async (boardId, setColumns) => { // Get columns in a board
+//   try {
+//     const token = localStorage.getItem('token'); // Get the token from localStorage
+//     const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns`, { // Adjusted URL
+//       method: 'GET',
+//       headers: {
+//         'Authorization': `Bearer ${token}` // Include the token in the headers
+//       }
+//     });
+
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       console.error(`Failed to fetch columns: ${errorText}`);
+//       throw new Error(`Failed to fetch columns: ${errorText}`);
+//     }
+
+//     const columns = await response.json();
+//     setColumns(columns || []); // Ensure columns is defined even if fetching fails
+//   } catch (error) {
+//     console.error('Failed to fetch columns:', error);
+//     if (error.message.includes("Unauthorized")) {
+//       throw new Error("Unauthorized");
+//     } else {
+//       setColumns([]); // Ensure columns is defined even if fetching fails
+//     }
+//   }
+// };

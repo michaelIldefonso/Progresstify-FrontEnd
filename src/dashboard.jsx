@@ -184,40 +184,7 @@ const Dashboard = () => {
               </Box>
             </Box>
             <List>
-              {boards.map((board) => (
-                <ListItem
-                  button
-                  key={board.id}
-                  onClick={() => selectBoard(board, setActiveBoard, setEditingBoardId, navigate)}
-                >
-                  <ListItemIcon>
-                    <DashboardIcon /> 
-                  </ListItemIcon>
-                  {editingBoardId === board.id ? (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                      <TextField
-                        value={boardName}
-                        onChange={(e) => handleNameChange(e, setBoardName)}
-                        onBlur={() => handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
-                        autoFocus
-                        sx={{ mb: 1 }}
-                      />
-                    </Box>
-                  ) : (
-                    <ListItemText primary={board.name} />
-                  )}
-                  <IconButton onClick={() => handleEditClick(board, setEditingBoardId, setBoardName)}>
-                    <Edit />
-                  </IconButton>
-                </ListItem>
-              ))}
-              <ListItem button onClick={() => setModalOpen(true)}>
-                <ListItemIcon>
-                  <Add />
-                </ListItemIcon>
-                <ListItemText primary="Create Board" />
-              </ListItem>
+              {/* Add any additional navigation items here */}
             </List>
           </Drawer>
           <Box
@@ -254,6 +221,34 @@ const Dashboard = () => {
                 >
                   Create Board
                 </Button>
+                {boards.map((board) => (
+                <ListItem
+                  button
+                  key={board.id}
+                  onClick={() => selectBoard(board, setActiveBoard, setEditingBoardId, navigate)}
+                >
+                  <ListItemIcon>
+                    <DashboardIcon /> 
+                  </ListItemIcon>
+                  {editingBoardId === board.id ? (
+                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                      <TextField
+                        value={boardName}
+                        onChange={(e) => handleNameChange(e, setBoardName)}
+                        onBlur={() => handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
+                        autoFocus
+                        sx={{ mb: 1 }}
+                      />
+                    </Box>
+                  ) : (
+                    <ListItemText primary={board.name} />
+                  )}
+                  <IconButton onClick={() => handleEditClick(board, setEditingBoardId, setBoardName)}>
+                    <Edit />
+                  </IconButton>
+                </ListItem>
+              ))}
             </div>
 
             )}

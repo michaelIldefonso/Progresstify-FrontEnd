@@ -7,6 +7,7 @@ import { useDarkModeEffect, useColumnsEffect, useFetchUserEffect, useFetchColumn
 import AppBarWithMenu from "./Components/Board/BoardComponents/AppbarWithMenu";
 import ColumnList from "./Components/Board/BoardComponents/Columnlist";
 import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar";
+import { handleWheelScroll } from "./Components/Functions/eventHandlerFunctions";
 
 const Board = () => {
   const { id } = useParams();
@@ -26,6 +27,8 @@ const Board = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = createCustomTheme(darkMode);
+  const columnsContainerRef = useRef(null);
+  const scrollbarRef = useRef(null);
 
   useDarkModeEffect(darkMode, setDarkMode);
   useColumnsEffect(columns, setColumns);

@@ -30,6 +30,13 @@ const handleDrop = (e, targetColumnId, draggingCard, columns, setColumns, setDra
   if (!draggingCard) return;
 
   const { cardId, columnId } = draggingCard;
+
+  // Check if the source column and target column are the same
+  if (columnId === targetColumnId) {
+    setDraggingCard(null);
+    return;
+  }
+
   const sourceColumn = columns.find((col) => col.id === columnId);
   const targetColumn = columns.find((col) => col.id === targetColumnId);
 
@@ -357,7 +364,7 @@ const Workspace = () => {
                     onWheel={(e) => {
                       e.stopPropagation(); // Prevent the event from propagating to the parent
                     }}
-                    onDrop={(e) => handleDrop(e, column.id, draggingCard, columns, setColumns, setDraggingCard)}
+                    onDrop={(e) => handleDrop(e, column.id, draggingCard, columns, setColumns, setDraggingCard)} //card dissappearing fix
                     onDragOver={(e) => e.preventDefault()}
                     draggable
                     onDragStart={(e) => handleColumnDragStart(e, column.id, setDraggingColumn)}

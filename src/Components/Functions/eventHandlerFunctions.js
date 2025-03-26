@@ -73,3 +73,4 @@ export const handleScrollbarScroll = (e, columnsContainerRef) => {
     columnsContainerRef.current.scrollLeft = e.target.scrollLeft;
   }
 };
+

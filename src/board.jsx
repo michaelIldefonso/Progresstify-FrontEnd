@@ -10,7 +10,7 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { showColumn, renameColumn, finalizeColumnTitle, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCheckboxChange } from "./Components/Functions/cardColumnFunctions";
+import { showColumn, renameColumn, finalizeColumnTitle, addCard, removeCard, handleCardInputChange, handleCardInputKeyPress, handleCheckboxChange, getColumns, removeColumn } from "./Components/Functions/cardColumnFunctions";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
 import { navigateHome, handleLogout } from "./Components/Functions/navigationFunctions";
@@ -146,6 +146,11 @@ const Workspace = () => {
         navigate("/");
       });
   }, [navigate, location.search]);
+
+  // Fetch columns from the API on component mount
+  useEffect(() => {
+    getColumns(id, setColumns); // Fetch columns using the board ID
+  }, [id]);
 
   // Toggle dark mode
   const toggleDarkMode = () => {
@@ -409,7 +414,10 @@ const Workspace = () => {
                             {column.title || "Untitled Column"}
                           </Typography>
                         )}
-                        <IconButton onClick={() => setColumns(columns.filter((col) => col.id !== column.id))} sx={{ borderRadius: "24px" }}>
+                        <IconButton
+                          onClick={() => removeColumn(id, column.id, columns, setColumns)} // Call removeColumn with boardId, columnId, columns, and setColumns
+                          sx={{ borderRadius: "24px" }}
+                        >
                           <Close />
                         </IconButton>
                       </Box>

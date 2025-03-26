@@ -1,6 +1,6 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const addCard = (columns, setColumns, columnId) => {
+export const addCardPopup = (columns, setColumns, columnId) => {
   setColumns(
     columns.map((col) => {
       if (col.id === columnId && col.newCardText.trim()) {

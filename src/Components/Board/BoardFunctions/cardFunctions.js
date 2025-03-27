@@ -1,5 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 export const addCard = (columns, setColumns, columnId) => {
   setColumns(
     columns.map((col) => {
@@ -44,15 +42,39 @@ export const handleCardDragStart = (event, cardId, columnId, setDraggingCard) =>
   event.dataTransfer.effectAllowed = "move";
 };
 
+export const handleCardDragOver = (event) => {
+  event.preventDefault();
+};
+
+export const handleCardDrop = (event, targetColumnId, columns, setColumns, draggingCard) => {
+  event.preventDefault();
+  const { cardId, columnId } = draggingCard;
+
+  if (columnId !== targetColumnId) {
+    const sourceColumn = columns.find((col) => col.id === columnId);
+    const targetColumn = columns.find((col) => col.id === targetColumnId);
+    const card = sourceColumn.cards.find((card) => card.id === cardId);
+
+    setColumns(
+      columns.map((col) => {
+        if (col.id === columnId) {
+          return { ...col, cards: col.cards.filter((card) => card.id !== cardId) };
+        } else if (col.id === targetColumnId) {
+          return { ...col, cards: [...col.cards, card] };
+        }
+        return col;
+      })
+    );
+  }
+};
+
 export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
-  setColumns(prevColumns =>
-    prevColumns.map(column =>
+  setColumns((prevColumns) =>
+    prevColumns.map((column) =>
       column.id === columnId
         ? {
             ...column,
-            cards: column.cards.map(card =>
-              card.id === cardId ? { ...card, checked } : card
-            )
+            cards: column.cards.map((card) => (card.id === cardId ? { ...card, checked } : card)),
           }
         : column
     )

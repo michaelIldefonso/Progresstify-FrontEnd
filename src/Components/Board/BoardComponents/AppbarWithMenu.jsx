@@ -13,23 +13,40 @@ const AppBarWithMenu = ({ darkMode, setDarkMode, anchorEl, setAnchorEl, user, dr
   };
 
   return (
-    <AppBar position="fixed" sx={{ zIndex: 1301 }}>
+    <AppBar position="fixed" sx={{ zIndex: 1301, backgroundColor: darkMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
+     backdropFilter: "blur(3px)", boxShadow: "none", }}>
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)} sx={{ mr: 2 }}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          <img src="/hahaha.png" alt="Sitemark" />
+        <Typography variant="h6" sx={{ flexGrow: 1 }}> 
+          <img src={darkMode ? "/hahaha.png" : "/final_logo.png"} alt="Sitemark" /> 
         </Typography>
-        <Button variant="outlined" onClick={() => navigate("/workspace")} sx={{ color: "black", textTransform: "none" }}>
+        <Button
+          variant="outlined"
+          onClick={() => navigate("/workspace")}
+          sx={{ color: darkMode ? "white" : "black", textTransform: "none" }}
+        >
           Home
         </Button>
         {user && (
           <div>
-            <Button variant="outlined" onClick={(e) => handleMenu(e, setAnchorEl)} sx={{ color: "black", textTransform: "none" }}>
+            <Button
+              variant="outlined"
+              onClick={(e) => handleMenu(e, setAnchorEl)}
+              sx={{ color: darkMode ? "white" : "black", textTransform: "none" }}
+            >
               Account
             </Button>
-            <Menu id="menu-appbar" anchorEl={anchorEl} anchorOrigin={{ vertical: "bottom", horizontal: "right" }} keepMounted transformOrigin={{ vertical: "top", horizontal: "right" }} open={Boolean(anchorEl)} onClose={() => handleClose(setAnchorEl)}>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              keepMounted
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+              open={Boolean(anchorEl)}
+              onClose={() => handleClose(setAnchorEl)}
+            >
               <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
               <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
               <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>

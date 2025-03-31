@@ -3,7 +3,7 @@ import { Box, Drawer, List, Typography, IconButton, ThemeProvider } from "@mui/m
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
-import { useDarkModeEffect, useColumnsEffect, useFetchUserEffect, useFetchColumnsEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
+import { useDarkModeEffect, useColumnsEffect, useFetchUserEffect, useFetchColumnsEffect, useScrollBarEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
 import AppBarWithMenu from "./Components/Board/BoardComponents/AppbarWithMenu";
 import ColumnList from "./Components/Board/BoardComponents/Columnlist";
 import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar";
@@ -34,6 +34,7 @@ const Board = () => {
   useColumnsEffect(columns, setColumns);
   useFetchUserEffect(location, navigate, setUser);
   useFetchColumnsEffect(id, setColumns);
+  useScrollBarEffect(columnsContainerRef, scrollbarRef);
 
   return (
     <ThemeProvider theme={theme}>
@@ -53,8 +54,33 @@ const Board = () => {
               {/* Add any additional navigation items here */}
             </List>
           </Drawer>
-          <ColumnList id={id} columns={columns} setColumns={setColumns} draggingCard={draggingCard} setDraggingCard={setDraggingCard} draggingColumn={draggingColumn} setDraggingColumn={setDraggingColumn} darkMode={darkMode} drawerOpen={drawerOpen} />
-          <CustomScrollbar columns={columns} darkMode={darkMode} drawerOpen={drawerOpen} />
+          <Box
+            ref={columnsContainerRef}
+            
+            sx={{
+              display: "flex",
+              overflowX: "auto", // Enable horizontal scrolling
+              
+              padding: "16px", // Optional padding
+              width: "100%", // Ensure it takes the full width
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                width: `${columns.length * 266}px`, // Dynamically set the width based on the number of columns
+              }}
+            >
+              <ColumnList id={id} columns={columns} setColumns={setColumns} draggingCard={draggingCard} setDraggingCard={setDraggingCard} draggingColumn={draggingColumn} setDraggingColumn={setDraggingColumn} darkMode={darkMode} drawerOpen={drawerOpen} />
+            </Box>
+          </Box>  
+          <CustomScrollbar
+            columns={columns}
+            darkMode={darkMode}
+            drawerOpen={drawerOpen}
+            columnsContainerRef={columnsContainerRef}
+            scrollbarRef={scrollbarRef} // Pass scrollbarRef
+          />
         </Box>
       </div>
     </ThemeProvider>

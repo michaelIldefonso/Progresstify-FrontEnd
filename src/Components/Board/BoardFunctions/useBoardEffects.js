@@ -25,3 +25,27 @@ export const useFetchColumnsEffect = (id, setColumns) => {
     getColumns(id, setColumns);
   }, [id]);
 };
+
+export const useScrollBarEffect = (columnsContainerRef, scrollbarRef) => {
+  useEffect(() => {
+    const columnsContainer = columnsContainerRef.current;
+    if (columnsContainer) {
+      const handleWheel = (e) => {
+        // Allow vertical scrolling inside card lists
+        if (e.target.closest(".card-list")) {
+          console.log("Mouse is inside card list, allowing vertical scrolling");
+          return;
+        }
+
+        // Horizontal scrolling logic
+        e.preventDefault();
+        columnsContainer.scrollLeft += e.deltaY;
+      };
+
+      columnsContainer.addEventListener("wheel", handleWheel, { passive: false });
+      return () => {
+        columnsContainer.removeEventListener("wheel", handleWheel);
+      };
+    }
+  }, [columnsContainerRef, scrollbarRef]);
+};

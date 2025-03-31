@@ -6,7 +6,7 @@ import { handleCardInputChange, handleCardInputKeyPress, addCard } from "../Boar
 
 const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDraggingCard }) => {
   return (
-    <Box sx={{ marginTop: 2, maxHeight: "400px", overflowY: "auto", paddingRight: "10px", "&::-webkit-scrollbar": { width: "5px" }, "&::-webkit-scrollbar-thumb": { backgroundColor: darkMode ? "rgba(8, 8, 8, 0.5)" : "rgba(255, 253, 253, 0.5)", borderRadius: "8px" }, "&::-webkit-scrollbar-track": { backgroundColor: "transparent" } }}>
+    <Box className="card-list" sx={{ marginTop: 2, maxHeight: "400px", overflowY: "auto", paddingRight: "10px", "&::-webkit-scrollbar": { width: "5px" }, "&::-webkit-scrollbar-thumb": { backgroundColor: darkMode ? "rgba(8, 8, 8, 0.5)" : "rgba(255, 253, 253, 0.5)", borderRadius: "8px" }, "&::-webkit-scrollbar-track": { backgroundColor: "transparent" } }}>
       {column.isAddingCard && (
         <TextField fullWidth placeholder="Enter card text and press Enter" value={column.newCardText} onChange={(e) => handleCardInputChange(columns, setColumns, column.id, e.target.value)} onKeyPress={(e) => handleCardInputKeyPress(e, column.id, columns, setColumns)} onBlur={() => addCard(columns, setColumns, column.id)} autoFocus sx={{ marginBottom: 1, borderRadius: "24px" }} />
       )}

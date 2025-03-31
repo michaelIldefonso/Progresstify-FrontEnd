@@ -60,17 +60,24 @@ export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
 };
 
 export const handleWheelScroll = (e, columnsContainerRef, scrollbarRef) => {
-  if (!e.target.closest('.column')) {
-    if (columnsContainerRef.current && scrollbarRef.current) {
-      columnsContainerRef.current.scrollLeft += e.deltaY;
-      scrollbarRef.current.scrollLeft += e.deltaY;
-    }
+  // Allow vertical scrolling inside card lists
+  if (e.target.closest(".card-list")) {
+    
+    return; // Do nothing and allow the default vertical scrolling
+  }
+
+  // Horizontal scrolling logic
+  if (columnsContainerRef.current && scrollbarRef.current) {
+    const delta = e.deltaY; // Use vertical wheel movement to scroll horizontally
+    columnsContainerRef.current.scrollLeft += delta;
+    scrollbarRef.current.scrollLeft = columnsContainerRef.current.scrollLeft; // Sync scrollbarRef
+    
   }
 };
 
-export const handleScrollbarScroll = (e, columnsContainerRef) => {
+export const handleScrollbarScroll = (event, columnsContainerRef) => {
   if (columnsContainerRef.current) {
-    columnsContainerRef.current.scrollLeft = e.target.scrollLeft;
+    columnsContainerRef.current.scrollLeft = event.target.scrollLeft;
+    
   }
 };
-

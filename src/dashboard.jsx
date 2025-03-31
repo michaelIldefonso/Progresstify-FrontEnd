@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  CssBaseline, GlobalStyles, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal, Menu, MenuItem
+  CssBaseline, GlobalStyles, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Paper, Button, TextField, Modal, Menu, MenuItem, AppBar, Toolbar
 } from "@mui/material";
 import { Add, Dashboard as DashboardIcon, Brightness4, Brightness7, Edit, Menu as MenuIcon } from "@mui/icons-material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -70,7 +70,52 @@ const Dashboard = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} /> 
+      <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
+      <AppBar position="fixed" sx={{ zIndex: 1301, backgroundColor: darkMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)", backdropFilter: "blur(3px)", boxShadow: "none", }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)} sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            <p>Progresstify</p>
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/workspace")}
+            sx={{ color: darkMode ? "white" : "black", textTransform: "none" }}
+          >
+            Home
+          </Button>
+          {user && (
+            <div>
+              <Button
+                variant="outlined"
+                onClick={(e) => handleMenu(e, setAnchorEl)}
+                sx={{ color: darkMode ? "white" : "black", textTransform: "none" }}
+              >
+                Account
+              </Button>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                keepMounted
+                transformOrigin={{ vertical: "top", horizontal: "right" }}
+                open={Boolean(anchorEl)}
+                onClose={() => handleClose(setAnchorEl)}
+              >
+                <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
+                <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
+                <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
+                <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
+              </Menu>
+            </div>
+          )}
+          <IconButton onClick={toggleDarkMode} color="inherit">
+            {darkMode ? <Brightness4 /> : <Brightness7 />}
+          </IconButton>
+        </Toolbar>
+      </AppBar>
       <div>
         <Box
           sx={{
@@ -84,109 +129,6 @@ const Dashboard = () => {
             overflow: 'hidden', //to hide the damn scroll bar
           }}
         >
-          <div style={{ 
-            position: "absolute", 
-            top: 0, 
-            width: "100%", 
-            display: "flex", 
-            alignItems: "center", 
-            padding: "10px 20px",
-            backgroundColor: "transparent",
-            zIndex: 1301,
-          }}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)}
-              sx={{ mr: 2 , color: "white", }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              <img src="/hahaha.png" alt="Sitemark" />
-            </Typography>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Button
-                variant="outlined"
-                onClick={() => navigate("/workspace")} // Use the navigate function
-                sx={{
-                  color: "black",
-                  textTransform: "none",
-                  backgroundColor: "#30A8DB",
-                  boxShadow: 3,
-                  mr: 2,
-                }}
-              >
-                Home
-              </Button>
-              {user && (
-                <div>
-                  <Button
-                    variant="outlined"
-                    onClick={(e) => handleMenu(e, setAnchorEl)}
-                    sx={{
-                      color: "black",
-                      textTransform: "none",
-                      backgroundColor: "#30A8DB",
-                      boxShadow: 3,
-                      marginRight: "40px",
-                    }}
-                  >
-                    Account
-                  </Button>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    open={Boolean(anchorEl)}
-                    onClose={() => handleClose(setAnchorEl)}
-                  >
-                    <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
-                    <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
-                    <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
-                    <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
-                  </Menu>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <Drawer
-            variant="persistent"
-            anchor="left"
-            open={drawerOpen}
-            sx={{
-              width: 240,
-              flexShrink: 0,
-              "& .MuiDrawer-paper": {
-                width: 240,
-                boxSizing: "border-box",
-              },
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", pt: 2 }}>
-              <Box sx={{ display: "flex", alignItems: "center", marginTop: 14 }}>
-                <IconButton onClick={toggleDarkMode} color="inherit">
-                  {darkMode ? <Brightness4 /> : <Brightness7 />}
-                </IconButton>
-                <Typography variant="h6">
-                  {darkMode ? "Dark Mode" : "Light Mode"}
-                </Typography>
-              </Box>
-            </Box>
-            <List>
-              {/* Add any additional navigation items here */}
-            </List>
-          </Drawer>
           <Box
             component="main"
             sx={{
@@ -200,7 +142,7 @@ const Dashboard = () => {
             {activeBoard ? (
               <Typography variant="h4">Board: {activeBoard.name}</Typography>
             ) : (
-            <div
+              <div
                 style={{
                   padding: "40px",
                   display: "flex",
@@ -208,7 +150,6 @@ const Dashboard = () => {
                   alignItems: "center",
                   backgroundColor: "transparent",
                   borderRadius: "8px", // Optional: To mimic Paper's rounded corners
-                  
                 }}
               >
                 <Typography variant="h4" sx={{color: "white"}}>Select or Create a Board</Typography>
@@ -222,35 +163,34 @@ const Dashboard = () => {
                   Create Board
                 </Button>
                 {boards.map((board) => (
-                <ListItem
-                  button
-                  key={board.id}
-                  onClick={() => selectBoard(board, setActiveBoard, setEditingBoardId, navigate)}
-                >
-                  <ListItemIcon>
-                    <DashboardIcon /> 
-                  </ListItemIcon>
-                  {editingBoardId === board.id ? (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                      <TextField
-                        value={boardName}
-                        onChange={(e) => handleNameChange(e, setBoardName)}
-                        onBlur={() => handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
-                        autoFocus
-                        sx={{ mb: 1 }}
-                      />
-                    </Box>
-                  ) : (
-                    <ListItemText primary={board.name} />
-                  )}
-                  <IconButton onClick={() => handleEditClick(board, setEditingBoardId, setBoardName)}>
-                    <Edit />
-                  </IconButton>
-                </ListItem>
-              ))}
-            </div>
-
+                  <ListItem
+                    button
+                    key={board.id}
+                    onClick={() => selectBoard(board, setActiveBoard, setEditingBoardId, navigate)}
+                  >
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    {editingBoardId === board.id ? (
+                      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                        <TextField
+                          value={boardName}
+                          onChange={(e) => handleNameChange(e, setBoardName)}
+                          onBlur={() => handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
+                          onKeyPress={(e) => e.key === 'Enter' && handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)}
+                          autoFocus
+                          sx={{ mb: 1 }}
+                        />
+                      </Box>
+                    ) : (
+                      <ListItemText primary={board.name} />
+                    )}
+                    <IconButton onClick={() => handleEditClick(board, setEditingBoardId, setBoardName)}>
+                      <Edit />
+                    </IconButton>
+                  </ListItem>
+                ))}
+              </div>
             )}
           </Box>
 

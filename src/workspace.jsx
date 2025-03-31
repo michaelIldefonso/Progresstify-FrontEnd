@@ -100,9 +100,7 @@ function Workspaces() {
       >
         <AppBar position="absolute" sx={{ backgroundColor: "transparent", boxShadow: "none" }}>
           <Toolbar>
-            <Typography variant="h6" style={{ flexGrow: 1 }}>
-              <img src="/hahaha.png" alt="Sitemark" />
-            </Typography>
+            
             {user && (
               <div>
                 <Button
@@ -113,6 +111,7 @@ function Workspaces() {
                     textTransform: "none",
                     backgroundColor: "#30A8DB",
                     boxShadow: 3,
+                    position: "absolute", top: 16, right: 16
                   }}
                 >
                   Account

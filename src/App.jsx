@@ -69,9 +69,7 @@ function App() {
           padding: "10px 20px",
           backgroundColor: "transparent"
         }}>
-          <Typography variant="h6" sx={{marginLeft: "20px",}}>
-            <img src="/hahaha.png" alt="Sitemark" />
-          </Typography>
+          
           <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }}>
             {/* IconButton to toggle between light and dark mode */}
             <IconButton onClick={toggleDarkMode} sx={{ color: darkMode ? "#fff" : "#000" }}>

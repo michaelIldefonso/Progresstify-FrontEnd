@@ -20,7 +20,7 @@ const AppBarWithMenu = ({ darkMode, setDarkMode, anchorEl, setAnchorEl, user, dr
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" sx={{ flexGrow: 1 }}> 
-          <img src={darkMode ? "/hahaha.png" : "/final_logo.png"} alt="Sitemark" /> 
+          <p>Progresstify</p>
         </Typography>
         <Button
           variant="outlined"

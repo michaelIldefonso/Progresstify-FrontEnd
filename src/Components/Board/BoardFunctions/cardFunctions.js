@@ -1,17 +1,55 @@
-export const addCard = (columns, setColumns, columnId) => {
-  setColumns(
-    columns.map((col) => {
-      if (col.id === columnId && col.newCardText.trim()) {
-        return {
-          ...col,
-          cards: [...col.cards, { id: Date.now(), text: col.newCardText, checked: false }],
-          newCardText: "",
-          isAddingCard: false,
-        };
+export const ShowPopupCard = async (columns, setColumns, columnId) => { // Show addcard when clicked
+  const column = columns.find((col) => col.id === columnId);
+  if (column.newCardText.trim()) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/cards`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          column_id: columnId,
+          text: column.newCardText,
+          checked: false,
+          position: column.cards.length // Assuming position is based on the card's order
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Failed to create card: ${errorText}`);
+        throw new Error(`Failed to create card: ${errorText}`);
       }
-      return col;
-    })
-  );
+
+      const newCard = await response.json();
+      setColumns(
+        columns.map((col) => {
+          if (col.id === columnId) {
+            return {
+              ...col,
+              cards: [...col.cards, newCard],
+              newCardText: "",
+              isAddingCard: false,
+            };
+          }
+          return col;
+        })
+      );
+    } catch (error) {
+      console.error('Failed to create card:', error);
+    }
+  } else {
+    setColumns(
+      columns.map((col) => {
+        if (col.id === columnId) {
+          return { ...col, newCardText: "", isAddingCard: false };
+        }
+        return col;
+      })
+    );
+  }
 };
 
 export const removeCard = (columns, setColumns, columnId, cardId) => {
@@ -79,4 +117,34 @@ export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
         : column
     )
   );
+};
+
+export const getCard = async (boardId, setColumns) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/cards/boards/${boardId}/cards`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Failed to fetch cards: ${errorText}`);
+      throw new Error(`Failed to fetch cards: ${errorText}`);
+    }
+
+    const cards = await response.json();
+    setColumns((prevColumns) =>
+      prevColumns.map((column) => ({
+        ...column,
+        cards: cards
+          .filter((card) => card.column_id === column.id) // Assign cards to the correct column
+          .map(({ id, text, checked, position }) => ({ id, text, checked, position })),
+      }))
+    );
+  } catch (error) {
+    console.error('Failed to fetch cards:', error);
+  }
 };

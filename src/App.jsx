@@ -49,7 +49,7 @@ function App() {
       {/* Main page container */}
       <div style={{
         backgroundColor: darkMode ? "#0a0f1e" : "#f0f0f0",
-        backgroundImage: darkMode ? 'url("/office-Darkmode.png")' : 'url("/office-Lightmode.png")', // Add background images for l and d mode
+        backgroundImage: darkMode ? 'url("/darkroomrtx.png")' : 'url("/couch1.jpg")', // Add background images for l and d mode
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: "100vh",
@@ -92,7 +92,7 @@ function App() {
           open={open} 
           onClose={() => setOpen(false)}
           PaperProps={{ style: {
-            backgroundColor: darkMode ? "#111827" : "#fff",
+            backgroundColor: darkMode ? "#111827" : "#fddfa1",
             color: darkMode ? "#fff" : "#000",
             padding: "20px",
             borderRadius: "10px"
@@ -115,10 +115,12 @@ function App() {
                     type="email"
                     variant="filled"
                     InputProps={{ style: {
-                      backgroundColor: darkMode ? "#1f2937" : "#e0e0e0",
+                      backgroundColor: darkMode ? "#1f2937" : "#f1bb75",
                       color: darkMode ? "#fff" : "#000"
-                    }}}
-                    InputLabelProps={{ style: { color: "#578FCA" } }}
+                    },
+                  
+                  }}
+                    InputLabelProps={{ style: { color: darkMode ? "#578FCA" : "black",} }}
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -131,10 +133,10 @@ function App() {
                     type="password"
                     variant="filled"
                     InputProps={{ style: {
-                      backgroundColor: darkMode ? "#1f2937" : "#e0e0e0",
+                      backgroundColor: darkMode ? "#1f2937" : "#f1bb75",
                       color: darkMode ? "#fff" : "#000"
                     }}}
-                    InputLabelProps={{ style: { color: "#578FCA" } }}
+                    InputLabelProps={{ style: { color: darkMode ? "#578FCA" : "black",} }}
                     value={formData.password}
                     onChange={handleChange}
                     required
@@ -162,8 +164,8 @@ function App() {
                     label={<Typography variant="body2" style={{ color: darkMode ? "white" : "black" }}>Remember me</Typography>}
                   />
                   <Button fullWidth variant="contained" sx={{
-                    backgroundColor: "#578FCA",
-                    color: darkMode ? "#000" : "#fff",
+                    backgroundColor: darkMode ? "#578FCA" : "#f88f4e",
+                    color: darkMode ? "#000" : "black",
                     marginTop: "10px"
                   }} type="submit">
                     {isSignUp ? "Sign Up" : "Sign In"}

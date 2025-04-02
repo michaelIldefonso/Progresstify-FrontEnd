@@ -21,7 +21,7 @@ const Board = () => {
   });
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false); //Drawer is closed by default
   const [draggingColumn, setDraggingColumn] = useState(null);
   const [draggingCard, setDraggingCard] = useState(null);
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Board = () => {
   return (
     <ThemeProvider theme={theme}>
       <div onWheel={(e) => handleWheelScroll(e, columnsContainerRef, scrollbarRef)}>
-        <Box sx={{ display: "flex", position: "relative", backgroundImage: darkMode ? 'url("/stary.jpg")' : 'url("/cloud.jpg")', backgroundSize: "cover", backgroundPosition: "center", minHeight: "100vh", width: "100vw", overflow: "hidden" }}>
+        <Box sx={{ display: "flex", position: "relative", backgroundImage: darkMode ? 'url("/room2.jpg")' : 'url("/room1.jpg")', backgroundSize: "cover", backgroundPosition: "center", minHeight: "100vh", width: "100vw", overflow: "hidden" }}>
           <AppBarWithMenu darkMode={darkMode} setDarkMode={setDarkMode} anchorEl={anchorEl} setAnchorEl={setAnchorEl} user={user} drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
           <Drawer variant="persistent" anchor="left" open={drawerOpen} sx={{ position: "fixed", width: 240, flexShrink: 0, zIndex: 1300, "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", zIndex: 1300 } }}>
             <Box sx={{ display: "flex", alignItems: "center", pt: 15 }}>

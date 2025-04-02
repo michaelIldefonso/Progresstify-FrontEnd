@@ -92,7 +92,7 @@ function Workspaces() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          backgroundImage: 'url("/blue.jpg")', // Add background image here
+          backgroundImage: 'url("/12mb.png")', // Add background image here
           backgroundSize: "cover",
           backgroundPosition: "center",
           overflow: 'hidden', // Add this line to remove the scrollbar from the right side
@@ -142,9 +142,11 @@ function Workspaces() {
             width: 300,
             cursor: "pointer",
             marginTop: 8,
-            background: "linear-gradient(135deg, rgb(30, 30, 30) 30%, rgb(30, 30, 30) 90%)",
+            background: "linear-gradient(135deg, rgb(30, 30, 30, 0.8) 30%, rgb(30, 30, 30) 90%)",
             color: "white",
             transition: "transform 0.3s, box-shadow 0.3s",
+            border: 1,
+            borderColor: "rgb(30, 30, 30)",
             "&:hover": {
               transform: "scale(1.05)",
               boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.3)",
@@ -248,7 +250,7 @@ function Workspaces() {
                 <Card
                   sx={{
                     cursor: "pointer",
-                    backgroundColor: "rgb(30, 30, 30)",
+                    backgroundColor: "rgb(30, 30, 30, 0.5)",
                     color: "white",
                     transition: "transform 0.2s",
                     "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
@@ -257,7 +259,7 @@ function Workspaces() {
                 >
                   <CardContent>
                     <Typography variant="h6">{ws.name}</Typography>
-                    <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.8)" }}>
+                    <Typography variant="body2" sx={{ color: "rgba(255, 255, 255,)" }}>
                       {ws.description || "No description available"}
                     </Typography>
                   </CardContent>

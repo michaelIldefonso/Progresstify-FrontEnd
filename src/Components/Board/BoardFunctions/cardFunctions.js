@@ -71,7 +71,7 @@ export const handleCardInputChange = (columns, setColumns, columnId, text) => {
 
 export const handleCardInputKeyPress = (event, columnId, columns, setColumns) => {
   if (event.key === "Enter") {
-    addCard(columns, setColumns, columnId);
+    ShowPopupCard(columns, setColumns, columnId);
   }
 };
 

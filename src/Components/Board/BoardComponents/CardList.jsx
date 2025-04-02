@@ -13,7 +13,7 @@ const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDrag
         value={column.newCardText} 
         onChange={(e) => handleCardInputChange(columns, setColumns, column.id, e.target.value)} 
         onKeyPress={(e) => handleCardInputKeyPress(e, column.id, columns, setColumns)} 
-        onBlur={() => addCard(columns, setColumns, column.id)} 
+        onBlur={() => ShowPopupCard(columns, setColumns, column.id)} 
         autoFocus sx={{ marginBottom: 1, borderRadius: "24px" }} />
       )}
       {column.cards.map((card) => (

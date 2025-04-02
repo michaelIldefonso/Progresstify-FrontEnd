@@ -121,7 +121,7 @@ const Dashboard = () => {
           sx={{
             display: "flex",
             position: "relative",
-            backgroundImage: darkMode ? 'url("/stary.jpg")' : 'url("/cloud.jpg")',
+            backgroundImage: darkMode ? 'url("/doggosleepin-lofiD.png")' : 'url("/doggosleepin-lofiL.png")',
             backgroundSize: "cover",
             backgroundPosition: "center",
             minHeight: "100vh",

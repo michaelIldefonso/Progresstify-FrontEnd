@@ -49,7 +49,7 @@ function App() {
       {/* Main page container */}
       <div style={{
         backgroundColor: darkMode ? "#0a0f1e" : "#f0f0f0",
-        backgroundImage: darkMode ? 'url("/ladida1.jpg")' : 'url("/ladida2.jpg")', // Add background images for l and d mode
+        backgroundImage: darkMode ? 'url("/office-Darkmode.png")' : 'url("/office-Lightmode.png")', // Add background images for l and d mode
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         minHeight: "100vh",

@@ -4,6 +4,7 @@ import GoogleIcon from "@mui/icons-material/Google"; // Google icon from MUI
 import Brightness4Icon from '@mui/icons-material/Brightness4';//moon icon
 import Brightness7Icon from '@mui/icons-material/Brightness7';// sun icon
 
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
@@ -86,7 +87,26 @@ function App() {
             </Button>
           </div>
         </div>
-
+        <Typography variant="h6" align="center" style={{ marginTop: "20px", color: darkMode ? "#fff" : "#000",
+          paddingTop: 0,
+          marginTop: 0,
+          position: "absolute",
+          top: darkMode ? "10%": "11%",
+          left: darkMode ? "37%": "29%",
+          backgroundColor: darkMode ? "rgba(84, 109, 247, 0.1)": "rgba(255, 218, 52, 0.1)",
+          color: darkMode ? "rgba(13, 17, 37)" : "rgba(87,40,20,255)",
+          width: "80%",
+          maxWidth: "600px",
+          borderRadius: "16px",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          padding: "13px",
+         }}>
+          <h1>Welcome to Progresstify</h1>
+          <p>Progresstify helps you stay organized. Create boards, lists, and cards to manage tasks visually. 
+            Prioritize tasks, set deadlines, and track progress in real-time. Manage your projects efficiently
+             with Progresstify!</p>
+        </Typography>
         {/* Login / Sign Up Dialog */}
         <Dialog 
           open={open} 

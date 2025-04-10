@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Box, TextField, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
-import { handleCardInputChange, handleCardInputKeyPress, ShowPopupCard } from "../BoardFunctions/cardFunctions";
+import { handleCardInputChange, handleCardInputKeyPress, ShowPopupCard, getCard } from "../BoardFunctions/cardFunctions";
 
 const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDraggingCard }) => {
+  const { id: boardId } = useParams();
+
+  useEffect(() => {
+    if (columns.length > 0) {
+      getCard(boardId, setColumns); // Fetch cards only if columns are loaded
+    }
+  }, [boardId, columns, setColumns]);
+
   return (
     <Box className="card-list" sx={{ marginTop: 2, maxHeight: "400px", overflowY: "auto", paddingRight: "10px", "&::-webkit-scrollbar": { width: "5px" }, "&::-webkit-scrollbar-thumb": { backgroundColor: darkMode ? "rgba(8, 8, 8, 0.5)" : "rgba(255, 253, 253, 0.5)", borderRadius: "8px" }, "&::-webkit-scrollbar-track": { backgroundColor: "transparent" } }}>
       {column.isAddingCard && (

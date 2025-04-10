@@ -136,14 +136,21 @@ export const getCard = async (boardId, setColumns) => {
     }
 
     const cards = await response.json();
-    setColumns((prevColumns) =>
-      prevColumns.map((column) => ({
+
+    setColumns((prevColumns) => {
+      if (!prevColumns || prevColumns.length === 0) {
+        console.warn("Columns are not yet loaded. Retrying...");
+        setTimeout(() => getCard(boardId, setColumns), 500); // Retry after 500ms
+        return prevColumns;
+      }
+
+      return prevColumns.map((column) => ({
         ...column,
         cards: cards
           .filter((card) => card.column_id === column.id) // Assign cards to the correct column
           .map(({ id, text, checked, position }) => ({ id, text, checked, position })),
-      }))
-    );
+      }));
+    });
   } catch (error) {
     console.error('Failed to fetch cards:', error);
   }

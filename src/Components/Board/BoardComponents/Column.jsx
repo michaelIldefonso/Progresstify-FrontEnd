@@ -9,7 +9,7 @@ const Column = ({ column, id, columns, setColumns, draggingCard, setDraggingCard
   return (
     <Box
       className="column"
-      sx={{ display: "inline-block", minWidth: "250px", marginRight: "16px" }}
+      sx={{ display: "inline-block", minWidth: "250px", marginRight: "16px", marginLeft: "10px"}}
       onWheel={(e) => e.stopPropagation()}
       onDrop={(e) => handleCardDrop(e, column.id, columns, setColumns, draggingCard)}
       onDragOver={(e) => handleCardDragOver(e)}

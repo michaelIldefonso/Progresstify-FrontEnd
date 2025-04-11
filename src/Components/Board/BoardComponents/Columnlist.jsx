@@ -9,9 +9,16 @@ const ColumnList = ({ id, columns, setColumns, draggingCard, setDraggingCard, dr
   const scrollbarRef = useRef(null);
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 3, marginLeft: drawerOpen ? "240px" : "16px", marginTop: "140px", transition: "margin-left 0.3s", overflow: "hidden" }}>
-      <div style={{ height: "calc(100% - 60px)", overflow: "hidden" }}>
-        <Box sx={{ position: "fixed", top: "120px", left: drawerOpen ? "240px" : "16px", zIndex: 1200, transition: "left 0.3s" }}>
+    <Box 
+    sx={{ flexGrow: 1,
+          padding: 3, 
+          marginTop: "140px", 
+          transition: "margin-left 0.3s", }}>
+      <div style={{ height: "calc(100% - 60px)",}}>
+        <Box 
+        sx={{ position: "fixed", 
+              top: "120px", 
+              zIndex: 1200, transition: "left 0.3s" }}>
           <Button variant="contained" startIcon={<Add />} onClick={() => handleAddColumn(id, columns, setColumns, columnsContainerRef)} sx={{ borderRadius: "24px", marginLeft: "24px" }}>
             Add Column
           </Button>

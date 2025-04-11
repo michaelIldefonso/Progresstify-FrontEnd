@@ -168,3 +168,11 @@ export const getCard = async (boardId, setColumns, cardsFetchedRef) => {
     console.error('Failed to fetch cards:', error);
   }
 };
+
+export const startAddingCard = (columnId, columns, setColumns) => {
+  setColumns(
+    columns.map((col) =>
+      col.id === columnId ? { ...col, newCardText: "", isAddingCard: true } : col
+    )
+  );
+};

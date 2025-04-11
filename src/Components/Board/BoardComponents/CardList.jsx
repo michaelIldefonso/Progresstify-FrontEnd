@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Box, TextField, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
-import { handleCardInputChange, handleCardInputKeyPress, addCard, getCard } from "../BoardFunctions/cardFunctions";
+import { handleCardInputChange, handleCardInputKeyPress, addCard, getCard, startAddingCard } from "../BoardFunctions/cardFunctions";
 
 const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDraggingCard }) => {
   const { id: boardId } = useParams();
@@ -46,7 +46,7 @@ const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDrag
           value={column.newCardText}
           onChange={(e) => handleCardInputChange(columns, setColumns, column.id, e.target.value)}
           onKeyPress={(e) => handleCardInputKeyPress(e, column.id, columns, setColumns)}
-          onBlur={() => handleCreateCard(column.id, column.newCardText, columns, setColumns)} // Updated to use handleCreateCard
+          onBlur={() => addCard(column.id, columns, setColumns)} // Use addCard directly
           autoFocus
           sx={{ marginBottom: 1, borderRadius: "24px" }}
         />
@@ -66,13 +66,7 @@ const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDrag
       <Button
         variant="text"
         startIcon={<Add />}
-        onClick={() =>
-          setColumns(
-            columns.map((col) =>
-              col.id === column.id ? { ...col, newCardText: "", isAddingCard: true } : col
-            )
-          )
-        }
+        onClick={() => startAddingCard(column.id, columns, setColumns)} // Use startAddingCard
         sx={{ borderRadius: "24px", marginTop: 1 }}
       >
         Add a card

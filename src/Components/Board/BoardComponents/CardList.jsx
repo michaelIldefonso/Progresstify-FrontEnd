@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Box, TextField, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
-import { handleCardInputChange, handleCardInputKeyPress, ShowPopupCard, handleCreateCard, getCard } from "../BoardFunctions/cardFunctions";
+import { handleCardInputChange, handleCardInputKeyPress, addCard, getCard } from "../BoardFunctions/cardFunctions";
 
 const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDraggingCard }) => {
   const { id: boardId } = useParams();

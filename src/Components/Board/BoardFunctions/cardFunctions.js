@@ -1,23 +1,9 @@
-export const ShowPopupCard = (columns, setColumns, columnId) => {
-  const column = columns.find((col) => col.id === columnId);
-  if (column.newCardText.trim()) {
-    handleCreateCard(columnId, column.newCardText, columns, setColumns);
-  } else {
-    setColumns(
-      columns.map((col) => {
-        if (col.id === columnId) {
-          return { ...col, newCardText: "", isAddingCard: false };
-        }
-        return col;
-      })
-    );
-  }
-};
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const handleCreateCard = async (columnId, cardText, columns, setColumns) => {
+export const showCard = async (columnId, cardText, columns, setColumns) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/cards`, {
+    const response = await fetch(`${API_BASE_URL}/api/cards`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,8 +12,9 @@ export const handleCreateCard = async (columnId, cardText, columns, setColumns) 
       body: JSON.stringify({
         column_id: columnId,
         text: cardText,
+        title: "", // Add a blank title/name
         checked: false,
-        position: columns.find((col) => col.id === columnId).cards.length // Assuming position is based on the card's order
+        position: columns.find((col) => col.id === columnId).cards.length
       })
     });
 
@@ -38,6 +25,8 @@ export const handleCreateCard = async (columnId, cardText, columns, setColumns) 
     }
 
     const newCard = await response.json();
+    console.log(`Card created successfully:`, newCard); // Log the created card
+
     setColumns(
       columns.map((col) => {
         if (col.id === columnId) {
@@ -53,6 +42,22 @@ export const handleCreateCard = async (columnId, cardText, columns, setColumns) 
     );
   } catch (error) {
     console.error('Failed to create card:', error);
+  }
+};
+
+export const addCard = async (columnId, columns, setColumns) => {
+  const column = columns.find((col) => col.id === columnId);
+  if (column.newCardText.trim()) {
+    await showCard(columnId, column.newCardText, columns, setColumns); // Call showCard directly
+  } else {
+    setColumns(
+      columns.map((col) => {
+        if (col.id === columnId) {
+          return { ...col, newCardText: "", isAddingCard: false };
+        }
+        return col;
+      })
+    );
   }
 };
 

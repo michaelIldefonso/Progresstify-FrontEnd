@@ -11,8 +11,7 @@ export const showCard = async (columnId, cardText, columns, setColumns) => {
       },
       body: JSON.stringify({
         column_id: columnId,
-        text: cardText,
-        title: "", // Add a blank title/name
+        text: "",
         checked: false,
         position: columns.find((col) => col.id === columnId).cards.length
       })

@@ -41,19 +41,7 @@ const Board = () => {
       <div onWheel={(e) => handleWheelScroll(e, columnsContainerRef, scrollbarRef)}>
         <Box sx={{ display: "flex", position: "relative", backgroundImage: darkMode ? 'url("/room2.jpg")' : 'url("/room1.jpg")', backgroundSize: "cover", backgroundPosition: "center", minHeight: "100vh", width: "100vw", overflow: "hidden" }}>
           <AppBarWithMenu darkMode={darkMode} setDarkMode={setDarkMode} anchorEl={anchorEl} setAnchorEl={setAnchorEl} user={user} drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-          <Drawer variant="persistent" anchor="left" open={drawerOpen} sx={{ position: "fixed", width: 240, flexShrink: 0, zIndex: 1300, "& .MuiDrawer-paper": { width: 240, boxSizing: "border-box", zIndex: 1300 } }}>
-            <Box sx={{ display: "flex", alignItems: "center", pt: 15 }}>
-              <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
-                {darkMode ? <Brightness4 /> : <Brightness7 />}
-              </IconButton>
-              <Typography variant="h6" sx={{ marginLeft: 1 }}>
-                {darkMode ? "Dark Mode" : "Light Mode"}
-              </Typography>
-            </Box>
-            <List>
-              {/* Add any additional navigation items here */}
-            </List>
-          </Drawer>
+
           <Box
             ref={columnsContainerRef}
             

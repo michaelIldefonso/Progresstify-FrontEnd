@@ -16,9 +16,6 @@ const AppBarWithMenu = ({ darkMode, setDarkMode, anchorEl, setAnchorEl, user, dr
     <AppBar position="fixed" sx={{ zIndex: 1301, backgroundColor: darkMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
      backdropFilter: "blur(3px)", boxShadow: "none", }}>
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)} sx={{ mr: 2 }}>
-          <MenuIcon />
-        </IconButton>
         <Typography variant="h6" sx={{ flexGrow: 1 }}> 
           <p>Progresstify</p>
         </Typography>

@@ -71,7 +71,11 @@ const Dashboard = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <GlobalStyles styles={{ body: { overflow: 'hidden' } }} />
-      <AppBar position="fixed" sx={{ zIndex: 1301, backgroundColor: darkMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)", backdropFilter: "blur(3px)", boxShadow: "none", }}>
+      <AppBar position="fixed"
+        sx={{ zIndex: 1301, 
+              backgroundColor: darkMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)", 
+              backdropFilter: "blur(3px)", 
+              boxShadow: "none", }}>
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => toggleDrawer(setDrawerOpen, drawerOpen)} sx={{ mr: 2 }}>
             <MenuIcon />
@@ -152,13 +156,22 @@ const Dashboard = () => {
                   borderRadius: "8px", // Optional: To mimic Paper's rounded corners
                 }}
               >
-                <Typography variant="h4" sx={{color: "white"}}>Select or Create a Board</Typography>
+                <Typography variant="h4" sx={{color: darkMode ? "white" : "black"}}>
+                  Select or Create a Board
+                  </Typography>
+
                 <Button
                   variant="contained"
                   color="primary"
                   startIcon={<Add />}
                   onClick={() => setModalOpen(true)}
-                  sx={{ mt: 2, backgroundColor: "transparent", color: "white", border: "1px solid" , fontWeight: "700" }}
+                  sx={{ mt: 2, 
+                      backgroundColor: "transparent",
+                      color: darkMode ?  "white" : "black",
+                      border: "1px solid" , 
+                      fontWeight: "700",
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)", }}
                 >
                   Create Board
                 </Button>
@@ -203,6 +216,7 @@ const Dashboard = () => {
                 transform: "translate(-50%, -50%)",
                 width: 400,
                 padding: 4,
+                
               }}
             >
               <Typography variant="h6">Board</Typography>

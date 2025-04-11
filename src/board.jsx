@@ -63,6 +63,9 @@ const Board = () => {
               
               padding: "16px", // Optional padding
               width: "100%", // Ensure it takes the full width
+              scrollbarWidth: "none", // Hide scrollbar (Firefox)
+
+              "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar (Webkit Browsers)
             }}
           >
             <Box

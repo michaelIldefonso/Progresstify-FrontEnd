@@ -1,11 +1,12 @@
-import React from "react";
-import { Box, Paper, TextField, Typography, IconButton, Button } from "@mui/material";
-import { Close, Add } from "@mui/icons-material";
+import React, { memo } from "react";
+import { Box, Paper, TextField, Typography, IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 import CardList from "./CardList";
 import { renameColumn, finalizeColumnTitle, removeColumn, handleColumnDragStart } from "../BoardFunctions/columnFunctions";
-import { handleCardDragOver, handleCardDrop, handleCardDragStart } from "../BoardFunctions/cardFunctions";
+import { handleCardDragOver, handleCardDrop } from "../BoardFunctions/cardFunctions";
 
-const Column = ({ column, id, columns, setColumns, draggingCard, setDraggingCard, draggingColumn, setDraggingColumn, darkMode }) => {
+// Memoized version of Column
+const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggingCard, draggingColumn, setDraggingColumn, darkMode }) => {
   return (
     <Box
       className="column"
@@ -55,6 +56,6 @@ const Column = ({ column, id, columns, setColumns, draggingCard, setDraggingCard
       </Paper>
     </Box>
   );
-};
+});
 
 export default Column;

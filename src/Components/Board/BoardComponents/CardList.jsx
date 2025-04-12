@@ -1,27 +1,48 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { Box, TextField, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
-import { handleCardInputChange, handleCardInputKeyPress, addCard, getCard, startAddingCard } from "../BoardFunctions/cardFunctions";
+import {
+  handleCardInputChange,
+  handleCardInputKeyPress,
+  addCard,
+  getCard,
+} from "../BoardFunctions/cardFunctions";
 
-const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDraggingCard }) => {
-  const { id: boardId } = useParams();
-  const cardsFetchedRef = useRef(false); // Shared flag to track if cards are fetched
+const CardList = ({
+  column,
+  columns,
+  setColumns,
+  darkMode,
+  draggingCard,
+  setDraggingCard,
+}) => {
+  const { id: boardId } = useParams()
 
-  useEffect(() => {
-    if (columns.length > 0 && !cardsFetchedRef.current) {
-      const allColumnsHaveIds = columns.every((col) => col.id); // Ensure all columns have valid IDs
-      if (allColumnsHaveIds) {
-        console.log("Fetching cards for the first time...");
-        getCard(boardId, setColumns, cardsFetchedRef); // Fetch cards only once for the board
-      } else {
-        console.log("Some columns do not have valid IDs yet.");
-      }
-    } else {
-      console.log("Columns are empty or cards have already been fetched.");
-    }
-  }, [boardId, columns, setColumns]);
+ 
+
+  // Ref to ensure fetch only happens once
+const cardsFetchedRef = useRef(false);
+useEffect(() => {
+  // Wait until columns are initialized and valid
+  const allColumnsReady = columns.length > 0 && columns.every((col) => !!col.id);
+
+  if (!allColumnsReady) {
+    console.log("⏳ Waiting for columns to be ready...");
+    return;
+  }
+
+  if (cardsFetchedRef.current) {
+    console.log("✅ Cards already fetched. Skipping fetch.");
+    return;
+  }
+
+  console.log("📥 Fetching cards...");
+  getCard(boardId, setColumns, cardsFetchedRef);
+}, [boardId, setColumns]); // Only boardId and setColumns are needed here
+
+
 
   return (
     <Box
@@ -33,7 +54,9 @@ const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDrag
         paddingRight: "10px",
         "&::-webkit-scrollbar": { width: "5px" },
         "&::-webkit-scrollbar-thumb": {
-          backgroundColor: darkMode ? "rgba(8, 8, 8, 0.5)" : "rgba(255, 253, 253, 0.5)",
+          backgroundColor: darkMode
+            ? "rgba(8, 8, 8, 0.5)"
+            : "rgba(255, 253, 253, 0.5)",
           borderRadius: "8px",
         },
         "&::-webkit-scrollbar-track": { backgroundColor: "transparent" },
@@ -44,8 +67,12 @@ const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDrag
           fullWidth
           placeholder="Enter card text and press Enter"
           value={column.newCardText}
-          onChange={(e) => handleCardInputChange(columns, setColumns, column.id, e.target.value)}
-          onKeyPress={(e) => handleCardInputKeyPress(e, column.id, columns, setColumns)}
+          onChange={(e) =>
+            handleCardInputChange(columns, setColumns, column.id, e.target.value)
+          }
+          onKeyPress={(e) =>
+            handleCardInputKeyPress(e, column.id, columns, setColumns)
+          }
           onBlur={() => addCard(column.id, columns, setColumns)} // Use addCard directly
           autoFocus
           sx={{ marginBottom: 1, borderRadius: "24px" }}
@@ -66,7 +93,9 @@ const CardList = ({ column, columns, setColumns, darkMode, draggingCard, setDrag
       <Button
         variant="text"
         startIcon={<Add />}
-        onClick={() => startAddingCard(column.id, columns, setColumns)} // Use startAddingCard
+        onClick={() =>
+          addCard(column.id, columns, setColumns, "New Card") // Pass default text like "New Card"
+        }
         sx={{ borderRadius: "24px", marginTop: 1 }}
       >
         Add a card

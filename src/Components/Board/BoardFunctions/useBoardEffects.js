@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { fetchUserData } from "../../Functions/fetchFunctions"; // Corrected path
 import { getColumns } from "./columnFunctions"; // Corrected path
 
@@ -21,9 +21,13 @@ export const useFetchUserEffect = (location, navigate, setUser) => {
 };
 
 export const useFetchColumnsEffect = (id, setColumns) => {
+  const columnsFetchedRef = useRef(false);
+
   useEffect(() => {
-    getColumns(id, setColumns);
-  }, [id]);
+    if (!columnsFetchedRef.current) {
+      getColumns(id, setColumns, columnsFetchedRef);
+    }
+  }, [id, setColumns]);
 };
 
 export const useScrollBarEffect = (columnsContainerRef, scrollbarRef) => {

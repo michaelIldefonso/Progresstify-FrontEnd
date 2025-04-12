@@ -1,13 +1,17 @@
-import React, { useRef, memo } from "react";
+import React, { useRef, useEffect, memo } from "react";
 import { Box, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Column from "./Column";
-import { handleAddColumn, handleColumnsScroll } from "../BoardFunctions/columnFunctions";
+import { handleAddColumn, handleColumnsScroll, getColumns } from "../BoardFunctions/columnFunctions";
 
-// Memoized version of ColumnList
 const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCard, draggingColumn, setDraggingColumn, darkMode, drawerOpen }) => {
   const columnsContainerRef = useRef(null);
   const scrollbarRef = useRef(null);
+  const columnsFetchedRef = useRef(false); // Ensure this is initialized
+
+  useEffect(() => {
+    getColumns(id, setColumns, columnsFetchedRef); // Pass the initialized ref
+  }, [id, setColumns]);
 
   return (
     <Box sx={{ flexGrow: 1, padding: 3, marginTop: "140px", transition: "margin-left 0.3s" }}>
@@ -37,14 +41,14 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
             height: "100%",
             paddingTop: 2,
             "&::-webkit-scrollbar": { display: "none" },
-            "-ms-overflow-style": "none",
-            "scrollbar-width": "none",
+            "msOverflowStyle": "none",
+            "scrollbarWidth": "none",
           }}
           onScroll={(e) => handleColumnsScroll(e, scrollbarRef)}
         >
           {columns.map((column) => (
             <Column
-              key={column.id} // Ensure column.id is stable
+              key={column.id}
               column={column}
               id={id}
               columns={columns}

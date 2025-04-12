@@ -63,7 +63,9 @@ export const addCard = async (columnId, columns, setColumns, cardText = "") => {
   // Optimistically update the UI
   setColumns((prevColumns) =>
     prevColumns.map((col) =>
-      col.id === columnId ? { ...col, cards: [...col.cards, newCard] } : col
+      col.id === columnId
+        ? { ...col, cards: [...col.cards, newCard], isAddingCard: false, newCardText: "" }
+        : col
     )
   );
 
@@ -115,7 +117,14 @@ export const addCard = async (columnId, columns, setColumns, cardText = "") => {
 };
 
 // Remove a card from a column
-export const removeCard = (columns, setColumns, columnId, cardId) => {
+export const removeCard = async (columns, setColumns, columnId, cardId) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert("You are not authenticated. Please log in.");
+    return;
+  }
+
+  // Optimistically update the UI
   setColumns(
     columns.map((col) =>
       col.id === columnId
@@ -123,6 +132,31 @@ export const removeCard = (columns, setColumns, columnId, cardId) => {
         : col
     )
   );
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/cards/${cardId}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error(`Failed to delete card: ${await response.text()}`);
+
+    console.log("Card deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting card:", error.message);
+    alert("Failed to delete card. Please try again.");
+
+    // Revert the UI change if the API call fails
+    setColumns(
+      columns.map((col) =>
+        col.id === columnId
+          ? { ...col, cards: [...col.cards, { id: cardId }] }
+          : col
+      )
+    );
+  }
 };
 
 // Update card input text in a column
@@ -177,7 +211,14 @@ export const handleCardDrop = (event, targetColumnId, columns, setColumns, dragg
 };
 
 // Handle checkbox toggle in a card
-export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
+export const handleCheckboxChange = async (columnId, cardId, checked, setColumns) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert("You are not authenticated. Please log in.");
+    return;
+  }
+
+  // Optimistically update the UI
   setColumns((prevColumns) =>
     prevColumns.map((col) =>
       col.id === columnId
@@ -190,51 +231,40 @@ export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
         : col
     )
   );
-};
-
-// Fetch all cards for a board
-export const getCard = async (boardId, setColumns, cardsFetchedRef) => {
-  if (cardsFetchedRef.current) {
-    console.log("Cards fetch skipped because cardsFetchedRef is already true.");
-    return;
-  }
-
-  cardsFetchedRef.current = true; // Mark as fetched to prevent duplicate requests
-  console.log("Starting fetch for cards...");
 
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error("No authentication token found!");
-
-    const response = await fetch(`${API_BASE_URL}/api/cards/boards/${boardId}/cards`, {
-      method: 'GET',
+    const response = await fetch(`${API_BASE_URL}/api/cards/${cardId}/checked`, {
+      method: "PATCH",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
+      body: JSON.stringify({ checked }),
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch cards: ${await response.text()}`);
-    }
+    if (!response.ok) throw new Error(`Failed to update card: ${await response.text()}`);
 
-    const cards = await response.json();
-    console.log("Cards fetched successfully:", cards);
-
-    // Update columns with the fetched cards
-    setColumns((prevColumns) =>
-      prevColumns.map((col) => ({
-        ...col,
-        cards: cards
-          .filter((card) => card.column_id === col.id)
-          .map(({ id, text, checked, position }) => ({ id, text, checked, position })),
-      }))
-    );
+    const updatedCard = await response.json();
+    console.log("Card checked status updated successfully:", updatedCard);
   } catch (error) {
-    cardsFetchedRef.current = false; // Revert if fetch fails
-    console.error("Error while fetching cards:", error.message);
+    console.error("Error updating card checked status:", error.message);
+    alert("Failed to update card checked status. Please try again.");
+
+    // Revert the UI change if the API call fails
+    setColumns((prevColumns) =>
+      prevColumns.map((col) =>
+        col.id === columnId
+          ? {
+              ...col,
+              cards: col.cards.map((card) =>
+                card.id === cardId ? { ...card, checked: !checked } : card
+              ),
+            }
+          : col
+      )
+    );
   }
 };
-
 
 // Start adding a card
 export const startAddingCard = (columnId, columns, setColumns) => {

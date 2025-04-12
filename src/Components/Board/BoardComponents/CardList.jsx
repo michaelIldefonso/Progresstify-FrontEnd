@@ -1,14 +1,8 @@
-import React, { useEffect, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { Box, TextField, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
-import {
-  handleCardInputChange,
-  handleCardInputKeyPress,
-  addCard,
-  getCard,
-} from "../BoardFunctions/cardFunctions";
+import { handleCardInputChange, addCard, startAddingCard } from "../BoardFunctions/cardFunctions";
 
 const CardList = ({
   column,
@@ -18,32 +12,6 @@ const CardList = ({
   draggingCard,
   setDraggingCard,
 }) => {
-  const { id: boardId } = useParams()
-
- 
-
-  // Ref to ensure fetch only happens once
-const cardsFetchedRef = useRef(false);
-useEffect(() => {
-  // Wait until columns are initialized and valid
-  const allColumnsReady = columns.length > 0 && columns.every((col) => !!col.id);
-
-  if (!allColumnsReady) {
-    console.log("⏳ Waiting for columns to be ready...");
-    return;
-  }
-
-  if (cardsFetchedRef.current) {
-    console.log("✅ Cards already fetched. Skipping fetch.");
-    return;
-  }
-
-  console.log("📥 Fetching cards...");
-  getCard(boardId, setColumns, cardsFetchedRef);
-}, [boardId, setColumns]); // Only boardId and setColumns are needed here
-
-
-
   return (
     <Box
       className="card-list"
@@ -70,10 +38,16 @@ useEffect(() => {
           onChange={(e) =>
             handleCardInputChange(columns, setColumns, column.id, e.target.value)
           }
-          onKeyPress={(e) =>
-            handleCardInputKeyPress(e, column.id, columns, setColumns)
-          }
-          onBlur={() => addCard(column.id, columns, setColumns)} // Use addCard directly
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              addCard(column.id, columns, setColumns, column.newCardText);
+            }
+          }}
+          onBlur={() => {
+            if (column.newCardText.trim()) {
+              addCard(column.id, columns, setColumns, column.newCardText);
+            }
+          }}
           autoFocus
           sx={{ marginBottom: 1, borderRadius: "24px" }}
         />
@@ -93,9 +67,7 @@ useEffect(() => {
       <Button
         variant="text"
         startIcon={<Add />}
-        onClick={() =>
-          addCard(column.id, columns, setColumns, "New Card") // Pass default text like "New Card"
-        }
+        onClick={() => startAddingCard(column.id, columns, setColumns)}
         sx={{ borderRadius: "24px", marginTop: 1 }}
       >
         Add a card

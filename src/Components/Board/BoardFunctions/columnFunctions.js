@@ -90,10 +90,17 @@ export const removeColumn = async (boardId, columnId, columns, setColumns) => {
   }
 };
 
-export const getColumns = async (boardId, setColumns) => {
+export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
+  if (!columnsFetchedRef || columnsFetchedRef.current) {
+    console.log("Columns fetch skipped because columnsFetchedRef is already true or undefined.");
+    return;
+  }
+
+  columnsFetchedRef.current = true; // Mark as fetched to prevent duplicate requests
+
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns`, {
+    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns-with-cards`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -102,24 +109,24 @@ export const getColumns = async (boardId, setColumns) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`Failed to load columns: ${errorText}`);
-      throw new Error(`Failed to load columns: ${errorText}`);
+      console.error(`Failed to load columns with cards: ${errorText}`);
+      throw new Error(`Failed to load columns with cards: ${errorText}`);
     }
 
-    const columns = await response.json();
-    if (Array.isArray(columns)) {
-      setColumns(columns.map(col => ({
+    const columnsWithCards = await response.json();
+    if (Array.isArray(columnsWithCards)) {
+      setColumns(columnsWithCards.map(col => ({
         ...col,
         isEditing: false,
-        cards: col.cards || [],
         newCardText: "",
         isAddingCard: false
       })));
     } else {
-      console.error("Failed to load columns: response is not an array");
+      console.error("Failed to load columns with cards: response is not an array");
     }
   } catch (error) {
-    console.error("Failed to load columns:", error);
+    if (columnsFetchedRef) columnsFetchedRef.current = false; // Revert if fetch fails
+    console.error("Failed to load columns with cards:", error);
   }
 };
 

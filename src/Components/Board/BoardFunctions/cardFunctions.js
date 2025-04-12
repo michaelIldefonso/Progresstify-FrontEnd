@@ -205,7 +205,7 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
   let newPosition;
 
   if (targetCards.length === 0) {
-    newPosition = 0; // First card in the column
+    newPosition = 1; // First card in the column
   } else {
     // Find the index where the card is dropped
     const dropIndex = targetCards.findIndex((c) => c.id === draggingCard.dropTargetId);
@@ -217,7 +217,7 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
       // Calculate the position between the adjacent cards
       const prevPosition = dropIndex > 0 ? targetCards[dropIndex - 1].position : 0;
       const nextPosition = targetCards[dropIndex].position;
-      newPosition = parseFloat(((prevPosition + nextPosition) / 2).toFixed(2)); // Ensure numeric with 2 decimal places
+      newPosition = Math.floor((prevPosition + nextPosition) / 2); // Ensure integer position
     }
   }
 
@@ -228,16 +228,25 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
     return;
   }
 
-  // Convert position to a number explicitly
-  newPosition = Number(newPosition);
+  // Remove the card from the source column
+  const updatedSourceColumn = {
+    ...sourceColumn,
+    cards: sourceColumn.cards.filter((c) => c.id !== cardId),
+  };
+
+  // Add the card to the target column with the new position
+  const updatedTargetCards = [...targetColumn.cards, { ...card, position: newPosition }];
+
+  // Recalculate positions for all cards in the target column
+  updatedTargetCards.sort((a, b) => a.position - b.position); // Sort by position
+  updatedTargetCards.forEach((c, index) => {
+    c.position = index + 1; // Assign new integer positions starting from 1
+  });
 
   // Optimistically update the UI
   const updatedColumns = columns.map((col) => {
-    if (col.id === columnId) {
-      return { ...col, cards: col.cards.filter((card) => card.id !== cardId) };
-    } else if (col.id === targetColumnId) {
-      return { ...col, cards: [...col.cards, { ...card, position: newPosition }] };
-    }
+    if (col.id === columnId) return updatedSourceColumn;
+    if (col.id === targetColumnId) return { ...targetColumn, cards: updatedTargetCards };
     return col;
   });
 
@@ -255,7 +264,7 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
       },
       body: JSON.stringify({
         column_id: targetColumnId,
-        position: newPosition,
+        position: newPosition, // Send the updated integer position
       }),
     });
 

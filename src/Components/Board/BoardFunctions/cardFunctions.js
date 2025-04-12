@@ -187,26 +187,88 @@ export const handleCardDragOver = (event) => {
 };
 
 // Handle dropping a card into a new column
-export const handleCardDrop = (event, targetColumnId, columns, setColumns, draggingCard) => {
+export const handleCardDrop = async (event, targetColumnId, columns, setColumns, draggingCard) => {
   event.preventDefault();
   const { cardId, columnId } = draggingCard;
 
-  if (columnId !== targetColumnId) {
-    const sourceColumn = columns.find((col) => col.id === columnId);
-    const targetColumn = columns.find((col) => col.id === targetColumnId);
-    const card = sourceColumn.cards.find((card) => card.id === cardId);
+  const sourceColumn = columns.find((col) => col.id === columnId);
+  const targetColumn = columns.find((col) => col.id === targetColumnId);
+  const card = sourceColumn.cards.find((card) => card.id === cardId);
 
-    // Update columns after drag and drop
-    setColumns(
-      columns.map((col) => {
-        if (col.id === columnId) {
-          return { ...col, cards: col.cards.filter((card) => card.id !== cardId) };
-        } else if (col.id === targetColumnId) {
-          return { ...col, cards: [...col.cards, card] };
-        }
-        return col;
-      })
-    );
+  if (!card) {
+    console.error("Card not found in source column.");
+    return;
+  }
+
+  // Calculate the new position
+  const targetCards = targetColumn.cards;
+  let newPosition;
+
+  if (targetCards.length === 0) {
+    newPosition = 0; // First card in the column
+  } else {
+    // Find the index where the card is dropped
+    const dropIndex = targetCards.findIndex((c) => c.id === draggingCard.dropTargetId);
+
+    if (dropIndex === -1) {
+      // If dropped at the end
+      newPosition = targetCards[targetCards.length - 1].position + 1;
+    } else {
+      // Calculate the position between the adjacent cards
+      const prevPosition = dropIndex > 0 ? targetCards[dropIndex - 1].position : 0;
+      const nextPosition = targetCards[dropIndex].position;
+      newPosition = parseFloat(((prevPosition + nextPosition) / 2).toFixed(2)); // Ensure numeric with 2 decimal places
+    }
+  }
+
+  // Ensure newPosition is a valid number
+  if (isNaN(newPosition)) {
+    console.error("Invalid position calculated:", newPosition);
+    alert("Failed to calculate a valid position for the card.");
+    return;
+  }
+
+  // Convert position to a number explicitly
+  newPosition = Number(newPosition);
+
+  // Optimistically update the UI
+  const updatedColumns = columns.map((col) => {
+    if (col.id === columnId) {
+      return { ...col, cards: col.cards.filter((card) => card.id !== cardId) };
+    } else if (col.id === targetColumnId) {
+      return { ...col, cards: [...col.cards, { ...card, position: newPosition }] };
+    }
+    return col;
+  });
+
+  setColumns(updatedColumns);
+
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error("No authentication token found!");
+
+    const response = await fetch(`${API_BASE_URL}/api/cards/${cardId}/move`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        column_id: targetColumnId,
+        position: newPosition,
+      }),
+    });
+
+    if (!response.ok) throw new Error(`Failed to update card position: ${await response.text()}`);
+
+    const updatedCard = await response.json();
+    console.log("Card position updated successfully:", updatedCard);
+  } catch (error) {
+    console.error("Error updating card position:", error.message);
+    alert("Failed to update card position. Please try again.");
+
+    // Revert the UI change if the API call fails
+    setColumns(columns);
   }
 };
 

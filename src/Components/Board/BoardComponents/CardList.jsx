@@ -54,7 +54,7 @@ const CardList = ({
       )}
       {column.cards.map((card) => (
         <Card
-          key={card.id}
+          key={`${column.id}-${card.id}`} // Ensure unique keys by combining column ID and card ID
           card={card}
           columnId={column.id}
           columns={columns}

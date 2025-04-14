@@ -40,7 +40,20 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
                   e.preventDefault();
                 }
               }}
-              sx={{ borderRadius: "24px", }}
+              sx={{ borderRadius: "24px",
+                "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Default border color
+      },
+      "&:hover fieldset": {
+        borderColor: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Hover border color
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Focused border color
+      },
+    }, 
+
+              }}
             />
           ) : (
             <Typography variant="h6" onClick={() => setColumns(columns.map((col) => col.id === column.id ? { ...col, isEditing: true } : col))}>

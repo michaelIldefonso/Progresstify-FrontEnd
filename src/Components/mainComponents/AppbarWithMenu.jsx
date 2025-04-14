@@ -2,10 +2,10 @@ import React from "react";
 import { AppBar, Toolbar, Button, Menu, MenuItem, IconButton, Typography } from "@mui/material";
 import { Brightness4, Brightness7, Menu as MenuIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { toggleDrawer, handleMenu, handleClose } from "../../Functions/eventHandlerFunctions";
-import { handleLogout } from "../../Functions/navigationFunctions";
+import { handleMenu, handleClose } from "../Functions/eventHandlerFunctions";
+import { handleLogout } from "../Functions/navigationFunctions";
 
-const AppBarWithMenu = ({ darkMode, setDarkMode, anchorEl, setAnchorEl, user, drawerOpen, setDrawerOpen }) => {
+const AppBarWithMenu = ({ darkMode, setDarkMode, anchorEl, setAnchorEl, user }) => {
   const navigate = useNavigate();
 
   const toggleDarkMode = () => {

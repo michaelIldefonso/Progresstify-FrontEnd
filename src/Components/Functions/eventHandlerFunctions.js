@@ -81,3 +81,18 @@ export const handleScrollbarScroll = (event, columnsContainerRef) => {
     
   }
 };
+
+export const handleChange = (e) => {
+  setFormData({ ...formData, [e.target.name]: e.target.value });
+};
+
+export const handleSubmit = (e) => {
+  e.preventDefault();
+  if (isSignUp && formData.password !== formData.confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+  alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
+  setOpen(false);
+  // Navigate("/workspace"); // Uncomment this when using a router
+};

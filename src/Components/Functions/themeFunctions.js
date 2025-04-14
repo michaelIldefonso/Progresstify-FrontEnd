@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import { useEffect } from "react";
 
 // Function to create a theme based on dark mode
 export const createCustomTheme = (darkMode) => {
@@ -34,4 +35,10 @@ export const createCustomTheme = (darkMode) => {
       },
     },
   });
+};
+
+export const useDarkModeEffect = (darkMode, setDarkMode) => {
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 };

@@ -5,18 +5,21 @@ import { useNavigate } from "react-router-dom";
 import { handleMenu, handleClose } from "../Functions/eventHandlerFunctions";
 import { handleLogout } from "../Functions/navigationFunctions";
 
-const AppBarWithMenu = ({ darkMode, setDarkMode, anchorEl, setAnchorEl, user }) => {
+const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user }) => {
   const navigate = useNavigate();
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
   return (
-    <AppBar position="fixed" sx={{ zIndex: 1301, backgroundColor: darkMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
-     backdropFilter: "blur(3px)", boxShadow: "none", }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        zIndex: 1301,
+        backgroundColor: darkMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
+        backdropFilter: "blur(3px)",
+        boxShadow: "none",
+      }}
+    >
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}> 
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
           <p>Progresstify</p>
         </Typography>
         <Button

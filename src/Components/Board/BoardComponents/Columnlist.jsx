@@ -14,7 +14,9 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
   }, [id, setColumns]);
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 3, marginTop: "140px", transition: "margin-left 0.3s" }}>
+    <Box sx={{ flexGrow: 1, padding: 3, marginTop: "140px", transition: "margin-left 0.3s",
+      
+     }}>
       <div style={{ height: "calc(100% - 60px)" }}>
         <Box
           sx={{
@@ -28,7 +30,11 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
             variant="contained"
             startIcon={<Add />}
             onClick={() => handleAddColumn(id, columns, setColumns, columnsContainerRef)}
-            sx={{ borderRadius: "24px", marginLeft: "24px" }}
+            sx={{ 
+                 borderRadius: "24px", 
+                 marginLeft: "24px",
+                 backgroundColor: darkMode ? "rgb(9, 137, 241)" : "rgb(241, 128, 41)",
+               }}
           >
             Add Column
           </Button>
@@ -43,6 +49,7 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
             "&::-webkit-scrollbar": { display: "none" },
             "msOverflowStyle": "none",
             "scrollbarWidth": "none",
+            
           }}
           onScroll={(e) => handleColumnsScroll(e, scrollbarRef)}
         >

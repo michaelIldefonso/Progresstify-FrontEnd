@@ -10,7 +10,7 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
   return (
     <Box
       className="column"
-      sx={{ display: "inline-block", minWidth: "250px", marginRight: "16px", marginLeft: "10px"}}
+      sx={{ display: "inline-block", minWidth: "250px", marginRight: "16px", marginLeft: "10px",}}
       onWheel={(e) => e.stopPropagation()}
       onDrop={(e) => handleCardDrop(e, column.id, columns, setColumns, draggingCard)}
       onDragOver={(e) => handleCardDragOver(e)}
@@ -18,7 +18,13 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
       onDragStart={(e) => handleColumnDragStart(e, column.id, setDraggingColumn)}
     >
       <Paper
-        sx={{ padding: 2, transition: "transform 0.3s", "&:hover": { transform: "scale(1.02)" }, borderRadius: "24px", marginBottom: "10px" }}
+        sx={{ padding: 2,
+              transition: "transform 0.3s", 
+              "&:hover": { transform: "scale(1.02)" }, 
+              borderRadius: "24px", 
+              marginBottom: "10px",
+              backgroundColor: darkMode ? "rgb(0, 0, 0, 0.9)":"rgb(255, 219, 150, 0.9)", 
+            }}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
           {column.isEditing ? (
@@ -34,7 +40,7 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
                   e.preventDefault();
                 }
               }}
-              sx={{ borderRadius: "24px" }}
+              sx={{ borderRadius: "24px", }}
             />
           ) : (
             <Typography variant="h6" onClick={() => setColumns(columns.map((col) => col.id === column.id ? { ...col, isEditing: true } : col))}>

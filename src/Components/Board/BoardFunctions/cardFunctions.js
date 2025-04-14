@@ -200,6 +200,12 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
     return;
   }
 
+  // card put into the same column not disappearing fix
+  if (sourceColumn.id === targetColumn.id) {
+    console.log("Card dropped back into the same column, no updates needed.");
+    return;
+  }
+
   // Calculate the new position
   const targetCards = targetColumn.cards;
   let newPosition;

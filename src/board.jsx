@@ -39,8 +39,24 @@ const Board = () => { // Workspace board
   return (
     <ThemeProvider theme={theme}>
       <div onWheel={(e) => handleWheelScroll(e, columnsContainerRef, scrollbarRef)}>
-        <Box sx={{ display: "flex", position: "relative", backgroundImage: darkMode ? 'url("/room2.jpg")' : 'url("/room1.jpg")', backgroundSize: "cover", backgroundPosition: "center", minHeight: "100vh", width: "100vw", overflow: "hidden" }}>
-          <AppBarWithMenu darkMode={darkMode} setDarkMode={setDarkMode} anchorEl={anchorEl} setAnchorEl={setAnchorEl} user={user} drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+        <Box sx={{ display: "flex",
+                   position: "relative", 
+                   backgroundImage: darkMode ? 'url("/room2.jpg")' : 'url("/room1.jpg")',
+                   backgroundSize: "cover",
+                   backgroundPosition: "center", 
+                   minHeight: "100vh", width: "100vw", 
+                   overflow: "hidden" 
+                }}>
+                  
+          <AppBarWithMenu 
+            darkMode={darkMode} 
+            toggleDarkMode={() => setDarkMode((prevMode) => !prevMode)} // Fix the prop name
+            anchorEl={anchorEl} 
+            setAnchorEl={setAnchorEl} 
+            user={user} 
+            drawerOpen={drawerOpen} 
+            setDrawerOpen={setDrawerOpen} 
+          />
 
           <Box
             ref={columnsContainerRef}

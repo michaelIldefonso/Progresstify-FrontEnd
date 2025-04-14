@@ -24,7 +24,7 @@ const CardList = ({
         "&::-webkit-scrollbar-thumb": {
           backgroundColor: darkMode
             ? "rgba(8, 8, 8, 0.5)"
-            : "rgba(255, 253, 253, 0.5)",
+            : "rgba(175, 114, 1, 0.88)",
           borderRadius: "8px",
         },
         "&::-webkit-scrollbar-track": { backgroundColor: "transparent" },
@@ -49,7 +49,21 @@ const CardList = ({
             }
           }}
           autoFocus
-          sx={{ marginBottom: 1, borderRadius: "24px" }}
+          sx={{ marginBottom: 1,
+                borderRadius: "24px",
+                "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: darkMode ? "rgba(15, 15, 20, 0.78)" : "rgb(241, 128, 41)", // Default border color
+      },
+      "&:hover fieldset": {
+        borderColor: darkMode ? "rgba(15, 15, 20, 0.9)" : "rgb(241, 128, 41)", // Slightly darker on hover
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: darkMode ? "rgba(15, 15, 20, 1)" : "rgb(241, 128, 41)", // Stronger color on focus
+      },
+    },
+
+              }}
         />
       )}
       {column.cards.map((card) => (
@@ -68,7 +82,19 @@ const CardList = ({
         variant="text"
         startIcon={<Add />}
         onClick={() => startAddingCard(column.id, columns, setColumns)}
-        sx={{ borderRadius: "24px", marginTop: 1 }}
+        sx={{ borderRadius: "24px", 
+              marginTop: 1, 
+              color: darkMode ? "rgb(9, 137, 241)" : "rgb(29, 13, 1)", // Default text color
+    "&:hover": {
+      color: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Hover text color
+    },
+    "&:active": {
+      color: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Text color when clicked
+    },
+    "&.Mui-focusVisible": {
+      color: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Text color when focused
+    },
+           }}
       >
         Add a card
       </Button>

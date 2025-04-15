@@ -7,7 +7,8 @@ const Card = ({ card, columnId, columns, setColumns, draggingCard, setDraggingCa
   return (
     <MuiCard 
     sx={{ marginBottom: 1, 
-          backgroundColor: darkMode ? "rgba(15, 15, 20, 0.78)":"rgb(234, 170, 102)", 
+          backgroundColor: darkMode ? "rgba(15, 15, 20, 0.78)":"rgb(234, 170, 102)",
+          willChange: "transform", 
           transition: "transform 0.3s", 
           "&:hover": { transform: "scale(1.005)" }, 
           borderRadius: "15px",
@@ -22,16 +23,19 @@ const Card = ({ card, columnId, columns, setColumns, draggingCard, setDraggingCa
                          alignItems: "center", 
                          borderRadius: "10px",
                          padding: "center",
+                         fontFamily: '"Times New Roman", Times, serif',
+                         
                          
                       }}>
 
         <FormControlLabel control={<Checkbox checked={card.checked} onChange={(e) => handleCheckboxChange(columnId, card.id, e.target.checked, setColumns)} 
                   sx={{ borderRadius: "50%" }} />} label={<Typography 
                   sx={{ wordBreak: "break-word",
-                        fontSize: "12px",
+                        fontSize: "18px",
                         fontWeight: "bold",
                         color: darkMode ? "#fff" : "#000",
-                        textAlign:"center",   
+                        textAlign:"center",
+                        fontFamily: '-apple-system',   
                       }}>
                         {card.text}</Typography>} />
 

@@ -20,6 +20,7 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
       <Paper
         sx={{ padding: 2,
               transition: "transform 0.3s", 
+              willChange: "transform",
               "&:hover": { transform: "scale(1.02)" }, 
               borderRadius: "24px", 
               marginBottom: "10px",
@@ -41,18 +42,19 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
                 }
               }}
               sx={{ borderRadius: "24px",
-                "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Default border color
-      },
-      "&:hover fieldset": {
-        borderColor: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Hover border color
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Focused border color
-      },
-    }, 
-
+                "& .MuiOutlinedInput-root":
+                {
+                  "& fieldset": {
+                    borderColor: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Default border color
+                  },
+                  "&:hover fieldset": {
+                    borderColor: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Hover border color
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Focused border color
+                  },
+                }, 
+                
               }}
             />
           ) : (

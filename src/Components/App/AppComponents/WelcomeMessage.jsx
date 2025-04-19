@@ -9,9 +9,7 @@ function WelcomeMessage({ darkMode }) {
       align="center"
       style={{
         marginTop: "20px",
-        color: darkMode ? "#fff" : "#000",
         paddingTop: 0,
-        marginTop: 0,
         position: "absolute",
         top: "10%",
         backgroundColor: darkMode ? "rgba(84, 109, 247, 0.1)" : "rgba(255, 218, 52, 0.1)",

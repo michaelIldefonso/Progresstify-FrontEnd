@@ -15,6 +15,7 @@ const CardList = ({
   return (
     <Box
       className="card-list"
+      // style for card and scrollbar vertical inside the column
       sx={{
         marginTop: 2,
         maxHeight: "400px",
@@ -24,7 +25,7 @@ const CardList = ({
         "&::-webkit-scrollbar-thumb": {
           backgroundColor: darkMode
             ? "rgba(8, 8, 8, 0.5)"
-            : "rgba(175, 114, 1, 0.88)",
+            : "rgba(109, 80, 27, 0.4)",
           borderRadius: "8px",
         },
         "&::-webkit-scrollbar-track": { backgroundColor: "transparent" },
@@ -49,19 +50,21 @@ const CardList = ({
             }
           }}
           autoFocus
+          // style for input field, when you click on it, it will be rounded and have a border color
           sx={{ marginBottom: 1,
                 borderRadius: "24px",
-                "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: darkMode ? "rgba(15, 15, 20, 0.78)" : "rgb(241, 128, 41)", // Default border color
-      },
-      "&:hover fieldset": {
-        borderColor: darkMode ? "rgba(15, 15, 20, 0.9)" : "rgb(241, 128, 41)", // Slightly darker on hover
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: darkMode ? "rgba(15, 15, 20, 1)" : "rgb(241, 128, 41)", // Stronger color on focus
-      },
-    },
+                "& .MuiOutlinedInput-root": 
+                {
+                  "& fieldset": {
+                    borderColor: darkMode ? "rgba(15, 15, 20, 0.78)" : "rgb(241, 128, 41)", // Default border color
+                  },
+                  "&:hover fieldset": {
+                    borderColor: darkMode ? "rgba(15, 15, 20, 0.9)" : "rgb(241, 128, 41)", // Slightly darker on hover
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: darkMode ? "rgba(15, 15, 20, 1)" : "rgb(241, 128, 41)", // Stronger color on focus
+                  },
+                },
 
               }}
         />
@@ -82,18 +85,19 @@ const CardList = ({
         variant="text"
         startIcon={<Add />}
         onClick={() => startAddingCard(column.id, columns, setColumns)}
+        // style for add a card hover color change
         sx={{ borderRadius: "24px", 
               marginTop: 1, 
               color: darkMode ? "rgb(9, 137, 241)" : "rgb(29, 13, 1)", // Default text color
-    "&:hover": {
-      color: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Hover text color
-    },
-    "&:active": {
-      color: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Text color when clicked
-    },
-    "&.Mui-focusVisible": {
-      color: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Text color when focused
-    },
+              "&:hover": {
+                color: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Hover text color
+              },
+              "&:active": {
+                color: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Text color when clicked
+              },
+              "&.Mui-focusVisible": {
+                color: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Text color when focused
+              },
            }}
       >
         Add a card

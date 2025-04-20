@@ -18,6 +18,7 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
       onDragStart={(e) => handleColumnDragStart(e, column.id, setDraggingColumn)}
     >
       <Paper
+        // this is the style for column
         sx={{ padding: 2,
               transition: "transform 0.3s", 
               willChange: "transform",

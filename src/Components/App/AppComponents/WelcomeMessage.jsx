@@ -3,8 +3,8 @@ import { Typography } from "@mui/material";
 
 function WelcomeMessage({ darkMode }) {
   return (
+    // style for intro welcome message
     <Typography
-    
       variant="div"
       align="center"
       style={{

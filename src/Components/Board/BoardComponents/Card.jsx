@@ -6,6 +6,7 @@ import { removeCard, handleCheckboxChange, handleCardDragStart } from "../BoardF
 const Card = ({ card, columnId, columns, setColumns, draggingCard, setDraggingCard, darkMode }) => {
   return (
     <MuiCard 
+    //style for card inside the column
     sx={{ marginBottom: 1, 
           backgroundColor: darkMode ? "rgba(15, 15, 20, 0.78)":"rgb(234, 170, 102)",
           willChange: "transform", 
@@ -14,28 +15,37 @@ const Card = ({ card, columnId, columns, setColumns, draggingCard, setDraggingCa
           borderRadius: "15px",
           marginTop: "5px",
           height: "auto",
-
          }} 
           draggable onDragStart={(e) => handleCardDragStart(e, card.id, columnId, setDraggingCard)}>
 
-      <CardContent sx={{ display: "flex",
-                         justifyContent: "space-between",
-                         alignItems: "center", 
-                         borderRadius: "10px",
-                         padding: "center",
-                         fontFamily: '"Times New Roman", Times, serif',
-                         
-                         
-                      }}>
+            <CardContent   //this is the style for content inside the card
+                         sx={{ 
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center", 
+                              borderRadius: "10px",
+                              padding: "center",
+                            }}>
 
-        <FormControlLabel control={<Checkbox checked={card.checked} onChange={(e) => handleCheckboxChange(columnId, card.id, e.target.checked, setColumns)} 
-                  sx={{ borderRadius: "50%" }} />} label={<Typography 
-                  sx={{ wordBreak: "break-word",
+        <FormControlLabel 
+        control={<Checkbox checked={card.checked} 
+        onChange={(e) => handleCheckboxChange(columnId, card.id, e.target.checked, setColumns)} 
+                      //this is the style for checkbox
+                  sx={{ 
+                        borderRadius: "50%",
+                        color: darkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.6)", // Default color
+                        "&.Mui-checked": {
+                          color: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Color when checked
+                        },
+                    }} />} label={<Typography 
+                      //this is the style for text inside the card
+                  sx={{ 
+                        wordBreak: "break-word",
                         fontSize: "18px",
                         fontWeight: "bold",
                         color: darkMode ? "#fff" : "#000",
                         textAlign:"center",
-                        fontFamily: '-apple-system',   
+                        fontFamily: '"Times New Roman", Times, serif',   
                       }}>
                         {card.text}</Typography>} />
 

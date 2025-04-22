@@ -94,8 +94,9 @@ export const deleteBoard = async (workspaceId, boardId, boards, setBoards) => {
       method: 'DELETE',
     });
 
-    setBoards(boards.filter((board) => board.id !== boardId));
+    setBoards(boards.filter((board) => board.id !== boardId)); // Update state after deletion
   } catch (error) {
     console.error("Failed to delete board:", error);
+    alert("Failed to delete board. Please try again.");
   }
 };

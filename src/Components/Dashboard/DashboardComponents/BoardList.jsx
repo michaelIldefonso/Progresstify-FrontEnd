@@ -1,6 +1,6 @@
 import React from "react";
 import { List, ListItem, ListItemIcon, ListItemText, IconButton, TextField, Box, Button, Typography } from "@mui/material";
-import { Dashboard as DashboardIcon, Add, Edit } from "@mui/icons-material";
+import { Dashboard as DashboardIcon, Add, Edit, Delete } from "@mui/icons-material";
 
 const BoardListComponent = ({
   boards,
@@ -19,6 +19,7 @@ const BoardListComponent = ({
   handleNameChange,
   handleNameSave,
   handleEditClick,
+  deleteBoard, // Ensure deleteBoard is passed as a prop
 }) => (
   <div
     style={{
@@ -80,6 +81,14 @@ const BoardListComponent = ({
         )}
         <IconButton onClick={() => handleEditClick(board, setEditingBoardId, setBoardName)}>
           <Edit />
+        </IconButton>
+        <IconButton
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent triggering the board selection
+            deleteBoard(workspaceId, board.id, boards, setBoards); // Ensure deleteBoard is called correctly
+          }}
+        >
+          <Delete />
         </IconButton>
       </ListItem>
     ))}

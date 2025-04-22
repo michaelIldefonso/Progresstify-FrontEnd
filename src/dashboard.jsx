@@ -5,7 +5,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import {
-  loadBoards, createBoard, selectBoard, handleEditClick, handleNameChange, handleNameSave
+  loadBoards, createBoard, selectBoard, handleEditClick, handleNameChange, handleNameSave, deleteBoard
 } from "./Components/Dashboard/DashboardFunctions/dashboardFunctions";
 import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
 import { handleLogout } from "./Components/Functions/navigationFunctions";
@@ -102,6 +102,7 @@ const Dashboard = () => {
               handleNameChange={handleNameChange}
               handleNameSave={handleNameSave}
               handleEditClick={handleEditClick}
+              deleteBoard={deleteBoard}
             />
           )}
         </Box>

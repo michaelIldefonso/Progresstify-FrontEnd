@@ -87,3 +87,15 @@ export const handleNameSave = async (workspaceId, board, boards, setBoards, boar
     console.error("Failed to save board name:", error);
   }
 };
+
+export const deleteBoard = async (workspaceId, boardId, boards, setBoards) => {
+  try {
+    await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${boardId}`, {
+      method: 'DELETE',
+    });
+
+    setBoards(boards.filter((board) => board.id !== boardId));
+  } catch (error) {
+    console.error("Failed to delete board:", error);
+  }
+};

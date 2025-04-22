@@ -248,6 +248,7 @@ function Workspaces() {
             workspaces.map((ws) => (
               <Grid item key={ws.id} xs={12} sm={6} md={4} lg={3}>
                 <Card
+                  onClick={() => handleSelectWorkspace(ws.id)} // Ensure this is set
                   sx={{
                     cursor: "pointer",
                     backgroundColor: "rgb(30, 30, 30, 0.5)",
@@ -262,7 +263,10 @@ function Workspaces() {
                       {ws.description || "No description available"}
                     </Typography>
                     <IconButton
-                      onClick={() => handleDeleteWorkspace(ws.id, setWorkspaces)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent triggering the card's onClick
+                        handleDeleteWorkspace(ws.id, setWorkspaces);
+                      }}
                       sx={{ color: "red", mt: 1 }}
                     >
                       <Delete />

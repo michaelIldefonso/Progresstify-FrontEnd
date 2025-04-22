@@ -52,3 +52,16 @@ export const handleDescriptionChange = (e, setWorkspaceDescription, setDescripti
     setDescriptionError("Description exceeds 200 characters limit."); // Set description error
   }
 };
+
+export const handleDeleteWorkspace = (workspaceId, setWorkspaces) => {
+  axios
+    .delete(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces/delete/${workspaceId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+    .then(() => {
+      setWorkspaces((prevWorkspaces) =>
+        prevWorkspaces.filter((ws) => ws.id !== workspaceId)
+      );
+    })
+    .catch((error) => console.error("Error deleting workspace:", error));
+};

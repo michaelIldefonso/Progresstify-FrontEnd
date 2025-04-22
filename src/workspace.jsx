@@ -16,12 +16,12 @@ import {
   Paper,
   Grid,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, Delete } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { handleMenu, handleClose } from "./Components/Functions/eventHandlerFunctions";
 import { handleLogout } from "./Components/Functions/navigationFunctions";
-import { handleCreateWorkspace, handleCloseModal, handleSubmit, handleDescriptionChange } from "./Components/Functions/createWorkspaceFunctions";
+import { handleCreateWorkspace, handleCloseModal, handleSubmit, handleDescriptionChange, handleDeleteWorkspace } from "./Components/Functions/createWorkspaceFunctions";
 
 function Workspaces() {
   const navigate = useNavigate(); // Navigation hook
@@ -255,13 +255,18 @@ function Workspaces() {
                     transition: "transform 0.2s",
                     "&:hover": { transform: "scale(1.05)", boxShadow: 3 },
                   }}
-                  onClick={() => handleSelectWorkspace(ws.id)} // Updated to navigate to Dashboard
                 >
                   <CardContent>
                     <Typography variant="h6">{ws.name}</Typography>
                     <Typography variant="body2" sx={{ color: "rgba(255, 255, 255,)" }}>
                       {ws.description || "No description available"}
                     </Typography>
+                    <IconButton
+                      onClick={() => handleDeleteWorkspace(ws.id, setWorkspaces)}
+                      sx={{ color: "red", mt: 1 }}
+                    >
+                      <Delete />
+                    </IconButton>
                   </CardContent>
                 </Card>
               </Grid>

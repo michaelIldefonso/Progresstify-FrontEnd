@@ -59,7 +59,10 @@ function Workspaces() {
         withCredentials: true,
         headers: { Authorization: `Bearer ${storedToken}` },
       })
-      .then((response) => setWorkspaces(response.data))
+      .then((response) => {
+        console.log("Fetched workspaces:", response.data); // Debug log
+        setWorkspaces(response.data);
+      })
       .catch((error) => console.error("Error fetching workspaces:", error));
 
     axios
@@ -276,8 +279,8 @@ function Workspaces() {
                         <Delete />
                       </IconButton>
                     </Box>
-                    <Typography variant="body2" sx={{ color: "rgba(255, 255, 255,)" }}>
-                      {ws.description || "No description available"}
+                    <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.7)" }}>
+                      {ws.description || "No description available"} {/* Ensure description is displayed */}
                     </Typography>
                   </CardContent>
                 </Card>

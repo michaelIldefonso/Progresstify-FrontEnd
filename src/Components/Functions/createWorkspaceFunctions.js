@@ -22,6 +22,10 @@ export const handleSubmit = (
   // Create a new workspace
   if (!workspaceName) return;
 
+  console.log("Submitting workspace with the following details:"); // Debug log
+  console.log("Name:", workspaceName); // Log workspace name
+  console.log("Description:", workspaceDescription); // Log workspace description
+
   axios
     .post(
       // Post request to create a new workspace
@@ -32,6 +36,8 @@ export const handleSubmit = (
       }
     )
     .then((response) => {
+      console.log("Request payload sent:", { name: workspaceName, description: workspaceDescription }); // Log payload
+      console.log("Workspace created successfully:", response.data); // Log API response
       // Update the workspaces state
       setWorkspaces([...workspaces, response.data]); // Add the new workspace to the workspaces array
       setOpen(false); // Close the modal

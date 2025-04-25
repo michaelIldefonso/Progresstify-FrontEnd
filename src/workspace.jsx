@@ -15,6 +15,7 @@ import {
   TextField,
   Paper,
   Grid,
+  Box,
 } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -258,19 +259,26 @@ function Workspaces() {
                   }}
                 >
                   <CardContent>
-                    <Typography variant="h6">{ws.name}</Typography>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <Typography variant="h6">{ws.name}</Typography>
+                      <IconButton
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent triggering the card's onClick
+                          handleDeleteWorkspace(ws.id, setWorkspaces);
+                        }}
+                        sx={{
+                          color: "white", // Change color to white
+                          "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.1)", // Adjust hover effect
+                          },
+                        }}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </Box>
                     <Typography variant="body2" sx={{ color: "rgba(255, 255, 255,)" }}>
                       {ws.description || "No description available"}
                     </Typography>
-                    <IconButton
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent triggering the card's onClick
-                        handleDeleteWorkspace(ws.id, setWorkspaces);
-                      }}
-                      sx={{ color: "red", mt: 1 }}
-                    >
-                      <Delete />
-                    </IconButton>
                   </CardContent>
                 </Card>
               </Grid>

@@ -40,6 +40,7 @@ const BoardListComponent = ({
       startIcon={<Add />}
       onClick={() => setModalOpen(true)}
       sx={{
+        borderRadius: "15px",
         mt: 2,
         backgroundColor: "transparent",
         color: darkMode ? "white" : "black",
@@ -47,6 +48,10 @@ const BoardListComponent = ({
         fontWeight: "700",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
+        mb: "30px",
+        "&:hover": {
+            backgroundColor: darkMode ? "rgba(0, 0, 0, 0.25)" : "rgba(240, 240, 240, 0.47)", // Hover effect
+          },
       }}
     >
       Create Board
@@ -56,6 +61,19 @@ const BoardListComponent = ({
         button
         key={board.id}
         onClick={() => selectBoard(board, setActiveBoard, setEditingBoardId, navigate)}
+        sx={{
+        mt: "3px",
+        backgroundColor: "transparent",
+        color: darkMode ? "white" : "black",
+        border: "1px solid",
+        borderRadius: "15px",
+        fontWeight: "700",
+        backdropFilter: "blur(3px)",
+        WebkitBackdropFilter: "blur(3px)",
+          "&:hover": {
+            backgroundColor: darkMode ? "rgba(0, 0, 0, 0.25)" : "rgba(240, 240, 240, 0.47)", // Hover effect
+          },
+        }}
       >
         <ListItemIcon>
           <DashboardIcon />

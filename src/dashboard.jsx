@@ -81,7 +81,12 @@ const Dashboard = () => {
           overflow: "hidden",
         }}
       >
-        <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8, minHeight: "100vh" }}>
+        <Box component="main" 
+        sx={{ 
+          flexGrow: 1, 
+          p: 3, mt: 8, 
+          minHeight: "100vh" 
+          }}>
           {activeBoard ? (
             <Typography variant="h4">Board: {activeBoard.name}</Typography>
           ) : (

@@ -21,6 +21,7 @@ const BoardModalComponent = ({
         transform: "translate(-50%, -50%)",
         width: 400,
         padding: 4,
+        backgroundColor: darkMode ? "rgba(0, 0, 0, 0.9)" : "rgba(255, 255, 255, 0.9)",
       }}
     >
       <Typography variant="h6">Board</Typography>

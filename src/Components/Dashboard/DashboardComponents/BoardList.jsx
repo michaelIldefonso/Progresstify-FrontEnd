@@ -1,10 +1,9 @@
-import React from "react";
-import { List, ListItem, ListItemIcon, ListItemText, IconButton, TextField, Box, Button, Typography } from "@mui/material";
+import { ListItem, ListItemIcon, ListItemText, IconButton, TextField, Box, Button, Typography } from "@mui/material";
 import { Dashboard as DashboardIcon, Add, Edit, Delete } from "@mui/icons-material";
+import PropTypes from "prop-types";
 
 const BoardListComponent = ({
   boards,
-  activeBoard,
   editingBoardId,
   boardName,
   setBoardName,
@@ -112,5 +111,31 @@ const BoardListComponent = ({
     ))}
   </div>
 );
+
+// Add PropTypes for validation
+BoardListComponent.propTypes = {
+  boards: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  activeBoard: PropTypes.object,
+  editingBoardId: PropTypes.string,
+  boardName: PropTypes.string.isRequired,
+  setBoardName: PropTypes.func.isRequired,
+  setModalOpen: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool.isRequired,
+  setEditingBoardId: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
+  workspaceId: PropTypes.string.isRequired,
+  setActiveBoard: PropTypes.func.isRequired,
+  setBoards: PropTypes.func.isRequired,
+  selectBoard: PropTypes.func.isRequired,
+  handleNameChange: PropTypes.func.isRequired,
+  handleNameSave: PropTypes.func.isRequired,
+  handleEditClick: PropTypes.func.isRequired,
+  deleteBoard: PropTypes.func.isRequired,
+};
 
 export default BoardListComponent;

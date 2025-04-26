@@ -1,9 +1,9 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Card as MuiCard, CardContent, IconButton, Typography, Checkbox, FormControlLabel } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { removeCard, handleCheckboxChange, handleCardDragStart } from "../BoardFunctions/cardFunctions";
 
-const Card = ({ card, columnId, columns, setColumns, draggingCard, setDraggingCard, darkMode }) => {
+const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }) => {
   return (
     <MuiCard 
     //style for card inside the column
@@ -55,6 +55,21 @@ const Card = ({ card, columnId, columns, setColumns, draggingCard, setDraggingCa
       </CardContent>
     </MuiCard>
   );
+};
+
+// Add PropTypes for validation
+Card.propTypes = {
+  card: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    checked: PropTypes.bool.isRequired,
+  }).isRequired,
+  columnId: PropTypes.string.isRequired,
+  columns: PropTypes.array.isRequired,
+  setColumns: PropTypes.func.isRequired,
+  draggingCard: PropTypes.object,
+  setDraggingCard: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool.isRequired,
 };
 
 export default Card;

@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Box, TextField, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
@@ -104,6 +104,27 @@ const CardList = ({
       </Button>
     </Box>
   );
+};
+
+// Add PropTypes for validation
+CardList.propTypes = {
+  column: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    isAddingCard: PropTypes.bool.isRequired,
+    newCardText: PropTypes.string.isRequired,
+    cards: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        checked: PropTypes.bool.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
+  columns: PropTypes.array.isRequired,
+  setColumns: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool.isRequired,
+  draggingCard: PropTypes.object,
+  setDraggingCard: PropTypes.func,
 };
 
 export default CardList;

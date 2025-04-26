@@ -1,5 +1,5 @@
-import React from "react";
 import { Modal, Paper, Typography, TextField, Button } from "@mui/material";
+import PropTypes from "prop-types";
 
 const BoardModalComponent = ({
   modalOpen,
@@ -45,5 +45,16 @@ const BoardModalComponent = ({
     </Paper>
   </Modal>
 );
-
+// Add PropTypes for validation
+BoardModalComponent.propTypes = {
+  modalOpen: PropTypes.bool.isRequired,
+  setModalOpen: PropTypes.func.isRequired,
+  boardName: PropTypes.string.isRequired,
+  setBoardName: PropTypes.func.isRequired,
+  createBoard: PropTypes.func.isRequired,
+  workspaceId: PropTypes.string.isRequired,
+  boards: PropTypes.array.isRequired,
+  setBoards: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool.isRequired,
+};
 export default BoardModalComponent;

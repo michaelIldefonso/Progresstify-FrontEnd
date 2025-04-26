@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   CssBaseline, GlobalStyles, Box, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -7,7 +7,7 @@ import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import {
   loadBoards, createBoard, selectBoard, handleEditClick, handleNameChange, handleNameSave, deleteBoard
 } from "./Components/Dashboard/DashboardFunctions/dashboardFunctions";
-import { handleMenu, handleClose, toggleDrawer } from "./Components/Functions/eventHandlerFunctions";
+import { handleMenu, handleClose,} from "./Components/Functions/eventHandlerFunctions";
 import { handleLogout } from "./Components/Functions/navigationFunctions";
 import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import { useDarkModeEffect } from "./Components/Functions/themeFunctions";
@@ -23,7 +23,6 @@ const Dashboard = () => {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : true; // Initialize from local storage
   });
-  const [drawerOpen, setDrawerOpen] = useState(true); // Drawer state
   const [boards, setBoards] = useState([]); // Boards state
   const [activeBoard, setActiveBoard] = useState(null); // Active board state
   const [editingBoardId, setEditingBoardId] = useState(null); // Editing board state
@@ -39,7 +38,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchUserData(location, navigate, setUser);
-  }, [navigate, location.search]);
+  }, [navigate]);
 
   const theme = createCustomTheme(darkMode);
 
@@ -64,8 +63,7 @@ const Dashboard = () => {
         handleClose={handleClose}
         handleLogout={handleLogout}
         setAnchorEl={setAnchorEl}
-        toggleDrawer={toggleDrawer}
-        drawerOpen={drawerOpen}
+       
       />
       <Box
         sx={{

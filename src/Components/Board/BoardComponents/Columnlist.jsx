@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, memo } from "react";
+import { useRef, useEffect, memo } from "react";
 import { Box, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Column from "./Column";
 import { handleAddColumn, handleColumnsScroll, getColumns } from "../BoardFunctions/columnFunctions";
+import PropTypes from "prop-types"; // Import PropTypes
 
-const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCard, draggingColumn, setDraggingColumn, darkMode, drawerOpen }) => {
+const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCard, draggingColumn, setDraggingColumn, darkMode }) => {
   const columnsContainerRef = useRef(null);
   const scrollbarRef = useRef(null);
   const columnsFetchedRef = useRef(false); // Ensure this is initialized
@@ -72,5 +73,25 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
     </Box>
   );
 });
+
+// Add displayName for the memo-wrapped component
+ColumnList.displayName = "ColumnList";
+
+// Add PropTypes for validation
+ColumnList.propTypes = {
+  id: PropTypes.string.isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  setColumns: PropTypes.func.isRequired,
+  draggingCard: PropTypes.object,
+  setDraggingCard: PropTypes.func,
+  draggingColumn: PropTypes.object,
+  setDraggingColumn: PropTypes.func,
+  darkMode: PropTypes.bool.isRequired,
+};
 
 export default ColumnList;

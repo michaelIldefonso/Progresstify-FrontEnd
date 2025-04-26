@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types"; // Import PropTypes
 import { Box } from "@mui/material";
 import { handleScrollbarScroll } from "../../Functions/eventHandlerFunctions";
 
@@ -34,6 +34,19 @@ const CustomScrollbar = ({ columns, darkMode, drawerOpen, columnsContainerRef, s
       />
     </Box>
   );
+};
+// Add PropTypes for validation
+CustomScrollbar.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  darkMode: PropTypes.bool.isRequired,
+  drawerOpen: PropTypes.bool.isRequired,
+  columnsContainerRef: PropTypes.object.isRequired,
+  scrollbarRef: PropTypes.object.isRequired,
 };
 
 export default CustomScrollbar;

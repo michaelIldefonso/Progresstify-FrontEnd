@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import { handleChange, handleSubmit } from "../../Functions/eventHandlerFunctions";
+import PropTypes from "prop-types"; // Import PropTypes
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -170,5 +171,12 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
     </Dialog>
   );
 }
-
+// Add PropTypes for validation
+AuthDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  isSignUp: PropTypes.bool.isRequired,
+  setIsSignUp: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool.isRequired,
+};
 export default AuthDialog;

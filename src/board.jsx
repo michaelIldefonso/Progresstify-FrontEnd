@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Box, ThemeProvider } from "@mui/material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";

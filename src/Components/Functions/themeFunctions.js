@@ -37,7 +37,7 @@ export const createCustomTheme = (darkMode) => {
   });
 };
 
-export const useDarkModeEffect = (darkMode, setDarkMode) => {
+export const useDarkModeEffect = (darkMode) => {
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);

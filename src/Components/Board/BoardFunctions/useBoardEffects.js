@@ -1,14 +1,8 @@
 import { useEffect, useRef } from "react";
-import { fetchUserData } from "../../Functions/fetchFunctions"; // Corrected path
+import { fetchUserData } from "../../Functions/fetchUserFunctions"; // Corrected path
 import { getColumns } from "./columnFunctions"; // Corrected path
 
-export const useDarkModeEffect = (darkMode, setDarkMode) => {
-  useEffect(() => {
-    localStorage.setItem("darkMode", JSON.stringify(darkMode));
-  }, [darkMode]);
-};
-
-export const useColumnsEffect = (columns, setColumns) => {
+export const useColumnsEffect = (columns,) => {
   useEffect(() => {
     localStorage.setItem("columns", JSON.stringify(columns));
   }, [columns]);
@@ -17,7 +11,7 @@ export const useColumnsEffect = (columns, setColumns) => {
 export const useFetchUserEffect = (location, navigate, setUser) => {
   useEffect(() => {
     fetchUserData(location, navigate, setUser);
-  }, [navigate, location.search]);
+  }, [navigate, location, setUser]);
 };
 
 export const useFetchColumnsEffect = (id, setColumns) => {

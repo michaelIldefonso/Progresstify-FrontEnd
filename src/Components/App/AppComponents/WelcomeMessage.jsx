@@ -1,5 +1,5 @@
-import React from "react";
 import { Typography } from "@mui/material";
+import PropTypes from "prop-types"; // Import PropTypes
 
 function WelcomeMessage({ darkMode }) {
   return (
@@ -33,4 +33,7 @@ function WelcomeMessage({ darkMode }) {
   );
 }
 
+WelcomeMessage.propTypes = {
+  darkMode: PropTypes.bool.isRequired, // Validate darkMode as a required boolean
+};
 export default WelcomeMessage;

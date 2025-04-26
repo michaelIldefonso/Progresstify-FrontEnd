@@ -82,11 +82,11 @@ export const handleScrollbarScroll = (event, columnsContainerRef) => {
   }
 };
 
-export const handleChange = (e) => {
+export const handleChange = (e, formData, setFormData) => {
   setFormData({ ...formData, [e.target.name]: e.target.value });
 };
 
-export const handleSubmit = (e) => {
+export const handleSubmit = (e, isSignUp, formData, setOpen) => {
   e.preventDefault();
   if (isSignUp && formData.password !== formData.confirmPassword) {
     alert("Passwords do not match!");

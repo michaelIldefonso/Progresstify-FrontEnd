@@ -1,7 +1,7 @@
-import React from "react";
 import { Button, IconButton } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import PropTypes from "prop-types"; // Import PropTypes
 
 function Header({ darkMode, toggleDarkMode, setOpen }) {
   return (
@@ -43,5 +43,10 @@ function Header({ darkMode, toggleDarkMode, setOpen }) {
     </div>
   );
 }
-
+// Add PropTypes for validation
+Header.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+  toggleDarkMode: PropTypes.func.isRequired,
+  setOpen: PropTypes.func.isRequired,
+};
 export default Header;

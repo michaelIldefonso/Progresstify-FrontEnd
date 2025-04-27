@@ -57,7 +57,7 @@ const BoardListComponent = ({
     </Button>
     {boards.map((board) => (
       <ListItem
-        button
+        component="div"
         key={board.id}
         onClick={() => selectBoard(board, setActiveBoard, setEditingBoardId, navigate)}
         sx={{

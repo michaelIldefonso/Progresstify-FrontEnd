@@ -7,7 +7,7 @@ import { renameColumn, finalizeColumnTitle, removeColumn, handleColumnDragStart 
 import { handleCardDragOver, handleCardDrop } from "../BoardFunctions/cardFunctions";
 
 // Memoized version of Column
-const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggingCard, darkMode }) => {
+const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggingCard, setDraggingColumn, darkMode }) => {
   return (
     <Box
       className="column"
@@ -16,7 +16,7 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
       onDrop={(e) => handleCardDrop(e, column.id, columns, setColumns, draggingCard)}
       onDragOver={(e) => handleCardDragOver(e)}
       draggable
-      onDragStart={(e) => handleColumnDragStart(e, column.id)}
+      onDragStart={(e) => handleColumnDragStart(e, column.id, setDraggingColumn)} // Pass setDraggingColumn here
     >
       <Paper
         sx={{
@@ -107,6 +107,7 @@ Column.propTypes = {
   setColumns: PropTypes.func.isRequired,
   draggingCard: PropTypes.object,
   setDraggingCard: PropTypes.func,
+  setDraggingColumn: PropTypes.func.isRequired, // Add this
   darkMode: PropTypes.bool.isRequired,
 };
 

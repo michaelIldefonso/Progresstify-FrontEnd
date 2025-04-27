@@ -21,7 +21,6 @@ const Board = () => { // Workspace board
   });
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(false); //Drawer is closed by default
   const [draggingColumn, setDraggingColumn] = useState(null);
   const [draggingCard, setDraggingCard] = useState(null);
   const navigate = useNavigate();
@@ -54,8 +53,6 @@ const Board = () => { // Workspace board
             anchorEl={anchorEl} 
             setAnchorEl={setAnchorEl} 
             user={user} 
-            drawerOpen={drawerOpen} 
-            setDrawerOpen={setDrawerOpen} 
           />
 
           <Box
@@ -63,7 +60,7 @@ const Board = () => { // Workspace board
             
             sx={{
               display: "flex",
-              overflowX: "auto", // Enable horizontal scrolling
+              overflowY: "auto", 
               
               padding: "16px", // Optional padding
               width: "100%", // Ensure it takes the full width
@@ -78,13 +75,14 @@ const Board = () => { // Workspace board
                 width: `${columns.length * 266}px`, // Dynamically set the width based on the number of columns
               }}
             >
-              <ColumnList id={id} columns={columns} setColumns={setColumns} draggingCard={draggingCard} setDraggingCard={setDraggingCard} draggingColumn={draggingColumn} setDraggingColumn={setDraggingColumn} darkMode={darkMode} drawerOpen={drawerOpen} />
+              <ColumnList id={id} columns={columns} setColumns={setColumns} 
+              draggingCard={draggingCard} setDraggingCard={setDraggingCard} 
+              draggingColumn={draggingColumn} setDraggingColumn={setDraggingColumn} darkMode={darkMode} />
             </Box>
           </Box>  
           <CustomScrollbar
             columns={columns}
             darkMode={darkMode}
-            drawerOpen={drawerOpen}
             columnsContainerRef={columnsContainerRef}
             scrollbarRef={scrollbarRef} // Pass scrollbarRef
           />

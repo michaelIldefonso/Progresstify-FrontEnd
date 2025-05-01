@@ -28,8 +28,13 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
         },
       }}
     >
-      <DialogTitle align="center">{isSignUp ? "Sign Up" : "Sign In"}</DialogTitle>
-      <DialogContent style={{ maxHeight: "80vh", overflow: "hidden" }}>
+      <DialogTitle
+        align="center"
+        sx={{
+          fontSize: "1.69rem", 
+        }}
+      >{isSignUp ? "Sign Up" : "Sign In"}</DialogTitle>
+      <DialogContent style={{ maxHeight: "80vh", overflow: "hidden", fontSize: "1.5rem",}}>
         <Container maxWidth="xs">
           <Paper
             elevation={0}
@@ -49,10 +54,14 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
                 fontSize: "1.25rem", 
                 padding: "12px 16px", 
                 height: "50px", 
-                color: darkMode ? "white" : "black",
+                color: "white",
                 borderColor: darkMode ? "white" : "black",
                 textTransform: "none",
                 marginBottom: "10px",
+                backgroundColor: "#4285F4", // Google color
+                "&:hover": {
+                  backgroundColor: "#357ae8", // Darker shade on hover
+                },
               }}
             >
               Sign in with Google
@@ -67,10 +76,14 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
                 fontSize: "1.25rem", 
                 padding: "12px 16px", 
                 height: "50px",
-                color: darkMode ? "white" : "black",
+                color:"white",
                 borderColor: darkMode ? "white" : "black",
                 textTransform: "none",
                 marginBottom: "10px",
+                backgroundColor: "#3b5998", // Facebook color
+                "&:hover": {
+                  backgroundColor: "#2d4373", // Darker shade on hover
+                },
               }}
             >
               Sign in with Facbook
@@ -85,10 +98,14 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
                 fontSize: "1.25rem", 
                 padding: "12px 16px", 
                 height: "50px",
-                color: darkMode ? "white" : "black",
+                color: "white",
                 borderColor: darkMode ? "white" : "black",
                 textTransform: "none",
                 marginBottom: "10px",
+                backgroundColor: "#333", // GitHub color
+                "&:hover": {
+                  backgroundColor: "#444", // Darker shade on hover
+                },
               }}
             >
               Sign in with Github
@@ -103,10 +120,14 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
                 fontSize: "1.25rem", 
                 padding: "12px 16px", 
                 height: "50px",
-                color: darkMode ? "white" : "black",
+                color:  "white",
                 borderColor: darkMode ? "white" : "black",
                 textTransform: "none",
                 marginBottom: "10px",
+                backgroundColor: "#1DA1F2", // Twitter color
+                "&:hover": {
+                  backgroundColor: "#1A91DA", // Darker shade on hover
+                },
               }}
             >
               Sign in with Twitter
@@ -122,6 +143,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
                 marginTop: "10px",
                 textTransform: "none",
                 color: darkMode ? "#fff" : "#000",
+                fontSize: "1.1rem",
               }}
             >
               {isSignUp

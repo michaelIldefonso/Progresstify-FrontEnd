@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { fetchUserData } from "../../Functions/fetchUserFunctions"; // Corrected path
+import { fetchUserData } from "../../Functions/fetchFunctions"; // Corrected path
 import { getColumns } from "./columnFunctions"; // Corrected path
 
 export const useColumnsEffect = (columns,) => {

@@ -29,3 +29,26 @@ export const fetchUserData = (location, navigate, setUser) => {
       });
   };
   
+  export const fetchWorkspaces = (navigate, setWorkspaces) => {
+    const storedToken = localStorage.getItem("token");
+  
+    if (!storedToken) {
+      console.error("No token found, redirecting...");
+      navigate("/");
+      return;
+    }
+  
+    axios
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces`, {
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
+      .then((response) => {
+        console.log("API Response (Workspaces):", response.data);
+        setWorkspaces(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching workspaces:", error);
+        navigate("/");
+      });
+  };

@@ -9,7 +9,7 @@ import {
 } from "./Components/Dashboard/DashboardFunctions/dashboardFunctions";
 import { handleMenu, handleClose,} from "./Components/Functions/eventHandlerFunctions";
 import { handleLogout } from "./Components/Functions/navigationFunctions";
-import { fetchUserData } from "./Components/Functions/fetchUserFunctions";
+import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import { useDarkModeEffect } from "./Components/Functions/themeFunctions";
 import AppbarWithMenu  from "./Components/mainComponents/AppbarWithMenu";
 import BoardList  from "./Components/Dashboard/DashboardComponents/BoardList";

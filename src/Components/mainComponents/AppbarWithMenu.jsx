@@ -47,9 +47,6 @@ const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user 
               open={Boolean(anchorEl)}
               onClose={() => handleClose(setAnchorEl)}
             >
-              <MenuItem disabled>{`Email: ${user.userEmail}`}</MenuItem>
-              <MenuItem disabled>{`ID: ${user.userId}`}</MenuItem>
-              <MenuItem disabled>{`OAuth ID: ${user.userOauth_id}`}</MenuItem>
               <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
             </Menu>
           </div>

@@ -96,3 +96,13 @@ export const handleSubmit = (e, isSignUp, formData, setOpen) => {
   setOpen(false);
   // Navigate("/workspace"); // Uncomment this when using a router
 };
+
+export const handleScheduleDueDate = () => {
+  handleMenuClose();
+  // Implement scheduling logic here
+  const dueDate = prompt("Enter the due date (e.g., YYYY-MM-DD):");
+  if (dueDate) {
+    // You can update the card's due date here
+    alert(`Scheduled Due Date: ${dueDate}`);
+  }
+};

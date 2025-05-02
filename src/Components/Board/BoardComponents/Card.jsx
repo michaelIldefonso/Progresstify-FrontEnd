@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
-import { Card as MuiCard, CardContent, IconButton, Typography, Checkbox, FormControlLabel } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { useState } from "react";
+import { Card as MuiCard, CardContent, IconButton, Typography, Checkbox, FormControlLabel, Menu, MenuItem } from "@mui/material";
+import { MoreVert } from "@mui/icons-material";
 import { removeCard, handleCheckboxChange, handleCardDragStart } from "../BoardFunctions/cardFunctions";
+import { handleMenu, handleClose, handleScheduleDueDate } from "../../Functions/eventHandlerFunctions";
 
 const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
   return (
     <MuiCard 
     //style for card inside the column
@@ -49,9 +52,19 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
                       }}>
                         {card.text}</Typography>} />
 
-        <IconButton edge="end" onClick={() => removeCard(columns, setColumns, columnId, card.id)}>
-          <Delete />
-        </IconButton>
+        <div>
+          <IconButton edge="end" onClick={(e) => handleMenu(e, setAnchorEl)}>
+            <MoreVert />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={() => handleClose(setAnchorEl)}
+          >
+            <MenuItem onClick={() => removeCard(columns, setColumns, columnId, card.id)}>Remove Card</MenuItem>
+            <MenuItem onClick={handleScheduleDueDate}>Schedule Due Date</MenuItem>
+          </Menu>
+        </div>
       </CardContent>
     </MuiCard>
   );

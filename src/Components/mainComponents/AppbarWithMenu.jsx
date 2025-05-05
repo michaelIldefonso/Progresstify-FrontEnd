@@ -25,7 +25,8 @@ const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user 
         <Button
           variant="outlined"
           onClick={() => navigate("/workspace")}
-          sx={{ color: darkMode ? "white" : "black", textTransform: "none" }}
+          sx={{ color: darkMode ? "white" : "black", textTransform: "none",backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)", marginRight: "3px", }}
         >
           Home
         </Button>
@@ -34,7 +35,8 @@ const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user 
             <Button
               variant="outlined"
               onClick={(e) => handleMenu(e, setAnchorEl)}
-              sx={{ color: darkMode ? "white" : "black", textTransform: "none" }}
+              sx={{ color: darkMode ? "white" : "black", textTransform: "none",backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)", }}
             >
               Account
             </Button>

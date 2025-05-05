@@ -2,15 +2,11 @@
   export const handleMenu = (event, setAnchorEl) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   // Handles the closing of a menu by clearing the anchor element
   export const handleClose = (setAnchorEl) => {
     setAnchorEl(null);
-  };
-  
-  export const toggleDrawer = (setDrawerOpen, drawerOpen) => {
-    setDrawerOpen(!drawerOpen);
-  };
+  };  
 
   // Handles the drop event when a card is dragged and dropped into a column
   export const handleDrop = (e, targetColumnId, draggingCard, columns, setColumns, setDraggingCard) => {

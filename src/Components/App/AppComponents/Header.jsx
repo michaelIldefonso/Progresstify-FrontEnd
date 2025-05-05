@@ -38,6 +38,8 @@ function Header({ darkMode, toggleDarkMode, setOpen }) {
             textTransform: "none",
             marginLeft: "10px",
             marginRight: "20px",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
           }}
         >
           Login / Sign Up

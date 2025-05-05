@@ -26,6 +26,8 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
           color: darkMode ? "#fff" : "#000",
           padding: "20px",
           borderRadius: "10px",
+          height: "450px",
+          width: "440px",
         },
       }}
     >
@@ -138,7 +140,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
               Sign in with Twitter
             </Button>
 
-            {/* Sign in or sign up button */}
+            {/* Sign in or sign up */}
             <Button
               fullWidth
               color="secondary"

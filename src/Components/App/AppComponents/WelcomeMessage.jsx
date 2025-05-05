@@ -22,6 +22,7 @@ function WelcomeMessage({ darkMode }) {
         padding: "13px",
       }}
     >
+      {/* Welcome message text */}
       <h1>Welcome to Progresstify</h1>
       <p>
         Progresstify helps you stay organized. Create boards, lists, and cards

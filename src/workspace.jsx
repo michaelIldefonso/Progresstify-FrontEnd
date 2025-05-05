@@ -8,6 +8,8 @@ import WorkspaceList from "./Components/Workspace/WorkspaceComponents/workspaceL
 import { fetchUserData, fetchWorkspaces } from "./Components/Functions/fetchFunctions";
 
 function Workspaces() {
+  // Hooks
+  // useState is a React hook that allows you to add state to your functional components.
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
@@ -45,11 +47,14 @@ function Workspaces() {
           overflow: "hidden",
         }}
       >
+        {/* AppBarWithMenu is a custom component that renders the app bar with a menu. It takes user, anchorEl, setAnchorEl, and navigate as props. */}
         <AppBarWithMenu user={user} anchorEl={anchorEl} setAnchorEl={setAnchorEl} navigate={navigate} />
 
+        {/* CreateWorkspaceCard is a custom component that renders a card for creating a workspace. It takes setOpen as a prop to control the modal state. */}
         <CreateWorkspaceCard setOpen={setOpen} />
 
         <WorkspaceModal
+        // WorkspaceModal is a custom component that renders a modal for creating or editing a workspace. It takes various props to control its behavior.
           open={open}
           setOpen={setOpen}
           workspaceName={workspaceName}
@@ -61,7 +66,7 @@ function Workspaces() {
           setWorkspaces={setWorkspaces}
           workspaces={workspaces}
         />
-
+        {/* The Grid component is a layout component from Material-UI that allows for responsive grid layouts. It is used here to create a grid of workspaces. */}
         <Grid container spacing={3} justifyContent="center" sx={{ mt: 4 }}>
           {workspaces.length > 0 ? (
             <WorkspaceList workspaces={workspaces} setWorkspaces={setWorkspaces} navigate={navigate} />

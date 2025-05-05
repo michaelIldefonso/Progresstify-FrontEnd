@@ -22,14 +22,14 @@ export const createCustomTheme = (darkMode) => {
         styleOverrides: {
           root: {
             margin: "8px 0",
-            borderRadius: "24px", // Making buttons rounder
+            borderRadius: "24px", 
           },
         },
       },
       MuiCheckbox: {
         styleOverrides: {
           root: {
-            borderRadius: "50%", // Making checkboxes round
+            borderRadius: "50%", 
           },
         },
       },
@@ -37,6 +37,7 @@ export const createCustomTheme = (darkMode) => {
   });
 };
 
+// Custom React hook to persist the state of dark mode in localStorage whenever it changes
 export const useDarkModeEffect = (darkMode) => {
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));

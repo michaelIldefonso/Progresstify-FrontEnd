@@ -5,6 +5,7 @@ import PropTypes from "prop-types"; // Import PropTypes
 
 function Header({ darkMode, toggleDarkMode, setOpen }) {
   return (
+    // Positioning the buttons at the top right of the page
     <div
       style={{
         position: "absolute",
@@ -23,9 +24,11 @@ function Header({ darkMode, toggleDarkMode, setOpen }) {
           alignItems: "center",
         }}
       >
+        {/* Dark mode toggle button */}
         <IconButton onClick={toggleDarkMode} sx={{ color: darkMode ? "#fff" : "#000" }}>
           {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
         </IconButton>
+        {/* Login / Sign Up button */}
         <Button
           variant="outlined"
           onClick={() => setOpen(true)}

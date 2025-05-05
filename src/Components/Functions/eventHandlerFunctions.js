@@ -98,7 +98,7 @@ export const handleSubmit = (e, isSignUp, formData, setOpen) => {
 };
 
 export const handleScheduleDueDate = () => {
-  handleMenuClose();
+  handleClose();
   // Implement scheduling logic here
   const dueDate = prompt("Enter the due date (e.g., YYYY-MM-DD):");
   if (dueDate) {

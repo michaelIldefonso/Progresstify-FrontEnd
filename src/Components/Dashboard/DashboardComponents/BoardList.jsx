@@ -18,7 +18,7 @@ const BoardListComponent = ({
   handleNameChange,
   handleNameSave,
   handleEditClick,
-  deleteBoard, // Ensure deleteBoard is passed as a prop
+  deleteBoard, 
 }) => (
   <div
     style={{

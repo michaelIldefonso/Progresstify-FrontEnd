@@ -1,9 +1,11 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Base URL for the API
 
+// Retrieves the authentication token from localStorage
 const getAuthToken = () => {
   return localStorage.getItem('token'); // Adjust this based on where you store your token
 };
 
+// A utility function for making authenticated fetch requests
 const authFetch = async (url, options = {}) => {
   const token = getAuthToken();
   const headers = {
@@ -12,6 +14,7 @@ const authFetch = async (url, options = {}) => {
     'Authorization': `Bearer ${token}`
   };
 
+// Utility function to handle fetch requests, throwing an error for non-OK responses and returning JSON
   const response = await fetch(url, { ...options, headers });
   if (!response.ok) {
     const errorText = await response.text();
@@ -20,6 +23,7 @@ const authFetch = async (url, options = {}) => {
   return response.json();
 };
 
+// Loads boards for a specific workspace, updates the state with the boards, and sets the active board if an ID is provided
 export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => {
   try {
     const savedBoards = await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`);
@@ -37,6 +41,7 @@ export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => 
   }
 };
 
+// Creates a new board in the specified workspace, updates the boards state, and closes the modal
 export const createBoard = async (workspaceId, boards, setBoards, boardName, setBoardName, setModalOpen) => {
   try {
     if (!workspaceId) {
@@ -59,21 +64,25 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
   }
 };
 
+// Handles board selection, sets the active board, and navigates to its page
 export const selectBoard = (board, setActiveBoard, setEditingBoardId, navigate) => {
   setActiveBoard(board);
   setEditingBoardId(null);
   navigate(`/board/${board.id}`);
 };
 
+// Handles the click event to edit a board's name
 export const handleEditClick = (board, setEditingBoardId, setBoardName) => {
   setEditingBoardId(board.id);
   setBoardName(board.name);
 };
 
+// Handles changes to the board name input field
 export const handleNameChange = (e, setBoardName) => {
   setBoardName(e.target.value);
 };
 
+// Saves the updated board name and updates the board list state
 export const handleNameSave = async (workspaceId, board, boards, setBoards, boardName, setEditingBoardId) => {
   try {
     await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${board.id}`, {
@@ -88,6 +97,7 @@ export const handleNameSave = async (workspaceId, board, boards, setBoards, boar
   }
 };
 
+// Deletes a board and updates the board list state
 export const deleteBoard = async (workspaceId, boardId, boards, setBoards) => {
   try {
     await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${boardId}`, {

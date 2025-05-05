@@ -22,13 +22,13 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
           draggable onDragStart={(e) => handleCardDragStart(e, card.id, columnId, setDraggingCard)}>
 
             <CardContent   //this is the style for content inside the card
-                         sx={{ 
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center", 
-                              borderRadius: "10px",
-                              padding: "center",
-                            }}>
+              sx={{ 
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center", 
+                borderRadius: "10px",
+                padding: "center",
+              }}>           
 
         <FormControlLabel 
         control={<Checkbox checked={card.checked} 
@@ -53,6 +53,7 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
                         {card.text}</Typography>} />
 
         <div>
+          {/* This icon button is used to open the menu for card options */}
           <IconButton edge="end" onClick={(e) => handleMenu(e, setAnchorEl)}>
             <MoreVert />
           </IconButton>

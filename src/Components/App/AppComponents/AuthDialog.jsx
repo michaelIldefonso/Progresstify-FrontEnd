@@ -7,8 +7,8 @@ import {
   Button,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import PropTypes from "prop-types"; // Import PropTypes
-import FacebookIcon from "@mui/icons-material/Facebook"; // Import FacebookIcon
+import PropTypes from "prop-types"; 
+import FacebookIcon from "@mui/icons-material/Facebook"; 
 import GitHubIcon from "@mui/icons-material/GitHub";
 import TwitterIcon from "@mui/icons-material/Twitter";
 

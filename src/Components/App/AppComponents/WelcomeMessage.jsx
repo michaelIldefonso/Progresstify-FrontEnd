@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types"; 
 
 function WelcomeMessage({ darkMode }) {
   return (

@@ -17,6 +17,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
   return (
     <Dialog
+    //Pop up for sign in and sign up
       open={open}
       onClose={() => setOpen(false)}
       PaperProps={{
@@ -28,6 +29,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
         },
       }}
     >
+      {/*sign in and sign up */}
       <DialogTitle
         align="center"
         sx={{
@@ -44,7 +46,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
               backgroundColor: "transparent",
             }}
           >
-
+            {/* Google login option */}
             <Button
               fullWidth
               onClick={() => window.open(`${API_BASE_URL}/auth/google`, "_self")}
@@ -67,6 +69,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
               Sign in with Google
             </Button>
 
+            {/* Facebook login option */}
             <Button
               fullWidth
               onClick={() => window.open(`${API_BASE_URL}/auth/facrbook`, "_self")}
@@ -89,6 +92,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
               Sign in with Facbook
             </Button>
 
+            {/* GitHub login option */}
             <Button
               fullWidth
               onClick={() => window.open(`${API_BASE_URL}/auth/GitHub`, "_self")}
@@ -111,6 +115,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
               Sign in with Github
             </Button>
 
+            {/* Twitter login option */}
             <Button
               fullWidth
               onClick={() => window.open(`${API_BASE_URL}/auth/Twitter`, "_self")}
@@ -133,8 +138,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
               Sign in with Twitter
             </Button>
 
-
-
+            {/* Sign in or sign up button */}
             <Button
               fullWidth
               color="secondary"

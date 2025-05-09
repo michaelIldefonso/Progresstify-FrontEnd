@@ -1,11 +1,11 @@
 import React from "react";
 import { Card, CardContent, IconButton, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { handleCreateWorkspace } from "../WorkspaceFunctions/createWorkspaceFunctions";
+
 
 const CreateWorkspaceCard = ({ setOpen }) => (
 <Card
-    onClick={() => handleCreateWorkspace(setOpen)}
+    onClick={() => setOpen(true)}
     sx={{
     width: 300,
     cursor: "pointer",

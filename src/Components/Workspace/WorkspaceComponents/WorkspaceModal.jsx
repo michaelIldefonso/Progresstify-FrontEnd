@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Paper, Typography, TextField, Button } from "@mui/material";
-import { handleCloseModal, handleSubmit, handleDescriptionChange } from "../WorkspaceFunctions/createWorkspaceFunctions";
+import { handleSubmit, handleDescriptionChange } from "../WorkspaceFunctions/createWorkspaceFunctions";
 
 const WorkspaceModal = ({
     open,
@@ -14,7 +14,7 @@ const WorkspaceModal = ({
     setWorkspaces,
     workspaces,
 }) => (
-    <Modal open={open} onClose={() => handleCloseModal(setOpen)}>
+    <Modal open={open} onClose={() => setOpen(false)}>
         <Paper
         sx={{
             position: "absolute",

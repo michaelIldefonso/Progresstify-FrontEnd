@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Column from "./Column";
 import { handleAddColumn, handleColumnsScroll, getColumns } from "../BoardFunctions/columnFunctions";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types"; 
 
 const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCard, draggingColumn, setDraggingColumn, darkMode }) => {
   const columnsContainerRef = useRef(null);
@@ -15,9 +15,13 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
   }, [id, setColumns]);
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 3, marginTop: "140px", transition: "margin-left 0.3s",
-      
+    // Main container for the column list
+    <Box sx={{ flexGrow: 1,
+               padding: 3, 
+               marginTop: "140px", 
+               transition: "margin-left 0.3s",
      }}>
+      
       <div style={{ height: "calc(100% - 60px)" }}>
         <Box
           sx={{
@@ -27,6 +31,7 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
             transition: "left 0.3s",
           }}
         >
+          {/* Button to add a new column */}
           <Button
             variant="contained"
             startIcon={<Add />}
@@ -56,16 +61,16 @@ const ColumnList = memo(({ id, columns, setColumns, draggingCard, setDraggingCar
         >
           {columns.map((column) => (
             <Column
-              key={column.id}
-              column={column}
-              id={id}
-              columns={columns}
-              setColumns={setColumns}
-              draggingCard={draggingCard}
-              setDraggingCard={setDraggingCard}
-              draggingColumn={draggingColumn}
-              setDraggingColumn={setDraggingColumn}
-              darkMode={darkMode}
+              key={column.id} // Unique key for each column to help React optimize rendering
+              column={column} // Pass the current column's data as a prop
+              id={id} // Pass the board ID or unique identifier as a prop
+              columns={columns} // Pass the entire columns state for managing multiple columns
+              setColumns={setColumns} // Function to update the columns state
+              draggingCard={draggingCard} // The currently dragged card (if any)
+              setDraggingCard={setDraggingCard} // Function to update the dragging card state
+              draggingColumn={draggingColumn} // The currently dragged column (if any)
+              setDraggingColumn={setDraggingColumn} // Function to update the dragging column state
+              darkMode={darkMode} // Boolean flag to apply dark mode styling
             />
           ))}
         </Box>

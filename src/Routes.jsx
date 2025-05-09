@@ -5,6 +5,7 @@ import Workspace from "./workspace";
 import Dashboard from "./dashboard";
 
 const AppRoutes = () => {
+  // Define your routes here
   return (
     <Routes>
         <Route path="/" element={<App />} />

@@ -32,6 +32,7 @@ const CardList = ({
         "&::-webkit-scrollbar-track": { backgroundColor: "transparent" },
       }}
     >
+      {/* Input field for adding a new card */}
       {column.isAddingCard && (
         <TextField
           fullWidth
@@ -72,14 +73,14 @@ const CardList = ({
       )}
       {sortedCards.map((card) => (
         <Card
-          key={`${column.id}-${card.id}`} // Ensure unique keys by combining column ID and card ID
-          card={card}
-          columnId={column.id}
-          columns={columns}
-          setColumns={setColumns}
-          draggingCard={draggingCard}
-          setDraggingCard={setDraggingCard}
-          darkMode={darkMode}
+          key={`${column.id}-${card.id}`} // Unique key for each card by combining column and card IDs
+          card={card} // Pass the card object containing its data
+          columnId={column.id} // The ID of the column this card belongs to
+          columns={columns} // The current state of all columns
+          setColumns={setColumns} // Function to update the columns state
+          draggingCard={draggingCard} // The card currently being dragged (if any)
+          setDraggingCard={setDraggingCard} // Function to update the dragging card state
+          darkMode={darkMode} // Dark mode flag for styling
         />
       ))}
       <Button

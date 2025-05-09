@@ -1,10 +1,11 @@
 import { Button, IconButton } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types"; 
 
 function Header({ darkMode, toggleDarkMode, setOpen }) {
   return (
+    // Positioning the buttons at the top right of the page
     <div
       style={{
         position: "absolute",
@@ -23,9 +24,11 @@ function Header({ darkMode, toggleDarkMode, setOpen }) {
           alignItems: "center",
         }}
       >
+        {/* Dark mode toggle button */}
         <IconButton onClick={toggleDarkMode} sx={{ color: darkMode ? "#fff" : "#000" }}>
           {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
         </IconButton>
+        {/* Login / Sign Up button */}
         <Button
           variant="outlined"
           onClick={() => setOpen(true)}
@@ -35,6 +38,8 @@ function Header({ darkMode, toggleDarkMode, setOpen }) {
             textTransform: "none",
             marginLeft: "10px",
             marginRight: "20px",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
           }}
         >
           Login / Sign Up

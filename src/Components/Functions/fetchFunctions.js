@@ -1,20 +1,28 @@
-import axios from "axios";
+import axios from "axios";// Importing Axios, a promise-based HTTP client for making API requests
+
+// Fetches user data from the API and updates the user state
 export const fetchUserData = (location, navigate, setUser) => {
     const urlParams = new URLSearchParams(location.search);
     const token = urlParams.get("token");
-  
+
+    // Store token in localStorage if found in URL
     if (token) {
       localStorage.setItem("token", token);
+
+      // Replace the URL with a static path
+      window.history.replaceState({}, document.title, "/workspace");
     }
   
     const storedToken = localStorage.getItem("token");
-  
+
+    // Redirect to home page if no token is found
     if (!storedToken) {
       console.error("No token found, redirecting...");
       navigate("/");
       return;
     }
-  
+
+    // Make an API request to fetch user data
     axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, { 
       withCredentials: true,
       headers: { Authorization: `Bearer ${storedToken}` },
@@ -28,16 +36,19 @@ export const fetchUserData = (location, navigate, setUser) => {
         navigate("/");
       });
   };
-  
+
+  // Fetches workspaces from the API and updates the workspaces state
   export const fetchWorkspaces = (navigate, setWorkspaces) => {
     const storedToken = localStorage.getItem("token");
   
+    // Redirect to home page if no token is found
     if (!storedToken) {
       console.error("No token found, redirecting...");
       navigate("/");
       return;
     }
   
+     // Make an API request to fetch workspaces
     axios
       .get(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces`, {
         withCredentials: true,

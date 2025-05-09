@@ -1,15 +1,14 @@
-export const handleMenu = (event, setAnchorEl) => {
+  // Handles the opening of a menu by setting the anchor element
+  export const handleMenu = (event, setAnchorEl) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
+  // Handles the closing of a menu by clearing the anchor element
   export const handleClose = (setAnchorEl) => {
     setAnchorEl(null);
-  };
-  
-  export const toggleDrawer = (setDrawerOpen, drawerOpen) => {
-    setDrawerOpen(!drawerOpen);
-  };
-  
+  };  
+
+  // Handles the drop event when a card is dragged and dropped into a column
   export const handleDrop = (e, targetColumnId, draggingCard, columns, setColumns, setDraggingCard) => {
     e.preventDefault();
     if (!draggingCard) return;
@@ -21,15 +20,19 @@ export const handleMenu = (event, setAnchorEl) => {
       setDraggingCard(null);
       return;
     }
-  
+
+    // Find the source column and target column
     const sourceColumn = columns.find((col) => col.id === columnId);
     const targetColumn = columns.find((col) => col.id === targetColumnId);
-  
+
+    // Find the card being moved
     const card = sourceColumn.cards.find((c) => c.id === cardId);
-  
+
+    // Remove the card from the source column and add it to the target column
     const updatedSourceCards = sourceColumn.cards.filter((c) => c.id !== cardId);
     const updatedTargetCards = [...targetColumn.cards, card];
-  
+
+     // Update the columns with the new card positions
     const updatedColumns = columns.map((col) => {
       if (col.id === columnId) {
         return { ...col, cards: updatedSourceCards };
@@ -44,6 +47,7 @@ export const handleMenu = (event, setAnchorEl) => {
     setDraggingCard(null);
   };
 
+// Handles the change event for a checkbox, updating the 'checked' status of a specific card in a specific column
 export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
   setColumns((prevColumns) =>
     prevColumns.map((col) =>
@@ -98,7 +102,7 @@ export const handleSubmit = (e, isSignUp, formData, setOpen) => {
 };
 
 export const handleScheduleDueDate = () => {
-  handleMenuClose();
+  handleClose();
   // Implement scheduling logic here
   const dueDate = prompt("Enter the due date (e.g., YYYY-MM-DD):");
   if (dueDate) {

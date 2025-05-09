@@ -12,6 +12,7 @@ const BoardModalComponent = ({
   setBoards,
   darkMode,
 }) => (
+  // Modal component for creating a new board
   <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
     <Paper
       sx={{

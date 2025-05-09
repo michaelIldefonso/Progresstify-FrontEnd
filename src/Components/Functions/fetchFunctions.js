@@ -8,6 +8,9 @@ export const fetchUserData = (location, navigate, setUser) => {
     // Store token in localStorage if found in URL
     if (token) {
       localStorage.setItem("token", token);
+
+      // Replace the URL with a static path
+      window.history.replaceState({}, document.title, "/workspace");
     }
   
     const storedToken = localStorage.getItem("token");

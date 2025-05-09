@@ -99,31 +99,31 @@ export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
   columnsFetchedRef.current = true; // Mark as fetched to prevent duplicate requests
 
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns-with-cards`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Failed to load columns with cards: ${errorText}`);
-      throw new Error(`Failed to load columns with cards: ${errorText}`);
+      throw new Error(`Failed to load columns with cards: ${await response.text()}`);
     }
 
     const columnsWithCards = await response.json();
-    if (Array.isArray(columnsWithCards)) {
-      setColumns(columnsWithCards.map(col => ({
+    setColumns(
+      columnsWithCards.map((col) => ({
         ...col,
+        cards: col.cards.map((card) => ({
+          ...card,
+          dueDate: card.due_date, // Map `due_date` to `dueDate`
+        })),
         isEditing: false,
         newCardText: "",
-        isAddingCard: false
-      })));
-    } else {
-      console.error("Failed to load columns with cards: response is not an array");
-    }
+        isAddingCard: false,
+      }))
+    );
   } catch (error) {
     if (columnsFetchedRef) columnsFetchedRef.current = false; // Revert if fetch fails
     console.error("Failed to load columns with cards:", error);

@@ -12,6 +12,7 @@ const CardList = ({
   draggingCard,
   setDraggingCard,
 }) => {
+  const sortedCards = [...column.cards].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
   return (
     <Box
       className="card-list"
@@ -69,7 +70,7 @@ const CardList = ({
               }}
         />
       )}
-      {column.cards.map((card) => (
+      {sortedCards.map((card) => (
         <Card
           key={`${column.id}-${card.id}`} // Ensure unique keys by combining column ID and card ID
           card={card}
@@ -117,6 +118,7 @@ CardList.propTypes = {
         id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
         checked: PropTypes.bool.isRequired,
+        dueDate: PropTypes.string, // Ensure dueDate is a string
       })
     ).isRequired,
   }).isRequired,

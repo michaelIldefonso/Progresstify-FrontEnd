@@ -342,3 +342,38 @@ export const startAddingCard = (columnId, columns, setColumns) => {
     )
   );
 };
+
+// Update a card's due date
+export const updateCardDueDate = async (cardId, dueDate, columns, setColumns, columnId) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/cards/${cardId}/due-date`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ dueDate }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update due date");
+
+    const updatedCard = await response.json();
+
+    // Update the state
+    setColumns((prevColumns) =>
+      prevColumns.map((col) =>
+        col.id === columnId
+          ? {
+              ...col,
+              cards: col.cards.map((card) =>
+                card.id === cardId ? { ...card, dueDate: updatedCard.dueDate } : card
+              ),
+            }
+          : col
+      )
+    );
+  } catch (error) {
+    console.error("Error updating due date:", error);
+  }
+};

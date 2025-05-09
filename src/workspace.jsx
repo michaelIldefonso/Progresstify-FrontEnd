@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CssBaseline, GlobalStyles, Grid, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import AppBarWithMenu from "./Components/mainComponents/AppbarWithMenu";
+import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
 import CreateWorkspaceCard from "./Components/Workspace/WorkspaceComponents/createWorkspaceCard";
 import WorkspaceModal from "./Components/Workspace/WorkspaceComponents/WorkspaceModal";
 import WorkspaceList from "./Components/Workspace/WorkspaceComponents/workspaceList";

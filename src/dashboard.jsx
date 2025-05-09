@@ -11,7 +11,7 @@ import { handleMenu, handleClose,} from "./Components/Functions/eventHandlerFunc
 import { handleLogout } from "./Components/Functions/navigationFunctions";
 import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import { useDarkModeEffect } from "./Components/Functions/themeFunctions";
-import AppbarWithMenu  from "./Components/mainComponents/AppbarWithMenu";
+import AppbarWithMenu  from "./Components/AppBar/AppbarWithMenu";
 import BoardList  from "./Components/Dashboard/DashboardComponents/BoardList";
 import BoardModal  from "./Components/Dashboard/DashboardComponents/BoardModal";
 

@@ -3,7 +3,7 @@ import { Box, ThemeProvider } from "@mui/material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import { useColumnsEffect, useFetchUserEffect, useFetchColumnsEffect, useScrollBarEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
-import AppBarWithMenu from "./Components/mainComponents/AppbarWithMenu";
+import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
 import ColumnList from "./Components/Board/BoardComponents/Columnlist";
 import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar";
 import { handleWheelScroll } from "./Components/Functions/eventHandlerFunctions";

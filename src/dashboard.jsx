@@ -31,6 +31,7 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null); // Anchor element for menu
   const navigate = useNavigate(); // Navigation hook
+   // Define loading state
 
   useEffect(() => {
     loadBoards(workspaceId, setBoards, setActiveBoard);
@@ -56,7 +57,7 @@ const Dashboard = () => {
       <AppbarWithMenu
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
-        navigate={navigate}
+        navigate={navigate} 
         user={user}
         anchorEl={anchorEl}
         handleMenu={handleMenu}
@@ -86,7 +87,7 @@ const Dashboard = () => {
           minHeight: "100vh" 
           }}>
           {activeBoard ? (
-            <Typography variant="h4">Board: {activeBoard.name}</Typography>
+            null
           ) : (
             <BoardList
               boards={boards}

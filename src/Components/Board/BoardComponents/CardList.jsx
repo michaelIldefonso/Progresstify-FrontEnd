@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Skeleton } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
 import { handleCardInputChange, addCard, startAddingCard } from "../BoardFunctions/cardFunctions";
@@ -11,6 +11,7 @@ const CardList = ({
   darkMode,
   draggingCard,
   setDraggingCard,
+  isLoading,
 }) => {
   const sortedCards = [...column.cards].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
   return (
@@ -127,6 +128,7 @@ CardList.propTypes = {
   darkMode: PropTypes.bool.isRequired,
   draggingCard: PropTypes.object,
   setDraggingCard: PropTypes.func,
+  isloading: PropTypes.bool, // Add loading prop
 };
 
 export default CardList;

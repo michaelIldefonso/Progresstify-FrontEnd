@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import PropTypes from "prop-types"; 
+import PropTypes from "prop-types"; // Import PropTypes
 
 function WelcomeMessage({ darkMode }) {
   return (
@@ -22,7 +22,6 @@ function WelcomeMessage({ darkMode }) {
         padding: "13px",
       }}
     >
-      {/* Welcome message text */}
       <h1>Welcome to Progresstify</h1>
       <p>
         Progresstify helps you stay organized. Create boards, lists, and cards

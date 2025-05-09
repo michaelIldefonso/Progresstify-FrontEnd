@@ -32,29 +32,24 @@ const Dashboard = () => {
   const [anchorEl, setAnchorEl] = useState(null); // Anchor element for menu
   const navigate = useNavigate(); // Navigation hook
 
-  // Function to handle menu opening
   useEffect(() => {
     loadBoards(workspaceId, setBoards, setActiveBoard);
   }, [workspaceId]);
 
-  // Function to handle board selection
   useEffect(() => {
     fetchUserData(location, navigate, setUser);
   }, [navigate]);
 
-  // Function to handle board selection
   const theme = createCustomTheme(darkMode);
 
   // Use useEffect to update local storage whenever darkMode changes
   useDarkModeEffect(darkMode, setDarkMode);
 
-  // Function to handle board creation
   const toggleDarkMode = () => {
     setDarkMode(!darkMode); // Toggle dark mode state
   };
 
   return (
-    // ThemeProvider to apply custom theme
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <GlobalStyles styles={{ body: { overflow: "hidden" } }} />
@@ -71,7 +66,6 @@ const Dashboard = () => {
        
       />
       <Box
-        // Main container for the dashboard
         sx={{
           display: "flex",
           position: "relative",
@@ -85,9 +79,7 @@ const Dashboard = () => {
           overflow: "hidden",
         }}
       >
-      
         <Box component="main" 
-        // Main content area
         sx={{ 
           flexGrow: 1, 
           p: 3, mt: 8, 
@@ -96,9 +88,7 @@ const Dashboard = () => {
           {activeBoard ? (
             <Typography variant="h4">Board: {activeBoard.name}</Typography>
           ) : (
-            
             <BoardList
-            // Board list component
               boards={boards}
               activeBoard={activeBoard}
               editingBoardId={editingBoardId}
@@ -120,7 +110,6 @@ const Dashboard = () => {
           )}
         </Box>
         <BoardModal
-        // Board modal component
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
           boardName={boardName}

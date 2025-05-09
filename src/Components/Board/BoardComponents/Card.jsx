@@ -48,52 +48,68 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
   };
 
   return (
-    <MuiCard 
-    //style for card inside the column
-    sx={{ marginBottom: 1, 
-          backgroundColor: darkMode ? "rgba(15, 15, 20, 0.78)":"rgb(234, 170, 102)",
-          willChange: "transform", 
-          transition: "transform 0.3s", 
-          "&:hover": { transform: "scale(1.005)" }, 
-          borderRadius: "15px",
-          marginTop: "5px",
-          height: "auto",
-         }} 
-          draggable onDragStart={(e) => handleCardDragStart(e, card.id, columnId, setDraggingCard)}>
-
-            <CardContent   //this is the style for content inside the card
-              sx={{ 
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center", 
-                borderRadius: "10px",
-                padding: "center",
-              }}>           
-
-        <FormControlLabel 
-        control={<Checkbox checked={card.checked} 
-        onChange={(e) => handleCheckboxChange(columnId, card.id, e.target.checked, setColumns)} 
-                      //this is the style for checkbox
-                  sx={{ 
-                        borderRadius: "50%",
-                        color: darkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.6)", // Default color
-                        "&.Mui-checked": {
-                          color: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)", // Color when checked
-                        },
-                    }} />} label={<Typography 
-                      //this is the style for text inside the card
-                  sx={{ 
-                        wordBreak: "break-word",
-                        fontSize: "18px",
-                        fontWeight: "bold",
-                        color: darkMode ? "#fff" : "#000",
-                        textAlign:"center",
-                        fontFamily: '"Times New Roman", Times, serif',   
-                      }}>
-                        {card.text}</Typography>} />
+    <MuiCard
+      sx={{
+        marginBottom: 1,
+        backgroundColor: darkMode ? "rgba(15, 15, 20, 0.78)" : "rgb(234, 170, 102)",
+        willChange: "transform",
+        transition: "transform 0.3s",
+        "&:hover": { transform: "scale(1.005)" },
+        borderRadius: "15px",
+        marginTop: "5px",
+        height: "auto",
+      }}
+      draggable
+      onDragStart={(e) => handleCardDragStart(e, card.id, columnId, setDraggingCard)}
+    >
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderRadius: "10px",
+          padding: "center",
+        }}
+      >
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={card.checked}
+              onChange={(e) =>
+                handleCheckboxChange(columnId, card.id, e.target.checked, setColumns)
+              }
+              sx={{
+                borderRadius: "50%",
+                color: darkMode ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.6)",
+                "&.Mui-checked": {
+                  color: darkMode ? "rgb(7, 110, 193)" : "rgb(220, 110, 35)",
+                },
+              }}
+            />
+          }
+          label={
+            <Typography
+              sx={{
+                wordBreak: "break-word",
+                fontSize: "18px",
+                fontWeight: "bold",
+                color: darkMode ? "#fff" : "#000",
+                textAlign: "center",
+                fontFamily: '"Times New Roman", Times, serif',
+              }}
+            >
+              {card.text}
+            </Typography>
+          }
+        />
 
         <div>
-          {/* This icon button is used to open the menu for card options */}
+          <DatePicker
+            label="Due Date"
+            value={card.dueDate ? dayjs(card.dueDate) : null} // Ensure `dueDate` is a Day.js object
+            onChange={(newDate) => handleDueDateChange(newDate, card.id)}
+            renderInput={(params) => <TextField {...params} />}
+          />
           <IconButton edge="end" onClick={(e) => handleMenu(e, setAnchorEl)}>
             <MoreVert />
           </IconButton>

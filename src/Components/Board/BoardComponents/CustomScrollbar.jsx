@@ -1,10 +1,9 @@
-import PropTypes from "prop-types"; 
+import PropTypes from "prop-types"; // Import PropTypes
 import { Box } from "@mui/material";
 import { handleScrollbarScroll } from "../../Functions/eventHandlerFunctions";
 
 const CustomScrollbar = ({ columns, darkMode, drawerOpen, columnsContainerRef, scrollbarRef }) => {
   return (
-    // Custom scrollbar for the columns container
     <Box
       ref={scrollbarRef}
       sx={{

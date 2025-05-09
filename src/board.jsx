@@ -37,7 +37,6 @@ const Board = () => { // Workspace board
 
   return (
     <ThemeProvider theme={theme}>
-      {/* Main container for the board */}
       <div onWheel={(e) => handleWheelScroll(e, columnsContainerRef, scrollbarRef)}>
         <Box sx={{ display: "flex",
                    position: "relative", 
@@ -47,8 +46,7 @@ const Board = () => { // Workspace board
                    minHeight: "100vh", width: "100vw", 
                    overflow: "hidden" 
                 }}>
-
-          {/* App bar with menu component */}          
+                  
           <AppBarWithMenu 
             darkMode={darkMode} 
             toggleDarkMode={() => setDarkMode((prevMode) => !prevMode)} // Fix the prop name
@@ -56,8 +54,7 @@ const Board = () => { // Workspace board
             setAnchorEl={setAnchorEl} 
             user={user} 
           />
-      
-          {/* Container for the columns */}
+
           <Box
             ref={columnsContainerRef}
             
@@ -72,7 +69,6 @@ const Board = () => { // Workspace board
               "&::-webkit-scrollbar": { display: "none" }, // Hide scrollbar (Webkit Browsers)
             }}
           >
-            {/* Inner container for the column list */}
             <Box
               sx={{
                 display: "flex",
@@ -84,8 +80,6 @@ const Board = () => { // Workspace board
               draggingColumn={draggingColumn} setDraggingColumn={setDraggingColumn} darkMode={darkMode} />
             </Box>
           </Box>  
-
-          {/* Custom scrollbar component */}
           <CustomScrollbar
             columns={columns}
             darkMode={darkMode}

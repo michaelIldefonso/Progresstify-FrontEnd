@@ -1,6 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Fetches the base URL for API requests from environment variables
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// Adds a new column to the board by sending a POST request and updates the columns state with the new column in editing mode
 export const showColumn = async (boardId, columns, setColumns) => {
   try {
     const token = localStorage.getItem('token');
@@ -26,7 +25,6 @@ export const showColumn = async (boardId, columns, setColumns) => {
   }
 };
 
-// Renames a column by updating its title locally and sending a PUT request to persist the change on the server
 export const renameColumn = async (boardId, columns, setColumns, columnId, newTitle) => {
   setColumns(
     columns.map((col) =>
@@ -55,7 +53,6 @@ export const renameColumn = async (boardId, columns, setColumns, columnId, newTi
   }
 };
 
-// Finalizes the column title by disabling the editing state if the title is non-empty
 export const finalizeColumnTitle = (columns, setColumns, columnId) => {
   setColumns(
     columns.map((col) =>
@@ -66,13 +63,11 @@ export const finalizeColumnTitle = (columns, setColumns, columnId) => {
   );
 };
 
-// Handles the start of a column drag event by setting the dragged column's ID and enabling the move effect
 export const handleColumnDragStart = (event, columnId, setDraggingColumn) => {
   setDraggingColumn(columnId);
   event.dataTransfer.effectAllowed = "move";
 };
 
-// Removes a column from the state and sends a DELETE request to the server to persist the change
 export const removeColumn = async (boardId, columnId, columns, setColumns) => {
   setColumns(columns.filter((col) => col.id !== columnId));
 
@@ -95,7 +90,6 @@ export const removeColumn = async (boardId, columnId, columns, setColumns) => {
   }
 };
 
-// Fetches columns and their associated cards for a specific board and updates the state while avoiding redundant fetches
 export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
   if (!columnsFetchedRef || columnsFetchedRef.current) {
     console.log("Columns fetch skipped because columnsFetchedRef is already true or undefined.");
@@ -136,7 +130,6 @@ export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
   }
 };
 
-// Adds a new column and scrolls to the end of the container to display it
 export const handleAddColumn = async (id, columns, setColumns, columnsContainerRef) => {
   await showColumn(id, columns, setColumns);
   if (columnsContainerRef.current) {
@@ -144,7 +137,6 @@ export const handleAddColumn = async (id, columns, setColumns, columnsContainerR
   }
 };
 
-// Synchronizes the scroll position of the custom scrollbar with the main container's horizontal scroll
 export const handleColumnsScroll = (e, scrollbarRef) => {
   if (scrollbarRef.current) {
     scrollbarRef.current.scrollLeft = e.target.scrollLeft;

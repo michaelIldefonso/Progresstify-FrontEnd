@@ -18,9 +18,8 @@ const BoardListComponent = ({
   handleNameChange,
   handleNameSave,
   handleEditClick,
-  deleteBoard, 
+  deleteBoard, // Ensure deleteBoard is passed as a prop
 }) => (
-  // style for positioning the board list in the center of the page
   <div
     style={{
       padding: "40px",
@@ -34,7 +33,6 @@ const BoardListComponent = ({
     <Typography variant="h4" sx={{ color: darkMode ? "white" : "black" }}>
       Select or Create a Board
     </Typography>
-    {/* Button to create a new board */}
     <Button
       variant="contained"
       color="primary"
@@ -57,7 +55,6 @@ const BoardListComponent = ({
     >
       Create Board
     </Button>
-    {/* List of boards styles */}
     {boards.map((board) => (
       <ListItem
         component="div"
@@ -81,7 +78,6 @@ const BoardListComponent = ({
           <DashboardIcon />
         </ListItemIcon>
         {editingBoardId === board.id ? (
-           // If the current board is being edited, show an input field
           <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
             <TextField
               value={boardName}

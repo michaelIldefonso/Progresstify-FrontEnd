@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 export const handleMenu = (event, setAnchorEl) => {
     setAnchorEl(event.currentTarget);
   };
@@ -106,3 +108,16 @@ export const handleScheduleDueDate = () => {
     alert(`Scheduled Due Date: ${dueDate}`);
   }
 };
+
+export const useTimer = (delay = 2000) => {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [delay]);
+  return isReady;
+}

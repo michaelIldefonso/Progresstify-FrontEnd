@@ -4,6 +4,7 @@ import Header from "./Components/App/AppComponents/Header";
 import WelcomeMessage from "./Components/App/AppComponents/WelcomeMessage";
 import AuthDialog from "./Components/App/AppComponents/AuthDialog";
 
+
 function App() {
   const [open, setOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);

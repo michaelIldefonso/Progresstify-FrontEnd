@@ -59,13 +59,16 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
   }
 };
 
-export const selectBoard = (board, setActiveBoard, setEditingBoardId, navigate, setLoading) => {
+export const selectBoard = async (board, setActiveBoard, setEditingBoardId, navigate, setLoading) => {
   if (setLoading) setLoading(true); // Ensure setLoading is called only if defined
   setActiveBoard(board);
   setEditingBoardId(null);
-  navigate(`/board/${board.id}`).finally(() => {
+
+  try {
+    await navigate(`/board/${board.id}`); // Await the navigation
+  } finally {
     if (setLoading) setLoading(false); // Reset loading state after navigation
-  });
+  }
 };
 
 export const handleEditClick = (board, setEditingBoardId, setBoardName) => {

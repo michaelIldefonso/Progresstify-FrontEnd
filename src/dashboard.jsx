@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import {
-  CssBaseline, GlobalStyles, Box, Typography } from "@mui/material";
+  CssBaseline, GlobalStyles, Box, Skeleton } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
 import {
   loadBoards, createBoard, selectBoard, handleEditClick, handleNameChange, handleNameSave, deleteBoard
 } from "./Components/Dashboard/DashboardFunctions/dashboardFunctions";
-import { handleMenu, handleClose,} from "./Components/Functions/eventHandlerFunctions";
+import { handleMenu, handleClose, useTimer } from "./Components/Functions/eventHandlerFunctions";
 import { handleLogout } from "./Components/Functions/navigationFunctions";
 import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import { useDarkModeEffect } from "./Components/Functions/themeFunctions";
@@ -31,6 +31,7 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null); // Anchor element for menu
   const navigate = useNavigate(); // Navigation hook
+  const loading = !useTimer(2000); // Loading state for 2 seconds
    // Define loading state
 
   useEffect(() => {
@@ -57,14 +58,13 @@ const Dashboard = () => {
       <AppbarWithMenu
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
-        navigate={navigate} 
+        navigate={navigate}
         user={user}
         anchorEl={anchorEl}
         handleMenu={handleMenu}
         handleClose={handleClose}
         handleLogout={handleLogout}
         setAnchorEl={setAnchorEl}
-       
       />
       <Box
         sx={{
@@ -80,36 +80,55 @@ const Dashboard = () => {
           overflow: "hidden",
         }}
       >
-        <Box component="main" 
-        sx={{ 
-          flexGrow: 1, 
-          p: 3, mt: 8, 
-          minHeight: "100vh" 
-          }}>
-          {activeBoard ? (
-            null
-          ) : (
-            <BoardList
-              boards={boards}
-              activeBoard={activeBoard}
-              editingBoardId={editingBoardId}
-              boardName={boardName}
-              setBoardName={setBoardName}
-              setModalOpen={setModalOpen}
-              darkMode={darkMode}
-              setEditingBoardId={setEditingBoardId}
-              navigate={navigate}
-              workspaceId={workspaceId}
-              setActiveBoard={setActiveBoard}
-              setBoards={setBoards}
-              selectBoard={selectBoard}
-              handleNameChange={handleNameChange}
-              handleNameSave={handleNameSave}
-              handleEditClick={handleEditClick}
-              deleteBoard={deleteBoard}
-            />
-          )}
-        </Box>
+        {loading ? (
+          // Skeleton Loader
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100vh",
+            }}
+          >
+            <Skeleton height={50} width={300} style={{ marginBottom: "1rem" }} />
+            <Skeleton height={30} width={200} style={{ marginBottom: "1rem" }} />
+            <Skeleton height={400} width={600} />
+          </Box>
+        ) : (
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 3,
+              mt: 8,
+              minHeight: "100vh",
+            }}
+          >
+            {activeBoard ? null : (
+              <BoardList
+                boards={boards}
+                activeBoard={activeBoard}
+                editingBoardId={editingBoardId}
+                boardName={boardName}
+                setBoardName={setBoardName}
+                setModalOpen={setModalOpen}
+                darkMode={darkMode}
+                setEditingBoardId={setEditingBoardId}
+                navigate={navigate}
+                workspaceId={workspaceId}
+                setActiveBoard={setActiveBoard}
+                setBoards={setBoards}
+                selectBoard={selectBoard}
+                handleNameChange={handleNameChange}
+                handleNameSave={handleNameSave}
+                handleEditClick={handleEditClick}
+                deleteBoard={deleteBoard}
+              />
+            )}
+          </Box>
+        )}
         <BoardModal
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}

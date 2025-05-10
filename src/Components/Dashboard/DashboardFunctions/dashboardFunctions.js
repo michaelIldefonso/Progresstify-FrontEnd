@@ -1,32 +1,17 @@
+import { apiClient } from "../../../utils/auth";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Base URL for the API
-
-const getAuthToken = () => {
-  return localStorage.getItem('token'); // Adjust this based on where you store your token
-};
-
-const authFetch = async (url, options = {}) => {
-  const token = getAuthToken();
-  const headers = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-    'Authorization': `Bearer ${token}`
-  };
-
-  const response = await fetch(url, { ...options, headers });
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Network response was not ok: ${errorText}`);
-  }
-  return response.json();
-};
+const api = apiClient(); // Create an instance of apiClient
 
 export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => {
   try {
-    const savedBoards = await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`);
+    const response = await api.get(`/api/boards/${workspaceId}/boards`);
+    const savedBoards = response.data;
+
     if (Array.isArray(savedBoards)) {
       setBoards(savedBoards);
       if (id) {
-        const active = savedBoards.find(d => d.id === parseInt(id));
+        const active = savedBoards.find((d) => d.id === parseInt(id));
         setActiveBoard(active);
       }
     } else {
@@ -44,9 +29,8 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
     }
 
     console.log(`Sending request to create board in workspace ${workspaceId} with name ${boardName}`);
-    const newBoard = await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards`, {
-      method: 'POST',
-      body: JSON.stringify({ name: boardName }),
+    const newBoard = await api.post(`/api/boards/${workspaceId}/boards`, {
+      name: boardName,
     });
 
     console.log('Board created successfully:', newBoard);
@@ -82,9 +66,8 @@ export const handleNameChange = (e, setBoardName) => {
 
 export const handleNameSave = async (workspaceId, board, boards, setBoards, boardName, setEditingBoardId) => {
   try {
-    await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${board.id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ name: boardName })
+    await api.patch(`/api/boards/${workspaceId}/boards/${board.id}`, {
+      name: boardName
     });
 
     setBoards(boards.map(d => d.id === board.id ? { ...d, name: boardName } : d));
@@ -96,9 +79,7 @@ export const handleNameSave = async (workspaceId, board, boards, setBoards, boar
 
 export const deleteBoard = async (workspaceId, boardId, boards, setBoards) => {
   try {
-    await authFetch(`${API_BASE_URL}/api/boards/${workspaceId}/boards/${boardId}`, {
-      method: 'DELETE',
-    });
+    await api.delete(`/api/boards/${workspaceId}/boards/${boardId}`);
 
     setBoards(boards.filter((board) => board.id !== boardId)); // Update state after deletion
   } catch (error) {

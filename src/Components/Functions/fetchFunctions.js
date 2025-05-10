@@ -1,26 +1,26 @@
 import axios from "axios";
+import { apiClient } from "../../utils/auth";
 
 export const fetchUserData = async (location, navigate, setUser) => {
   const urlParams = new URLSearchParams(location.search);
   const token = urlParams.get("token");
-
+  const refreshToken = urlParams.get("refreshToken");
+  
   if (token) {
-    localStorage.setItem("token", token);
+    localStorage.setItem("Token", token); // Ensure the correct key is used for the access token
+  }
+  if (refreshToken) {
+    localStorage.setItem("RefreshToken", refreshToken); // Ensure the correct key is used for the refresh token
   }
 
-  const storedToken = localStorage.getItem("token");
+  // Remove token and refreshToken from the URL
+  const newUrl = location.pathname;
+  window.history.replaceState({}, document.title, newUrl);
 
-  if (!storedToken) {
-    console.error("No token found, redirecting...");
-    navigate("/");
-    return;
-  }
+  const client = apiClient(navigate);
 
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/data`, {
-      withCredentials: true,
-      headers: { Authorization: `Bearer ${storedToken}` },
-    });
+    const response = await client.get("/api/data");
     console.log("API Response:", response.data);
     setUser(response.data);
   } catch (error) {
@@ -30,19 +30,10 @@ export const fetchUserData = async (location, navigate, setUser) => {
 };
 
 export const fetchWorkspaces = async (navigate, setWorkspaces) => {
-  const storedToken = localStorage.getItem("token");
-
-  if (!storedToken) {
-    console.error("No token found, redirecting...");
-    navigate("/");
-    return;
-  }
+  const client = apiClient(navigate);
 
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces`, {
-      withCredentials: true,
-      headers: { Authorization: `Bearer ${storedToken}` },
-    });
+    const response = await client.get("/api/workspaces");
     console.log("API Response (Workspaces):", response.data);
     setWorkspaces(response.data);
   } catch (error) {

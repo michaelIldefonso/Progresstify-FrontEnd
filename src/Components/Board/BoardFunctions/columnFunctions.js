@@ -1,27 +1,19 @@
+import { apiClient } from "../../../utils/auth";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const api = apiClient(); // Create an instance of apiClient
 
 export const showColumn = async (boardId, columns, setColumns) => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ title: "", order: columns.length })
+    const response = await api.post(`/api/columns/${boardId}/columns`, {
+      title: "",
+      order: columns.length,
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Failed to create column: ${errorText}`);
-      throw new Error(`Failed to create column: ${errorText}`);
-    }
-
-    const newColumn = await response.json();
+    const newColumn = response.data;
     setColumns([...columns, { ...newColumn, isEditing: true, cards: [], newCardText: "", isAddingCard: false }]);
   } catch (error) {
-    console.error('Failed to create column:', error);
+    console.error("Failed to create column:", error);
   }
 };
 
@@ -33,14 +25,8 @@ export const renameColumn = async (boardId, columns, setColumns, columnId, newTi
   );
 
   try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns/${columnId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ title: newTitle })
+    const response = await api.put(`/api/columns/${boardId}/columns/${columnId}`, {
+      title: newTitle
     });
 
     if (!response.ok) {
@@ -72,13 +58,7 @@ export const removeColumn = async (boardId, columnId, columns, setColumns) => {
   setColumns(columns.filter((col) => col.id !== columnId));
 
   try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns/${columnId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
+    const response = await api.delete(`/api/columns/${boardId}/columns/${columnId}`);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -99,13 +79,7 @@ export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
   columnsFetchedRef.current = true; // Mark as fetched to prevent duplicate requests
 
   try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${API_BASE_URL}/api/columns/${boardId}/columns-with-cards`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.get(`/api/columns/${boardId}/columns-with-cards`);
 
     if (!response.ok) {
       throw new Error(`Failed to load columns with cards: ${await response.text()}`);

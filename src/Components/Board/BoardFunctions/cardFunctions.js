@@ -1,28 +1,25 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { apiClient } from "../../../utils/auth";
+
+// Export a function to initialize apiClient
+export const initializeApiClient = (navigate) => apiClient(navigate); // Create an instance of apiClient
+
+// Replace the direct apiClient initialization with a function call
+let api;
+export const setApiClient = (navigate) => {
+  api = initializeApiClient(navigate);
+};
 
 // Show a new card in a column
 export const showCard = async (columnId, columns, setColumns) => {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error("No authentication token found!");
-
-    const response = await fetch(`${API_BASE_URL}/api/cards`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        column_id: columnId,
-        text: "",
-        checked: false,
-        position: columns.find((col) => col.id === columnId).cards.length || 0,
-      }),
+    const response = await api.post(`/api/cards`, {
+      column_id: columnId,
+      text: "",
+      checked: false,
+      position: columns.find((col) => col.id === columnId).cards.length || 0,
     });
 
-    if (!response.ok) throw new Error(`Failed to create card: ${await response.text()}`);
-
-    const newCard = await response.json();
+    const newCard = response.data;
 
     // Update the column with the new card
     setColumns(
@@ -46,12 +43,6 @@ export const addCard = async (columnId, columns, setColumns, cardText = "") => {
     return;
   }
 
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert("You are not authenticated. Please log in.");
-    return;
-  }
-
   const tempId = Date.now(); // Temporary ID for UI
   const newCard = {
     id: tempId,
@@ -70,23 +61,14 @@ export const addCard = async (columnId, columns, setColumns, cardText = "") => {
   );
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/cards/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        column_id: columnId,
-        text: cardText,
-        checked: newCard.checked,
-        position: newCard.position,
-      }),
+    const response = await api.post(`/api/cards/create`, {
+      column_id: columnId,
+      text: cardText,
+      checked: newCard.checked,
+      position: newCard.position,
     });
 
-    if (!response.ok) throw new Error(`Failed to save card: ${await response.text()}`);
-
-    const savedCard = await response.json();
+    const savedCard = response.data;
 
     // Replace the temporary card with the saved card
     setColumns((prevColumns) =>
@@ -118,12 +100,6 @@ export const addCard = async (columnId, columns, setColumns, cardText = "") => {
 
 // Remove a card from a column
 export const removeCard = async (columns, setColumns, columnId, cardId) => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert("You are not authenticated. Please log in.");
-    return;
-  }
-
   // Optimistically update the UI
   setColumns(
     columns.map((col) =>
@@ -134,14 +110,7 @@ export const removeCard = async (columns, setColumns, columnId, cardId) => {
   );
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/cards/${cardId}`, {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) throw new Error(`Failed to delete card: ${await response.text()}`);
+    const response = await api.delete(`/api/cards/${cardId}`);
 
     console.log("Card deleted successfully.");
   } catch (error) {
@@ -250,24 +219,12 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
   setColumns(updatedColumns);
 
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error("No authentication token found!");
-
-    const response = await fetch(`${API_BASE_URL}/api/cards/${cardId}/move`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        column_id: targetColumnId,
-        position: newPosition,
-      }),
+    const response = await api.patch(`/api/cards/${cardId}/move`, {
+      column_id: targetColumnId,
+      position: newPosition,
     });
 
-    if (!response.ok) throw new Error(`Failed to update card position: ${await response.text()}`);
-
-    const updatedCard = await response.json();
+    const updatedCard = response.data;
     console.log("Card position updated successfully:", updatedCard);
   } catch (error) {
     console.error("Error updating card position:", error.message);
@@ -280,12 +237,6 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
 
 // Handle checkbox toggle in a card
 export const handleCheckboxChange = async (columnId, cardId, checked, setColumns) => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    alert("You are not authenticated. Please log in.");
-    return;
-  }
-
   // Optimistically update the UI
   setColumns((prevColumns) =>
     prevColumns.map((col) =>
@@ -301,18 +252,9 @@ export const handleCheckboxChange = async (columnId, cardId, checked, setColumns
   );
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/cards/${cardId}/checked`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({ checked }),
-    });
+    const response = await api.patch(`/api/cards/${cardId}/checked`, { checked });
 
-    if (!response.ok) throw new Error(`Failed to update card: ${await response.text()}`);
-
-    const updatedCard = await response.json();
+    const updatedCard = response.data;
     console.log("Card checked status updated successfully:", updatedCard);
   } catch (error) {
     console.error("Error updating card checked status:", error.message);
@@ -346,19 +288,12 @@ export const startAddingCard = (columnId, columns, setColumns) => {
 // Update a card's due date
 export const updateCardDueDate = async (cardId, dueDate, columns, setColumns, columnId) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/cards/${cardId}/due-date`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ dueDate }),
-    });
+    const response = await api.patch(
+      `/api/cards/${cardId}/due-date`,
+      { dueDate }
+    );
 
-    if (!response.ok) throw new Error("Failed to update due date");
-
-    const updatedCard = await response.json();
+    const updatedCard = response.data;
 
     // Update the state
     setColumns((prevColumns) =>

@@ -5,8 +5,9 @@ import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
 import CreateWorkspaceCard from "./Components/Workspace/WorkspaceComponents/createWorkspaceCard";
 import WorkspaceModal from "./Components/Workspace/WorkspaceComponents/WorkspaceModal";
 import WorkspaceList from "./Components/Workspace/WorkspaceComponents/workspaceList";
-import { fetchUserData, fetchWorkspaces } from "./Components/Functions/fetchFunctions";
+import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import { useTimer } from "./Components/Functions/eventHandlerFunctions";
+import { fetchWorkspaces } from "./Components/Workspace/WorkspaceFunctions/createWorkspaceFunctions";
 
 function Workspaces() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Workspaces() {
 
     // Fetch workspaces
     fetchWorkspaces(navigate, setWorkspaces);
-  }, [location, navigate]);
+  }, []);
 
   const loading = !useTimer(2000); // 2 seconds delay
 

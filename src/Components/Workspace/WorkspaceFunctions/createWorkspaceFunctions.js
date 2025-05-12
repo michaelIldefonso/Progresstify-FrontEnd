@@ -1,6 +1,5 @@
 import axios from "axios";
-
-
+import { apiClient } from "../../../utils/auth";
 
 export const handleSubmit = async (
   workspaceName,
@@ -11,6 +10,7 @@ export const handleSubmit = async (
   setWorkspaceName,
   setWorkspaceDescription
 ) => {
+  const client = apiClient();
   // Create a new workspace
   if (!workspaceName) return;
 
@@ -19,7 +19,7 @@ export const handleSubmit = async (
   console.log("Description:", workspaceDescription);
 
   try {
-    const response = await axios.post(
+    const response = await client.post(
       `${import.meta.env.VITE_API_BASE_URL}/api/workspaces`,
       { name: workspaceName, description: workspaceDescription },
       {
@@ -53,8 +53,9 @@ export const handleDescriptionChange = (e, setWorkspaceDescription, setDescripti
 };
 
 export const handleDeleteWorkspace = async (workspaceId, setWorkspaces) => {
+  const client = apiClient();
   try {
-    await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces/delete/${workspaceId}`, {
+    await client.delete(`${import.meta.env.VITE_API_BASE_URL}/api/workspaces/delete/${workspaceId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 
@@ -63,5 +64,18 @@ export const handleDeleteWorkspace = async (workspaceId, setWorkspaces) => {
     );
   } catch (error) {
     console.error("Error deleting workspace:", error);
+  }
+};
+
+export const fetchWorkspaces = async (navigate, setWorkspaces) => {
+  const client = apiClient(navigate);
+
+  try {
+    const response = await client.get("/api/workspaces");
+    console.log("API Response (Workspaces):", response.data);
+    setWorkspaces(response.data);
+  } catch (error) {
+    console.error("Error fetching workspaces:", error);
+    navigate("/");
   }
 };

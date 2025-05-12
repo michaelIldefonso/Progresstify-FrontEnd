@@ -11,9 +11,18 @@ export const showColumn = async (boardId, columns, setColumns) => {
     });
 
     const newColumn = response.data;
-    setColumns([...columns, { ...newColumn, isEditing: true, cards: [], newCardText: "", isAddingCard: false }]);
+    setColumns([
+      ...columns,
+      {
+        ...newColumn,
+        isEditing: true,
+        cards: [],
+        newCardText: "",
+        isAddingCard: false,
+      },
+    ]);
   } catch (error) {
-    console.error("Failed to create column:", error);
+    console.error("Failed to create column:", error.response?.data?.message || error.message);
   }
 };
 
@@ -26,16 +35,13 @@ export const renameColumn = async (boardId, columns, setColumns, columnId, newTi
 
   try {
     const response = await api.put(`/api/columns/${boardId}/columns/${columnId}`, {
-      title: newTitle
+      title: newTitle,
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Failed to rename column: ${errorText}`);
-      throw new Error(`Failed to rename column: ${errorText}`);
-    }
+    // Axios automatically throws an error for non-2xx responses, so no need for `response.ok`.
+    console.log("Column renamed successfully:", response.data);
   } catch (error) {
-    console.error('Failed to rename column:', error);
+    console.error("Failed to rename column:", error.response?.data?.message || error.message);
   }
 };
 
@@ -59,14 +65,9 @@ export const removeColumn = async (boardId, columnId, columns, setColumns) => {
 
   try {
     const response = await api.delete(`/api/columns/${boardId}/columns/${columnId}`);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Failed to delete column: ${errorText}`);
-      throw new Error(`Failed to delete column: ${errorText}`);
-    }
+    console.log("Column deleted successfully:", response.data);
   } catch (error) {
-    console.error('Failed to delete column:', error);
+    console.error("Failed to delete column:", error.response?.data?.message || error.message);
   }
 };
 
@@ -81,11 +82,9 @@ export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
   try {
     const response = await api.get(`/api/columns/${boardId}/columns-with-cards`);
 
-    if (!response.ok) {
-      throw new Error(`Failed to load columns with cards: ${await response.text()}`);
-    }
+    // Access the data directly from the Axios response
+    const columnsWithCards = response.data;
 
-    const columnsWithCards = await response.json();
     setColumns(
       columnsWithCards.map((col) => ({
         ...col,
@@ -100,7 +99,9 @@ export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
     );
   } catch (error) {
     if (columnsFetchedRef) columnsFetchedRef.current = false; // Revert if fetch fails
-    console.error("Failed to load columns with cards:", error);
+
+    // Handle specific error cases
+    console.error("Failed to load columns with cards:", error.response?.data?.message || error.message);
   }
 };
 

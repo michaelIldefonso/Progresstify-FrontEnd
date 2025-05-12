@@ -9,9 +9,14 @@ export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => 
     const savedBoards = response.data;
 
     if (Array.isArray(savedBoards)) {
-      setBoards(savedBoards);
+      // Ensure all boards have unique IDs
+      const uniqueBoards = savedBoards.filter((board, index, self) =>
+        index === self.findIndex((b) => b.id === board.id)
+      );
+
+      setBoards(uniqueBoards);
       if (id) {
-        const active = savedBoards.find((d) => d.id === parseInt(id));
+        const active = uniqueBoards.find((d) => d.id === parseInt(id));
         setActiveBoard(active);
       }
     } else {
@@ -29,12 +34,18 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
     }
 
     console.log(`Sending request to create board in workspace ${workspaceId} with name ${boardName}`);
-    const newBoard = await api.post(`/api/boards/${workspaceId}/boards`, {
+    const response = await api.post(`/api/boards/${workspaceId}/boards`, {
       name: boardName,
     });
 
+    const newBoard = response.data; // Ensure the response contains the new board with a unique ID
+
+    if (!newBoard || !newBoard.id) {
+      throw new Error('Failed to create board: Missing ID in response');
+    }
+
     console.log('Board created successfully:', newBoard);
-    setBoards([...boards, newBoard]);
+    setBoards([...boards, newBoard]); // Add the new board to the state
     setBoardName('');
     setModalOpen(false);
   } catch (error) {

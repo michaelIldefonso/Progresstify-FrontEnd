@@ -32,6 +32,7 @@ const Board = () => { // Workspace board
   const scrollbarRef = useRef(null);
   const loading = !useTimer(2000); // 2 seconds delay
 
+
   useDarkModeEffect(darkMode, setDarkMode);
   useColumnsEffect(columns, setColumns);
   useFetchUserEffect(location, navigate, setUser);

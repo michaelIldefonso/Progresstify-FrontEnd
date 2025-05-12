@@ -7,11 +7,9 @@ import "./style.css";
 import AppRoutes from "./Routes"; // Import the separated routes
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Router>
         <AppRoutes />
       </Router>
     </LocalizationProvider>
-  </React.StrictMode>
 );

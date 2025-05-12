@@ -1,14 +1,6 @@
-
 import { apiClient } from "../../../utils/auth";
 
-// Export a function to initialize apiClient
-export const initializeApiClient = (navigate) => apiClient(navigate); // Create an instance of apiClient
-
-// Replace the direct apiClient initialization with a function call
-let api;
-export const setApiClient = (navigate) => {
-  api = initializeApiClient(navigate);
-};
+const api = apiClient(); // Directly initialize the API client at the top of the file
 
 // Show a new card in a column
 export const showCard = async (columnId, columns, setColumns) => {
@@ -111,7 +103,7 @@ export const removeCard = async (columns, setColumns, columnId, cardId) => {
   );
 
   try {
-    const response = await api.delete(`/api/cards/${cardId}`);
+    await api.delete(`/api/cards/${cardId}`);
 
     console.log("Card deleted successfully.");
   } catch (error) {

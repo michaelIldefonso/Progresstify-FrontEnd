@@ -1,5 +1,6 @@
 export const handleLogout = (navigate) => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("Token");
+    localStorage.removeItem("RefreshToken");
     navigate("/"); // Navigate to login
   };
 

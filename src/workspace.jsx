@@ -5,7 +5,7 @@ import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
 import CreateWorkspaceCard from "./Components/Workspace/WorkspaceComponents/createWorkspaceCard";
 import WorkspaceModal from "./Components/Workspace/WorkspaceComponents/WorkspaceModal";
 import WorkspaceList from "./Components/Workspace/WorkspaceComponents/workspaceList";
-import { fetchUserData } from "./Components/Functions/fetchFunctions";
+import { fetchUserData, extractAndStoreTokens } from "./Components/Functions/fetchFunctions";
 import { useTimer } from "./Components/Functions/eventHandlerFunctions";
 import { fetchWorkspaces } from "./Components/Workspace/WorkspaceFunctions/createWorkspaceFunctions";
 
@@ -21,12 +21,25 @@ function Workspaces() {
   const [workspaces, setWorkspaces] = useState([]);
 
   useEffect(() => {
+    // Extract and store tokens from URL if present
+    extractAndStoreTokens(location);
+
+    let isMounted = true;
+
     // Fetch user data
-    fetchUserData(location, navigate, setUser);
+    fetchUserData(location, navigate, (user) => {
+      if (isMounted) setUser(user);
+    });
 
     // Fetch workspaces
-    fetchWorkspaces(navigate, setWorkspaces);
-  }, []);
+    fetchWorkspaces(navigate, (workspaces) => {
+      if (isMounted) setWorkspaces(workspaces);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [location, navigate]);
 
   const loading = !useTimer(2000); // 2 seconds delay
 

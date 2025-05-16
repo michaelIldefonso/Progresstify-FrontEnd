@@ -1,8 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Box, ThemeProvider, Skeleton } from "@mui/material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { createCustomTheme } from "./Components/Functions/themeFunctions";
-import { useColumnsEffect, useFetchUserEffect, useFetchColumnsEffect, useScrollBarEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
+import { useColumnsEffect, useScrollBarEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
+import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
 import ColumnList from "./Components/Board/BoardComponents/Columnlist";
 import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar";
@@ -35,8 +36,34 @@ const Board = () => { // Workspace board
 
   useDarkModeEffect(darkMode, setDarkMode);
   useColumnsEffect(columns, setColumns);
-  useFetchUserEffect(location, navigate, setUser);
-  useFetchColumnsEffect(id, setColumns);
+  // Use isMounted pattern for user fetch
+  useEffect(() => {
+    let isMounted = true;
+    // Assuming fetchUserData accepts a callback
+    fetchUserData(location, navigate, (user) => {
+      if (isMounted) setUser(user);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [location, navigate]);
+
+  // Use isMounted pattern for columns fetch
+  useEffect(() => {
+    let isMounted = true;
+    // Assuming getColumns accepts a callback
+    if (typeof id !== 'undefined') {
+      // Import getColumns if not already
+      import('./Components/Board/BoardFunctions/columnFunctions').then(({ getColumns }) => {
+        getColumns(id, (columns) => {
+          if (isMounted) setColumns(columns);
+        });
+      });
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
   useScrollBarEffect(columnsContainerRef, scrollbarRef);
 
   return (

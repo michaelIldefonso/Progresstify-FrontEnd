@@ -34,25 +34,29 @@ const Dashboard = () => {
   const loading = !useTimer(2000); // Loading state for 2 seconds
    // Define loading state
 
+
   useEffect(() => {
-    let isMounted = true; // Add a flag to prevent unnecessary calls
-    if (isMounted) {
-      loadBoards(workspaceId, setBoards, setActiveBoard);
-    }
+    let isMounted = true;
+    loadBoards(workspaceId, (boards) => {
+      if (isMounted) setBoards(boards);
+    }, (activeBoard) => {
+      if (isMounted) setActiveBoard(activeBoard);
+    });
     return () => {
-      isMounted = false; // Cleanup flag
+      isMounted = false;
     };
   }, [workspaceId]);
 
+
   useEffect(() => {
-    let isMounted = true; // Add a flag to prevent unnecessary calls
-    if (isMounted) {
-      fetchUserData(location, navigate, setUser);
-    }
+    let isMounted = true;
+    fetchUserData(location, navigate, (user) => {
+      if (isMounted) setUser(user);
+    });
     return () => {
-      isMounted = false; // Cleanup flag
+      isMounted = false;
     };
-  }, [navigate]);
+  }, [location, navigate]);
 
   const theme = createCustomTheme(darkMode);
 

@@ -1,17 +1,22 @@
+
 import { apiClient } from "../../utils/auth";
+
+// Extract and store tokens from URL if present
+export const extractAndStoreTokens = (location) => {
+  const urlParams = new URLSearchParams(location.search);
+  const token = urlParams.get("token");
+  const refreshToken = urlParams.get("refreshToken");
+  if (token && refreshToken) {
+    localStorage.setItem("Token", token);
+    localStorage.setItem("RefreshToken", refreshToken);
+  }
+  // Clean up the URL by removing query parameters
+  const newUrl = location.pathname;
+  window.history.replaceState({}, document.title, newUrl);
+};
 
 export const fetchUserData = async (location, navigate, setUser) => {
   try {
-    const urlParams = new URLSearchParams(location.search);
-    const token = urlParams.get("token");
-    const refreshToken = urlParams.get("refreshToken");
-    console.log("Token:", token);
-    console.log("Refresh Token:", refreshToken);
-
-    // Clean up the URL by removing query parameters
-    const newUrl = location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
-
     // Initialize API client
     const client = apiClient(navigate);
 

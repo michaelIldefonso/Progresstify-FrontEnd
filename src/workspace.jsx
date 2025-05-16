@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { CssBaseline, GlobalStyles, Grid, Typography, Skeleton, Box } from "@mui/material";
+import { CssBaseline, GlobalStyles, Grid, Typography, Skeleton, Box, IconButton, Button, Menu, MenuItem } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CreateWorkspaceCard from "./Components/Workspace/WorkspaceComponents/createWorkspaceCard";
 import WorkspaceModal from "./Components/Workspace/WorkspaceComponents/WorkspaceModal";
 import WorkspaceList from "./Components/Workspace/WorkspaceComponents/workspaceList";
 import { fetchUserData, extractAndStoreTokens } from "./Components/Functions/fetchFunctions";
-import { useTimer } from "./Components/Functions/eventHandlerFunctions";
+import { useTimer, handleClose, handleMenu } from "./Components/Functions/eventHandlerFunctions";
 import { fetchWorkspaces } from "./Components/Workspace/WorkspaceFunctions/createWorkspaceFunctions";
+import { handleLogout } from "./Components/Functions/navigationFunctions";
 
 function Workspaces() {
   const navigate = useNavigate();
@@ -19,6 +21,10 @@ function Workspaces() {
   const [workspaceDescription, setWorkspaceDescription] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const [workspaces, setWorkspaces] = useState([]);
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode ? JSON.parse(savedMode) : true;
+  });
 
   useEffect(() => {
     // Extract and store tokens from URL if present
@@ -41,6 +47,12 @@ function Workspaces() {
     };
   }, [location, navigate]);
 
+useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
+
   const loading = !useTimer(2000); // 2 seconds delay
 
   return (
@@ -49,16 +61,18 @@ function Workspaces() {
       <GlobalStyles styles={{ body: { overflow: "hidden" } }} />
       <div
         style={{
-          backgroundColor: "#0a0f1e",
+          backgroundColor: darkMode ? "#0a0f1e" : "#f0f0f0",
+          backgroundImage: darkMode
+            ? 'url("/darkroomrtx.png")'
+            : 'url("/couch1.jpg")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           minHeight: "100vh",
           width: "100vw",
           display: "flex",
-          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          backgroundImage: 'url("/12mb.png")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          flexDirection: "column",
           overflow: "hidden",
         }}
       >
@@ -80,12 +94,47 @@ function Workspaces() {
           </Box>
         ) : (
           <>
-            <AppBarWithMenu
-              user={user}
-              anchorEl={anchorEl}
-              setAnchorEl={setAnchorEl}
-              navigate={navigate}
-            />
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                padding: "10px 20px",
+                backgroundColor: "transparent",
+              }}
+            >
+              <div
+                style={{
+                  marginLeft: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={(e) => handleMenu(e, setAnchorEl)}
+                  sx={{ color: darkMode ? "#fff" : "#fff", textTransform: "none" }}
+                >
+                  Account
+                </Button>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  keepMounted
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  open={Boolean(anchorEl)}
+                  onClose={() => handleClose(setAnchorEl)}
+                >
+                  <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
+                </Menu>
+                <IconButton onClick={toggleDarkMode} sx={{ color: darkMode ? "#fff" : "#fff" }}>
+                  {darkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+                </IconButton>
+              </div>
+            </div>
 
             <CreateWorkspaceCard setOpen={setOpen} />
 

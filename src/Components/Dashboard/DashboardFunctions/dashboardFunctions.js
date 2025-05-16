@@ -1,31 +1,6 @@
 import { apiClient } from "../../../utils/auth";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Base URL for the API
 const api = apiClient(); // Create an instance of apiClient
-
-export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => {
-  try {
-    const response = await api.get(`/api/boards/${workspaceId}/boards`);
-    const savedBoards = response.data;
-
-    if (Array.isArray(savedBoards)) {
-      // Ensure all boards have unique IDs
-      const uniqueBoards = savedBoards.filter((board, index, self) =>
-        index === self.findIndex((b) => b.id === board.id)
-      );
-
-      setBoards(uniqueBoards);
-      if (id) {
-        const active = uniqueBoards.find((d) => d.id === parseInt(id));
-        setActiveBoard(active);
-      }
-    } else {
-      console.error("Failed to load boards: response is not an array");
-    }
-  } catch (error) {
-    console.error("Failed to load boards:", error);
-  }
-};
 
 export const createBoard = async (workspaceId, boards, setBoards, boardName, setBoardName, setModalOpen) => {
   try {
@@ -51,6 +26,30 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
   } catch (error) {
     console.error('Failed to create board:', error);
     alert('Failed to create board: ' + error.message);
+  }
+};
+
+export const loadBoards = async (workspaceId, setBoards, setActiveBoard, id) => {
+  try {
+    const response = await api.get(`/api/boards/${workspaceId}/boards`);
+    const savedBoards = response.data;
+
+    if (Array.isArray(savedBoards)) {
+      // Ensure all boards have unique IDs
+      const uniqueBoards = savedBoards.filter((board, index, self) =>
+        index === self.findIndex((b) => b.id === board.id)
+      );
+
+      setBoards(uniqueBoards);
+      if (id) {
+        const active = uniqueBoards.find((d) => d.id === parseInt(id));
+        setActiveBoard(active);
+      }
+    } else {
+      console.error("Failed to load boards: response is not an array");
+    }
+  } catch (error) {
+    console.error("Failed to load boards:", error);
   }
 };
 

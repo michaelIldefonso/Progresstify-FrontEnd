@@ -44,7 +44,7 @@ export const apiClient = (navigate) => {
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
-        console.log("Request Headers:", config.headers); // Log headers for debugging
+        
         return config;
     });
 

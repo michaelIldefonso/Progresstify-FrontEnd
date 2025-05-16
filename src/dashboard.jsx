@@ -35,11 +35,23 @@ const Dashboard = () => {
    // Define loading state
 
   useEffect(() => {
-    loadBoards(workspaceId, setBoards, setActiveBoard);
+    let isMounted = true; // Add a flag to prevent unnecessary calls
+    if (isMounted) {
+      loadBoards(workspaceId, setBoards, setActiveBoard);
+    }
+    return () => {
+      isMounted = false; // Cleanup flag
+    };
   }, [workspaceId]);
 
   useEffect(() => {
-    fetchUserData(location, navigate, setUser);
+    let isMounted = true; // Add a flag to prevent unnecessary calls
+    if (isMounted) {
+      fetchUserData(location, navigate, setUser);
+    }
+    return () => {
+      isMounted = false; // Cleanup flag
+    };
   }, [navigate]);
 
   const theme = createCustomTheme(darkMode);

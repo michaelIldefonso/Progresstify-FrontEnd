@@ -1,41 +1,15 @@
 import { apiClient } from "../../../utils/auth";
+import dayjs from "dayjs";
 
 const api = apiClient(); // Directly initialize the API client at the top of the file
 
-// Show a new card in a column
-export const showCard = async (columnId, columns, setColumns) => {
-  try {
-    const response = await api.post(`/api/cards`, {
-      column_id: columnId,
-      text: "",
-      checked: false,
-      position: columns.find((col) => col.id === columnId).cards.length || 0,
-    });
-
-    const newCard = response.data;
-
-    // Update the column with the new card
-    setColumns(
-      columns.map((col) =>
-        col.id === columnId
-          ? { ...col, cards: [...col.cards, newCard], newCardText: "", isAddingCard: false }
-          : col
-      )
-    );
-
-    console.log("Card created successfully:", newCard);
-  } catch (error) {
-    console.error("Failed to create card:", error.message);
-  }
-};
-
 // Add a card to a column
-export const addCard = async (columnId, columns, setColumns, cardText = "") => {
+export const addCard = async ( columnId, columns, setColumns, cardText = "") => {
   if (!cardText.trim()) {
     console.error("Cannot add an empty card.");
     return;
   }
-
+  
   const tempId = Date.now(); // Temporary ID for UI
   const newCard = {
     id: tempId,
@@ -88,6 +62,33 @@ export const addCard = async (columnId, columns, setColumns, cardText = "") => {
           : col
       )
     );
+  }
+};
+
+// Show a new card in a column
+export const showCard = async (columnId, columns, setColumns) => {
+  try {
+    const response = await api.post(`/api/cards`, {
+      column_id: columnId,
+      text: "",
+      checked: false,
+      position: columns.find((col) => col.id === columnId).cards.length || 0,
+    });
+
+    const newCard = response.data;
+
+    // Update the column with the new card
+    setColumns(
+      columns.map((col) =>
+        col.id === columnId
+          ? { ...col, cards: [...col.cards, newCard], newCardText: "", isAddingCard: false }
+          : col
+      )
+    );
+
+    console.log("Card created successfully:", newCard);
+  } catch (error) {
+    console.error("Failed to create card:", error.message);
   }
 };
 
@@ -303,5 +304,34 @@ export const updateCardDueDate = async (cardId, dueDate, columns, setColumns, co
     );
   } catch (error) {
     console.error("Error updating due date:", error);
+  }
+};
+
+export const handleDueDateChange = async (newDate, card, columnId, setColumns, navigate) => {
+  const api = apiClient(navigate);
+  const formattedDate = newDate ? dayjs(newDate).format("YYYY-MM-DD") : null;
+  try {
+    const response = await api.patch(
+      `/api/cards/${card.id}/due-date`,
+      { dueDate: formattedDate, }
+    );
+
+    const updatedCard = response.data;
+
+    // Update the state with the new due date
+    setColumns((prevColumns) =>
+      prevColumns.map((col) =>
+        col.id === columnId
+          ? {
+              ...col,
+              cards: col.cards.map((c) =>
+                c.id === card.id ? { ...c, dueDate: updatedCard.card?.due_date ?? updatedCard.dueDate } : c
+              ),
+            }
+          : col
+      )
+    );
+  } catch (error) {
+    console.error("Failed to update due date:", error);
   }
 };

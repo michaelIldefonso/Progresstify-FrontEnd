@@ -11,7 +11,6 @@ const CardList = ({
   darkMode,
   draggingCard,
   setDraggingCard,
-  isLoading,
 }) => {
   const sortedCards = [...column.cards].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
   return (
@@ -100,7 +99,7 @@ const CardList = ({
               "&.Mui-focusVisible": {
                 color: darkMode ? "rgb(5, 90, 160)" : "rgb(200, 90, 30)", // Text color when focused
               },
-           }}
+            }}
       >
         Add a card
       </Button>

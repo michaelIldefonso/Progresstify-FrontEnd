@@ -4,48 +4,13 @@ import dayjs from "dayjs"; // Import Day.js
 import { Card as MuiCard, CardContent, IconButton, Typography, Checkbox, FormControlLabel, Menu, MenuItem, TextField } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import { DatePicker } from "@mui/x-date-pickers"; // Import DatePicker
-import { removeCard, handleCheckboxChange, handleCardDragStart } from "../BoardFunctions/cardFunctions";
+import { removeCard, handleCheckboxChange, handleCardDragStart, handleDueDateChange } from "../BoardFunctions/cardFunctions";
 import { handleMenu, handleClose } from "../../Functions/eventHandlerFunctions";
+import { useNavigate } from "react-router-dom";
 
 const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-
-
-  const handleDueDateChange = async (newDate) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/cards/${card.id}/due-date`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ dueDate: newDate.toISOString() }),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to update due date");
-      }
-  
-      const updatedCard = await response.json();
-  
-      // Update the state with the new due date
-      setColumns((prevColumns) =>
-        prevColumns.map((col) =>
-          col.id === columnId
-            ? {
-                ...col,
-                cards: col.cards.map((c) =>
-                  c.id === card.id ? { ...c, dueDate: updatedCard.card.due_date } : c
-                ),
-              }
-            : col
-        )
-      );
-    } catch (error) {
-      console.error("Failed to update due date:", error);
-    }
-  };
+  const navigate = useNavigate();
 
   return (
     <MuiCard
@@ -104,12 +69,7 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
         />
 
         <div>
-          <DatePicker
-            label="Due Date"
-            value={card.dueDate ? dayjs(card.dueDate) : null} // Ensure `dueDate` is a Day.js object
-            onChange={(newDate) => handleDueDateChange(newDate, card.id)}
-            renderInput={(params) => <TextField {...params} />}
-          />
+          
           <IconButton edge="end" onClick={(e) => handleMenu(e, setAnchorEl)}>
             <MoreVert />
           </IconButton>
@@ -117,8 +77,46 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={() => handleClose(setAnchorEl)}
+            PaperProps={{
+              sx: {
+                backgroundColor: darkMode ? "rgba(15, 15, 20, 0.95)" : "rgb(234, 170, 102)",
+                color: darkMode ? "#fff" : "#000",
+                borderRadius: "15px",
+                minWidth: 220,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+                p: 1,
+              },
+            }}
           >
-            <MenuItem onClick={() => removeCard(columns, setColumns, columnId, card.id)}>
+            <MenuItem sx={{ borderRadius: "10px", mb: 1 }}>
+              <DatePicker
+                label="Due Date"
+                value={card.dueDate ? dayjs(card.dueDate) : null}
+                onChange={(newDate) => handleDueDateChange(newDate, card, columnId, setColumns, navigate)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    sx={{
+                      backgroundColor: darkMode ? "#222" : "#fff",
+                      borderRadius: "8px",
+                      input: { color: darkMode ? "#fff" : "#000" },
+                      width: "170px",
+                    }}
+                  />
+                )}
+              />
+            </MenuItem>
+            <MenuItem
+              onClick={() => removeCard(columns, setColumns, columnId, card.id)}
+              sx={{
+                borderRadius: "10px",
+                color: darkMode ? "#fff" : "#000",
+                "&:hover": {
+                  backgroundColor: darkMode ? "rgba(220, 110, 35, 0.15)" : "rgba(220, 110, 35, 0.08)",
+                },
+              }}
+            >
               Remove Card
             </MenuItem>
           </Menu>

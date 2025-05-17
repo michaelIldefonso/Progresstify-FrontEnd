@@ -66,29 +66,7 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
             >
               Sign in with Google
             </Button>
-
-            <Button
-              fullWidth
-              onClick={() => window.open(`${API_BASE_URL}/auth/facrbook`, "_self")}
-              variant="outlined"
-              startIcon={<FacebookIcon />}
-              sx={{
-                fontSize: "1.25rem", 
-                padding: "12px 16px", 
-                height: "50px",
-                color:"white",
-                borderColor: darkMode ? "white" : "black",
-                textTransform: "none",
-                marginBottom: "10px",
-                backgroundColor: "#3b5998", // Facebook color
-                "&:hover": {
-                  backgroundColor: "#2d4373", // Darker shade on hover
-                },
-              }}
-            >
-              Sign in with Facbook
-            </Button>
-
+            
             <Button
               fullWidth
               onClick={() => window.open(`${API_BASE_URL}/auth/GitHub`, "_self")}
@@ -112,6 +90,30 @@ function AuthDialog({ open, setOpen, isSignUp, setIsSignUp, darkMode }) {
             </Button>
 
             <Button
+              disabled
+              fullWidth
+              onClick={() => window.open(`${API_BASE_URL}/auth/facebook`, "_self")}
+              variant="outlined"
+              startIcon={<FacebookIcon />}
+              sx={{
+                fontSize: "1.25rem", 
+                padding: "12px 16px", 
+                height: "50px",
+                color:"white",
+                borderColor: darkMode ? "white" : "black",
+                textTransform: "none",
+                marginBottom: "10px",
+                backgroundColor: "#3b5998", // Facebook color
+                "&:hover": {
+                  backgroundColor: "#2d4373", // Darker shade on hover
+                },
+              }}
+            >
+              Sign in with Facbook
+            </Button>
+
+            <Button
+              disabled
               fullWidth
               onClick={() => window.open(`${API_BASE_URL}/auth/Twitter`, "_self")}
               variant="outlined"

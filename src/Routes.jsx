@@ -3,6 +3,7 @@ import App from "./App";
 import Board from "./board";
 import Workspace from "./workspace";
 import Dashboard from "./dashboard";
+import AccountDetails from "./AccountDetails";
 
 const AppRoutes = () => {
   return (
@@ -10,7 +11,8 @@ const AppRoutes = () => {
         <Route path="/" element={<App />} />
         <Route path="/workspace" element={<Workspace />} />
         <Route path="/dashboard/:workspaceId" element={<Dashboard />} />    
-        <Route path="/board/:id" element={<Board />} />{/* Route for specific dashboard */}    
+        <Route path="/board/:id" element={<Board />} />{/* Route for specific dashboard */}
+        <Route path="/accountDetails" element={<AccountDetails />} />
     </Routes>
   );
 };

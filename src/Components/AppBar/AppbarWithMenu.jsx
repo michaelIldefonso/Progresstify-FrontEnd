@@ -3,7 +3,8 @@ import { AppBar, Toolbar, Button, Menu, MenuItem, IconButton, Typography } from 
 import { Brightness4, Brightness7, Menu as MenuIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { handleMenu, handleClose } from "../Functions/eventHandlerFunctions";
-import { handleLogout } from "../Functions/navigationFunctions";
+import { handleLogout, navigateToAccountDetails } from "../Functions/navigationFunctions";
+
 
 const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user }) => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user 
               open={Boolean(anchorEl)}
               onClose={() => handleClose(setAnchorEl)}
             >
+              <MenuItem onClick={() => navigateToAccountDetails(navigate)}>Account Details</MenuItem>
               <MenuItem onClick={() => handleLogout(navigate)}>Logout</MenuItem>
             </Menu>
           </div>

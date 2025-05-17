@@ -10,8 +10,6 @@ import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar"
 import { handleWheelScroll, useTimer } from "./Components/Functions/eventHandlerFunctions";
 import { useDarkModeEffect } from "./Components/Functions/themeFunctions";
 
-
-
 const Board = () => { // Workspace board
   const { id } = useParams();
   const [darkMode, setDarkMode] = useState(() => {

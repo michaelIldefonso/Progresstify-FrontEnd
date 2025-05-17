@@ -7,3 +7,7 @@ export const handleLogout = (navigate) => {
 export const navigateHome = (navigate) => {
     navigate("/workspace"); // Navigate to home
   };
+
+export const navigateToAccountDetails = (navigate) => {
+    navigate("/accountDetails"); // Navigate to account details
+  };

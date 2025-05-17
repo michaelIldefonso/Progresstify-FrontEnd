@@ -8,11 +8,6 @@ export const handleMenu = (event, setAnchorEl) => {
     setAnchorEl(null);
   };
   
-  export const toggleDrawer = (setDrawerOpen, drawerOpen) => {
-    setDrawerOpen(!drawerOpen);
-  };
-  
-
 export const handleWheelScroll = (e, columnsContainerRef, scrollbarRef) => {
   // Allow vertical scrolling inside card lists
   if (e.target.closest(".card-list")) {
@@ -34,10 +29,6 @@ export const handleScrollbarScroll = (event, columnsContainerRef) => {
     columnsContainerRef.current.scrollLeft = event.target.scrollLeft;
     
   }
-};
-
-export const handleChange = (e, formData, setFormData) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
 };
 
 

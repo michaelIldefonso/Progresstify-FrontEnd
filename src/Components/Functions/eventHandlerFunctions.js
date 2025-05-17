@@ -12,54 +12,6 @@ export const handleMenu = (event, setAnchorEl) => {
     setDrawerOpen(!drawerOpen);
   };
   
-  export const handleDrop = (e, targetColumnId, draggingCard, columns, setColumns, setDraggingCard) => {
-    e.preventDefault();
-    if (!draggingCard) return;
-  
-    const { cardId, columnId } = draggingCard;
-  
-    // Check if the source column and target column are the same
-    if (columnId === targetColumnId) {
-      setDraggingCard(null);
-      return;
-    }
-  
-    const sourceColumn = columns.find((col) => col.id === columnId);
-    const targetColumn = columns.find((col) => col.id === targetColumnId);
-  
-    const card = sourceColumn.cards.find((c) => c.id === cardId);
-  
-    const updatedSourceCards = sourceColumn.cards.filter((c) => c.id !== cardId);
-    const updatedTargetCards = [...targetColumn.cards, card];
-  
-    const updatedColumns = columns.map((col) => {
-      if (col.id === columnId) {
-        return { ...col, cards: updatedSourceCards };
-      } else if (col.id === targetColumnId) {
-        return { ...col, cards: updatedTargetCards };
-      } else {
-        return col;
-      }
-    });
-  
-    setColumns(updatedColumns);
-    setDraggingCard(null);
-  };
-
-export const handleCheckboxChange = (columnId, cardId, checked, setColumns) => {
-  setColumns((prevColumns) =>
-    prevColumns.map((col) =>
-      col.id === columnId
-        ? {
-          ...col,
-          cards: col.cards.map((card) =>
-            card.id === cardId ? { ...card, checked: checked } : card
-          ),
-        }
-        : col
-    )
-  );
-};
 
 export const handleWheelScroll = (e, columnsContainerRef, scrollbarRef) => {
   // Allow vertical scrolling inside card lists
@@ -88,26 +40,6 @@ export const handleChange = (e, formData, setFormData) => {
   setFormData({ ...formData, [e.target.name]: e.target.value });
 };
 
-export const handleSubmit = (e, isSignUp, formData, setOpen) => {
-  e.preventDefault();
-  if (isSignUp && formData.password !== formData.confirmPassword) {
-    alert("Passwords do not match!");
-    return;
-  }
-  alert(`${isSignUp ? "Sign Up" : "Login"} successful!`);
-  setOpen(false);
-  // Navigate("/workspace"); // Uncomment this when using a router
-};
-
-export const handleScheduleDueDate = () => {
-  handleMenuClose();
-  // Implement scheduling logic here
-  const dueDate = prompt("Enter the due date (e.g., YYYY-MM-DD):");
-  if (dueDate) {
-    // You can update the card's due date here
-    alert(`Scheduled Due Date: ${dueDate}`);
-  }
-};
 
 export const useTimer = (delay = 2000) => {
   const [isReady, setIsReady] = useState(false);

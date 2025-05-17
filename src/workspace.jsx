@@ -9,8 +9,8 @@ import WorkspaceList from "./Components/Workspace/WorkspaceComponents/workspaceL
 import { fetchUserData, extractAndStoreTokens } from "./Components/Functions/fetchFunctions";
 import { useTimer, handleClose, handleMenu } from "./Components/Functions/eventHandlerFunctions";
 import { fetchWorkspaces } from "./Components/Workspace/WorkspaceFunctions/createWorkspaceFunctions";
-import { handleLogout } from "./Components/Functions/navigationFunctions";
-import { navigateToAccountDetails } from "./Components/Functions/navigationFunctions";
+import { handleLogout, navigateToAccountDetails } from "./Components/Functions/navigationFunctions";
+
 
 function Workspaces() {
   const navigate = useNavigate();

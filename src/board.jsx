@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Box, ThemeProvider, Skeleton } from "@mui/material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { createCustomTheme } from "./Components/Functions/themeFunctions";
+import { createCustomTheme, useDarkModeEffect } from "./Components/Functions/themeFunctions";
 import { useColumnsEffect, useScrollBarEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
 import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
 import ColumnList from "./Components/Board/BoardComponents/Columnlist";
 import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar";
 import { handleWheelScroll, useTimer } from "./Components/Functions/eventHandlerFunctions";
-import { useDarkModeEffect } from "./Components/Functions/themeFunctions";
 
 const Board = () => { // Workspace board
   const { id } = useParams();

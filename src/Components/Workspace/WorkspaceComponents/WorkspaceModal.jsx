@@ -1,6 +1,6 @@
-import React from "react";
 import { Modal, Paper, Typography, TextField, Button } from "@mui/material";
 import { handleSubmit, handleDescriptionChange } from "../WorkspaceFunctions/createWorkspaceFunctions";
+import PropTypes from "prop-types"; 
 
 const WorkspaceModal = ({
     open,
@@ -75,4 +75,16 @@ const WorkspaceModal = ({
     </Modal>
 );
 
+WorkspaceModal.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    workspaceName: PropTypes.string.isRequired,
+    setWorkspaceName: PropTypes.func.isRequired,
+    workspaceDescription: PropTypes.string.isRequired,
+    setWorkspaceDescription: PropTypes.func.isRequired,
+    descriptionError: PropTypes.string.isRequired,
+    setDescriptionError: PropTypes.func.isRequired,
+    setWorkspaces: PropTypes.func.isRequired,
+    workspaces: PropTypes.array.isRequired,
+};
 export default WorkspaceModal;

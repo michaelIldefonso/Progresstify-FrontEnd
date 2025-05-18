@@ -1,7 +1,6 @@
-import React from "react";
 import { Card, CardContent, IconButton, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
-
+import PropTypes from "prop-types";
 
 const CreateWorkspaceCard = ({ setOpen }) => (
 <Card
@@ -39,5 +38,9 @@ const CreateWorkspaceCard = ({ setOpen }) => (
     </CardContent>
 </Card>
 );
+
+CreateWorkspaceCard.propTypes = {
+  setOpen: PropTypes.func.isRequired,
+};
 
 export default CreateWorkspaceCard;

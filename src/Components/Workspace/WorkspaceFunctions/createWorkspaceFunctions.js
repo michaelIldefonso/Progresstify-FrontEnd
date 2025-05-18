@@ -13,9 +13,9 @@ export const handleSubmit = async (
   // Create a new workspace
   if (!workspaceName) return;
 
-  console.log("Submitting workspace with the following details:");
-  console.log("Name:", workspaceName);
-  console.log("Description:", workspaceDescription);
+  ("Submitting workspace with the following details:");
+  ("Name:", workspaceName);
+  ("Description:", workspaceDescription);
 
   try {
     const response = await client.post(
@@ -26,8 +26,8 @@ export const handleSubmit = async (
       }
     );
 
-    console.log("Request payload sent:", { name: workspaceName, description: workspaceDescription });
-    console.log("Workspace created successfully:", response.data);
+    ("Request payload sent:", { name: workspaceName, description: workspaceDescription });
+    ("Workspace created successfully:", response.data);
 
     // Update the workspaces state
     setWorkspaces([...workspaces, response.data]);
@@ -71,7 +71,7 @@ export const fetchWorkspaces = async (navigate, setWorkspaces) => {
 
   try {
     const response = await client.get("/api/workspaces");
-    console.log("API Response (Workspaces):", response.data);
+    ("API Response (Workspaces):", response.data);
     setWorkspaces(response.data);
   } catch (error) {
     console.error("Error fetching workspaces:", error);

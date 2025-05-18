@@ -31,7 +31,7 @@ export const useScrollBarEffect = (columnsContainerRef, scrollbarRef) => {
       const handleWheel = (e) => {
         // Allow vertical scrolling inside card lists
         if (e.target.closest(".card-list")) {
-          console.log("Mouse is inside card list, allowing vertical scrolling");
+          ("Mouse is inside card list, allowing vertical scrolling");
           return;
         }
 

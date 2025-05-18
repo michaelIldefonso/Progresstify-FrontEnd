@@ -22,7 +22,7 @@ export const fetchUserData = async (location, navigate, setUser) => {
 
     // Fetch user data
     const response = await client.get("/api/data");
-    console.log("API Response:", response.data);
+    ("API Response:", response.data);
 
     // Update user state
     setUser(response.data);

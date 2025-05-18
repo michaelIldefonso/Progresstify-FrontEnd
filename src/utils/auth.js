@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const refreshToken = async (navigate) => {
     const storedRefreshToken = localStorage.getItem("RefreshToken");
-    console.log("Stored Refresh Token:", storedRefreshToken); // Log the refresh token for debugging
+    ("Stored Refresh Token:", storedRefreshToken); // Log the refresh token for debugging
 
     if (!storedRefreshToken) {
         console.error("No refresh token found, redirecting...");
@@ -19,9 +19,9 @@ export const refreshToken = async (navigate) => {
             { withCredentials: true }
         );
         const newToken = response.data.accessToken; // Updated to match backend response key
-        console.log("New Access Token:", newToken); // Log the new token for debugging
+        ("New Access Token:", newToken); // Log the new token for debugging
         localStorage.setItem("Token", newToken); // Store the new token
-        console.log("Token stored in localStorage:", localStorage.getItem("Token")); // Verify token storage
+        ("Token stored in localStorage:", localStorage.getItem("Token")); // Verify token storage
         return newToken;
     } catch (error) {
         console.error("Error refreshing token:", error);

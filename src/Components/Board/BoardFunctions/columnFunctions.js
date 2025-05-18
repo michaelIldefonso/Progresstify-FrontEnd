@@ -38,7 +38,7 @@ export const renameColumn = async (boardId, columns, setColumns, columnId, newTi
     });
 
     // Axios automatically throws an error for non-2xx responses, so no need for `response.ok`.
-    console.log("Column renamed successfully:", response.data);
+    ("Column renamed successfully:", response.data);
   } catch (error) {
     console.error("Failed to rename column:", error.response?.data?.message || error.message);
   }
@@ -64,7 +64,7 @@ export const removeColumn = async (boardId, columnId, columns, setColumns) => {
 
   try {
     const response = await api.delete(`/api/columns/${boardId}/columns/${columnId}`);
-    console.log("Column deleted successfully:", response.data);
+    ("Column deleted successfully:", response.data);
   } catch (error) {
     console.error("Failed to delete column:", error.response?.data?.message || error.message);
   }
@@ -72,7 +72,7 @@ export const removeColumn = async (boardId, columnId, columns, setColumns) => {
 
 export const getColumns = async (boardId, setColumns, columnsFetchedRef) => {
   if (!columnsFetchedRef || columnsFetchedRef.current) {
-    console.log("Columns fetch skipped because columnsFetchedRef is already true or undefined.");
+    ("Columns fetch skipped because columnsFetchedRef is already true or undefined.");
     return;
   }
 

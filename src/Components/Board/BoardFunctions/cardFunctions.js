@@ -49,7 +49,7 @@ export const addCard = async ( columnId, columns, setColumns, cardText = "") => 
       )
     );
 
-    console.log("Card saved successfully:", savedCard);
+    ("Card saved successfully:", savedCard);
   } catch (error) {
     console.error("Error saving card:", error.message);
     alert("Failed to save card. Please try again.");
@@ -86,7 +86,7 @@ export const showCard = async (columnId, columns, setColumns) => {
       )
     );
 
-    console.log("Card created successfully:", newCard);
+    ("Card created successfully:", newCard);
   } catch (error) {
     console.error("Failed to create card:", error.message);
   }
@@ -106,7 +106,7 @@ export const removeCard = async (columns, setColumns, columnId, cardId) => {
   try {
     await api.delete(`/api/cards/${cardId}`);
 
-    console.log("Card deleted successfully.");
+    ("Card deleted successfully.");
   } catch (error) {
     console.error("Error deleting card:", error.message);
     alert("Failed to delete card. Please try again.");
@@ -165,7 +165,7 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
 
   // card put into the same column not disappearing fix
   if (sourceColumn.id === targetColumn.id) {
-    console.log("Card dropped back into the same column, no updates needed.");
+    ("Card dropped back into the same column, no updates needed.");
     return;
   }
 
@@ -219,7 +219,7 @@ export const handleCardDrop = async (event, targetColumnId, columns, setColumns,
     });
 
     const updatedCard = response.data;
-    console.log("Card position updated successfully:", updatedCard);
+    ("Card position updated successfully:", updatedCard);
   } catch (error) {
     console.error("Error updating card position:", error.message);
     alert("Failed to update card position. Please try again.");
@@ -249,7 +249,7 @@ export const handleCheckboxChange = async (columnId, cardId, checked, setColumns
     const response = await api.patch(`/api/cards/${cardId}/checked`, { checked });
 
     const updatedCard = response.data;
-    console.log("Card checked status updated successfully:", updatedCard);
+    ("Card checked status updated successfully:", updatedCard);
   } catch (error) {
     console.error("Error updating card checked status:", error.message);
     alert("Failed to update card checked status. Please try again.");

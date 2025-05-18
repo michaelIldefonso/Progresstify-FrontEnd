@@ -8,7 +8,7 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
       throw new Error('Workspace ID is required');
     }
 
-    console.log(`Sending request to create board in workspace ${workspaceId} with name ${boardName}`);
+    (`Sending request to create board in workspace ${workspaceId} with name ${boardName}`);
     const response = await api.post(`/api/boards/${workspaceId}/boards`, {
       name: boardName,
     });
@@ -19,7 +19,7 @@ export const createBoard = async (workspaceId, boards, setBoards, boardName, set
       throw new Error('Failed to create board: Missing ID in response');
     }
 
-    console.log('Board created successfully:', newBoard);
+    ('Board created successfully:', newBoard);
     setBoards([...boards, newBoard]); // Add the new board to the state
     setBoardName('');
     setModalOpen(false);

@@ -1,9 +1,9 @@
-import React from "react";
 import { AppBar, Toolbar, Button, Menu, MenuItem, IconButton, Typography } from "@mui/material";
-import { Brightness4, Brightness7, Menu as MenuIcon } from "@mui/icons-material";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { handleMenu, handleClose } from "../Functions/eventHandlerFunctions";
 import { handleLogout, navigateToAccountDetails } from "../Functions/navigationFunctions";
+import PropTypes from "prop-types";
 
 
 const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user }) => {
@@ -61,4 +61,12 @@ const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user 
   );
 };
 
+// Add PropTypes validation
+AppBarWithMenu.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+  toggleDarkMode: PropTypes.func.isRequired,
+  anchorEl: PropTypes.any,
+  setAnchorEl: PropTypes.func.isRequired,
+  user: PropTypes.object,
+};
 export default AppBarWithMenu;

@@ -1,7 +1,7 @@
-import React from "react";
 import { Grid, Card, CardContent, Typography, Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { handleDeleteWorkspace } from "../WorkspaceFunctions/createWorkspaceFunctions";
+import PropTypes from "prop-types";
 
 const WorkspaceList = ({ workspaces, setWorkspaces, navigate }) => (
     <>
@@ -42,5 +42,11 @@ const WorkspaceList = ({ workspaces, setWorkspaces, navigate }) => (
         ))}
     </>
 );
+
+WorkspaceList.propTypes = {
+  workspaces: PropTypes.array.isRequired,
+  setWorkspaces: PropTypes.func.isRequired,
+  navigate: PropTypes.func.isRequired,
+};
 
 export default WorkspaceList;

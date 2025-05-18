@@ -11,11 +11,9 @@ import { useTimer, handleClose, handleMenu } from "./Components/Functions/eventH
 import { fetchWorkspaces } from "./Components/Workspace/WorkspaceFunctions/createWorkspaceFunctions";
 import { handleLogout, navigateToAccountDetails } from "./Components/Functions/navigationFunctions";
 
-
 function Workspaces() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [workspaceName, setWorkspaceName] = useState("");
@@ -33,10 +31,8 @@ function Workspaces() {
 
     let isMounted = true;
 
-    // Fetch user data
-    fetchUserData(location, navigate, (user) => {
-      if (isMounted) setUser(user);
-    });
+    // Fetch user data (removed setUser since user is not used)
+    fetchUserData(location, navigate, () => {});
 
     // Fetch workspaces
     fetchWorkspaces(navigate, (workspaces) => {
@@ -48,11 +44,10 @@ function Workspaces() {
     };
   }, [location, navigate]);
 
-useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
   }, [darkMode]);
   const toggleDarkMode = () => setDarkMode(!darkMode);
-
 
   const loading = !useTimer(2000); // 2 seconds delay
 

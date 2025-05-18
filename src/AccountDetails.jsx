@@ -8,17 +8,16 @@ const AccountDetails = () => {
 
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    
+
     useEffect(() => { 
         let isMounted = true;
-        fetchUserData(location, navigate, (user) => {
+        fetchUserData(undefined, navigate, (user) => {
           if (isMounted) setUser(user);
         });
         return () => {
           isMounted = false;
         }
-    }, [location, navigate]);
-
+    }, [navigate]); // Removed 'location' from dependencies
 
     if (!user) return <Typography>Loading...</Typography>;
 
@@ -32,9 +31,8 @@ const AccountDetails = () => {
                 <Avatar
                     sx={{ width: 80, height: 80, mb: 2, bgcolor: "#1976d2", fontSize: 36 }}
                     alt="User"
-                  src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" // Leave empty for default, or use a default image URL
+                    src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
                 >
-                    
                 </Avatar>
                 <Typography variant="h5" gutterBottom>
                     Account Details

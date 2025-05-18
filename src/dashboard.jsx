@@ -50,13 +50,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     let isMounted = true;
-    fetchUserData(location, navigate, (user) => {
+    fetchUserData(undefined, navigate, (user) => {
       if (isMounted) setUser(user);
     });
     return () => {
       isMounted = false;
     };
-  }, [location, navigate]);
+  }, [navigate]); // Removed 'location' from dependencies
 
   const theme = createCustomTheme(darkMode);
 

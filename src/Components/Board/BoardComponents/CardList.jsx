@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Box, TextField, Button, Skeleton } from "@mui/material";
+import { Box, TextField, Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import Card from "./Card";
 import { handleCardInputChange, addCard, startAddingCard } from "../BoardFunctions/cardFunctions";

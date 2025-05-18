@@ -1,3 +1,27 @@
+// Finalize editing and persist column rename in one function
+export const finalizeAndRenameColumn = async (boardId, columns, setColumns, columnId) => {
+  // Finalize editing (set isEditing: false if title is not empty)
+  setColumns(
+    columns.map((col) =>
+      col.id === columnId && col.title.trim()
+        ? { ...col, isEditing: false }
+        : col
+    )
+  );
+
+  // Find the column's current title
+  const col = columns.find((col) => col.id === columnId);
+  if (!col) return;
+
+  // Persist the change via API
+  try {
+    await api.put(`/api/columns/${boardId}/columns/${columnId}`,
+      { title: col.title }
+    );
+  } catch (error) {
+    console.error("Failed to rename column:", error.response?.data?.message || error.message);
+  }
+};
 import { apiClient } from "../../../utils/auth";
 
 const api = apiClient(); // Create an instance of apiClient

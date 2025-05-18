@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Box, Paper, TextField, Typography, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import CardList from "./CardList";
-import { renameColumn, finalizeColumnTitle, removeColumn, handleColumnDragStart } from "../BoardFunctions/columnFunctions";
+import { finalizeAndRenameColumn, removeColumn, handleColumnDragStart } from "../BoardFunctions/columnFunctions";
 import { handleCardDragOver, handleCardDrop } from "../BoardFunctions/cardFunctions";
 
 // Memoized version of Column
@@ -35,11 +35,18 @@ const Column = memo(({ column, id, columns, setColumns, draggingCard, setDraggin
               fullWidth
               placeholder="Enter column name"
               value={column.title}
-              onChange={(e) => renameColumn(id, columns, setColumns, column.id, e.target.value)}
-              onBlur={() => finalizeColumnTitle(columns, setColumns, column.id)}
+              onChange={(e) => {
+                // Only update local state
+                setColumns(
+                  columns.map((col) =>
+                    col.id === column.id ? { ...col, title: e.target.value } : col
+                  )
+                );
+              }}
+              onBlur={() => finalizeAndRenameColumn(id, columns, setColumns, column.id)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  finalizeColumnTitle(columns, setColumns, column.id);
+                  finalizeAndRenameColumn(id, columns, setColumns, column.id);
                   e.preventDefault();
                 }
               }}

@@ -164,18 +164,17 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
                 label="Due Date"
                 value={card.dueDate ? dayjs(card.dueDate) : null}
                 onChange={(newDate) => handleDueDateChange(newDate, card, columnId, setColumns, navigate)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    size="small"
-                    sx={{
+                slotProps={{
+                  textField: {
+                    size: "small",
+                    sx: {
                       backgroundColor: darkMode ? "#222" : "#fff",
                       borderRadius: "8px",
                       input: { color: darkMode ? "#fff" : "#000" },
                       width: "170px",
-                    }}
-                  />
-                )}
+                    },
+                  },
+                }}
               />
             </MenuItem>
             <MenuItem

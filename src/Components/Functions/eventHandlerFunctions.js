@@ -44,3 +44,9 @@ export const useTimer = (delay = 2000) => {
   }, [delay]);
   return isReady;
 }
+
+
+
+export const isValidText = (newText) => {
+  return typeof newText === "string" && newText.trim() !== "";
+};

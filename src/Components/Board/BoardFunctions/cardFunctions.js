@@ -335,3 +335,29 @@ export const handleDueDateChange = async (newDate, card, columnId, setColumns, n
     console.error("Failed to update due date:", error);
   }
 };
+
+export const renameCard = async (cardId, newText, columns, setColumns, columnId) => {
+  try {
+    const response = await api.patch(
+      `/api/cards/${cardId}/text`,
+      { text: newText }
+    );
+
+    const updatedCard = response.data.card;
+
+    setColumns((prevColumns) =>
+      prevColumns.map((col) =>
+        col.id === columnId
+          ? {
+              ...col,
+              cards: col.cards.map((card) =>
+                card.id === cardId ? { ...card, text: updatedCard.text } : card
+              ),
+            }
+          : col
+      )
+    );
+  } catch (error) {
+    console.error("Failed to rename card:", error);
+  }
+};

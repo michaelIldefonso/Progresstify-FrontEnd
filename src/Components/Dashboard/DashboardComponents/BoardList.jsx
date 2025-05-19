@@ -87,10 +87,13 @@ const BoardListComponent = ({
                 onBlur={() =>
                   handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)
                 }
-                onKeyPress={(e) =>
-                  e.key === "Enter" &&
-                  handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId)
-                }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleNameSave(workspaceId, board, boards, setBoards, boardName, setEditingBoardId);
+                    e.target.blur(); // Optional: remove focus after saving
+                  }
+                }}
+                onClick={(e) => e.stopPropagation()}
                 autoFocus
                 sx={{ mb: 1 }}
               />
@@ -98,7 +101,12 @@ const BoardListComponent = ({
           ) : (
             <ListItemText primary={board.name} />
           )}
-          <IconButton onClick={() => handleEditClick(board, setEditingBoardId, setBoardName)}>
+          <IconButton
+            onClick={e => {
+              e.stopPropagation();
+              handleEditClick(board, setEditingBoardId, setBoardName);
+            }}
+          >
             <Edit />
           </IconButton>
           <IconButton

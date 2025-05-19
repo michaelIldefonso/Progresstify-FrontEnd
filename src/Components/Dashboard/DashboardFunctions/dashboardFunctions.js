@@ -71,13 +71,20 @@ export const handleEditClick = (board, setEditingBoardId, setBoardName) => {
 };
 
 export const handleNameChange = (e, setBoardName) => {
-  setBoardName(e.target.value);
+  const newName = e.target.value;
+  if (newName.length > 50) {
+    alert("Board name cannot exceed 50 characters");
+    return;
+  }
+  setBoardName(newName);
 };
 
-export const handleNameSave = async (workspaceId, board, boards, setBoards, boardName, setEditingBoardId) => {
+export const handleNameSave = async (
+  workspaceId, board, boards, setBoards, boardName, setEditingBoardId
+) => {
   try {
-    await api.patch(`/api/boards/${workspaceId}/boards/${board.id}`, {
-      name: boardName
+    await api.patch(`/api/boards/${workspaceId}/boards/${board.id}/rename`, {
+      newName: boardName
     });
 
     setBoards(boards.map(d => d.id === board.id ? { ...d, name: boardName } : d));

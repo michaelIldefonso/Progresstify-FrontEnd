@@ -7,7 +7,9 @@ import PropTypes from "prop-types";
 
 
 const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user }) => {
+
   const navigate = useNavigate();
+
 
   return (
     <AppBar

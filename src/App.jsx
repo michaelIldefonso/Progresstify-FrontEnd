@@ -4,7 +4,6 @@ import Header from "./Components/App/AppComponents/Header";
 import WelcomeMessage from "./Components/App/AppComponents/WelcomeMessage";
 import AuthDialog from "./Components/App/AppComponents/AuthDialog";
 
-
 function App() {
   const [open, setOpen] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -12,6 +11,7 @@ function App() {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : true;
   });
+
 
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));

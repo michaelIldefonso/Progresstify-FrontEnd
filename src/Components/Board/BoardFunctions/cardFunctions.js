@@ -362,7 +362,7 @@ export const renameCard = async (cardId, newText, columns, setColumns, columnId)
   }
 };
 
-export const getUpcomingTasks = async (days = 1) => {
-  const response = await api.get(`/api/cards/upcoming?days=${days}`);
+export const getUpcomingTasks = async (userId, days = 2) => {
+  const response = await api.get(`/api/cards/upcoming?days=${userId, days}`);
   return response.data;
 };

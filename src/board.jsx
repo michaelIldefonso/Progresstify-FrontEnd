@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Box, ThemeProvider, Skeleton } from "@mui/material";
+import { Box, ThemeProvider, Skeleton, Button, Paper, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { createCustomTheme, useDarkModeEffect } from "./Components/Functions/themeFunctions";
 import { useColumnsEffect, useScrollBarEffect } from "./Components/Board/BoardFunctions/useBoardEffects";
@@ -44,7 +44,7 @@ const Board = () => { // Workspace board
       if (isMounted) setUser(user);
     });
 
-    getUpcomingTasks(1).then(tasks => {
+    getUpcomingTasks(2).then(tasks => {
       if (tasks.length > 0) {
         setDueTomorrow(tasks);
         setShowNotification(true);
@@ -109,55 +109,107 @@ const Board = () => { // Workspace board
             </Box>
           ) : (
             <>
-            {showNotification && (
-              <div
-                style={{
-                  position: "fixed",
-                  bottom: 24,
-                  right: 24,
-                  zIndex: 9999,
-                  background: "#fffbe6",
-                  border: "1px solid #ffe58f",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                  padding: "12px 18px",
-                  borderRadius: "8px",
-                  minWidth: "240px",
-                  maxWidth: "320px",
-                  fontSize: "15px",
-                  color: "#8d6c00"
-                }}
-              >
-                <div style={{ fontWeight: 600, marginBottom: 4 }}>
-                  <strong>Reminder:</strong> Tasks due tomorrow!
-                </div>
-                <ul style={{ margin: 0, paddingLeft: 18, fontSize: "14px" }}>
-                  {dueTomorrow.map((task) => (
-                    <li key={task.id}>
-                      <b>{task.title || task.text}</b>{" "}
-                      <span style={{ color: "#b38f00", fontSize: "12px" }}>
-                        (Due: {new Date(task.due_date).toLocaleDateString()})
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  onClick={handleClose}
-                  style={{
-                    marginTop: 8,
-                    background: "#ffe58f",
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "3px 12px",
-                    cursor: "pointer",
-                    fontSize: "13px",
-                    color: "#a07b00",
-                    float: "right"
+            <Box>
+              {!showNotification && (
+                <Button
+                  onClick={() => setShowNotification(true)}
+                  sx={{
+                    position: "fixed",
+                    top: 84,
+                    right: 24,
+                    zIndex: 9999,
+                    bgcolor: "#1e3a8a",
+                    color: "#fff",
+                    fontWeight: 600,
+                    borderRadius: "8px",
+                    px: 2.5,
+                    py: 1,
+                    fontSize: "15px",
+                    textTransform: "none",
+                    boxShadow: "0 1px 4px rgba(30,58,138,0.10)",
+                    "&:hover": { bgcolor: "#2563eb" }
+                  }}
+                  variant="contained"
+                >
+                  Show Reminder
+                </Button>
+              )}
+
+              {/* Your Notification Paper */}
+              {showNotification && (
+                <Paper
+                  elevation={8}
+                  sx={{
+                    position: "fixed",
+                    top: 85,
+                    right: 24,
+                    zIndex: 9999,
+                    background: "rgba(30, 58, 138, 0.35)",
+                    border: "1px solid #60a5fa",
+                    boxShadow: "0 2px 16px rgba(30, 58, 138, 0.15)",
+                    backdropFilter: "blur(16px)",
+                    WebkitBackdropFilter: "blur(16px)",
+                    p: "16px 22px",
+                    borderRadius: "14px",
+                    minWidth: "260px",
+                    maxWidth: "340px",
+                    fontSize: "15px",
+                    color: "#f9fafb"
                   }}
                 >
-                  Dismiss
-                </button>
-              </div>
-            )}
+                  <Typography fontWeight={700} mb={1} fontSize="16px" letterSpacing={0.5}>
+                    <span style={{ color: "#60a5fa" }}>🔔</span> <strong>Reminder:</strong> Tasks due dates that are close.
+                  </Typography>
+                  <List dense disablePadding sx={{ fontSize: "15px", pl: 2 }}>
+                    {dueTomorrow.map((task) => (
+                      <ListItem key={task.id} disableGutters sx={{ py: 0.5 }}>
+                        <ListItemText
+                          primary={
+                            <Box component="span">
+                              <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
+                                {task.title}
+                              </Box>
+                              {': '}
+                              <Box component="span" sx={{ fontWeight: "bold", color: "#f9fafb" }}>
+                                {task.text}
+                              </Box>
+                              <Box component="span" sx={{ color: "#facc15", fontSize: "13px" }}>
+                                {" "} (Due: {new Date(task.due_date).toLocaleDateString()})
+                              </Box>
+                            </Box>
+                          }
+                          sx={{ m: 0 }}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+                  <Button
+                    onClick={() => setShowNotification(false)}
+                    sx={{
+                      mt: 2,
+                      bgcolor: "rgba(96, 165, 250, 0.15)",
+                      border: "1px solid #60a5fa",
+                      borderRadius: "7px",
+                      px: 3,
+                      py: 0.5,
+                      color: "#fff",
+                      fontWeight: 600,
+                      float: "right",
+                      fontSize: "14px",
+                      textTransform: "none",
+                      boxShadow: "0 1px 4px rgba(30,58,138,0.06)",
+                      "&:hover": {
+                        bgcolor: "rgba(96, 165, 250, 0.25)"
+                      }
+                    }}
+                    size="small"
+                    variant="contained"
+                  >
+                    Dismiss
+                  </Button>
+                </Paper>
+              )}
+            </Box>
               <AppBarWithMenu
                 darkMode={darkMode}
                 toggleDarkMode={() => setDarkMode((prevMode) => !prevMode)}

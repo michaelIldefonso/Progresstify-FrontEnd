@@ -361,3 +361,8 @@ export const renameCard = async (cardId, newText, columns, setColumns, columnId)
     console.error("Failed to rename card:", error);
   }
 };
+
+export const getUpcomingTasks = async (days = 1) => {
+  const response = await api.get(`/api/cards/upcoming?days=${days}`);
+  return response.data;
+};

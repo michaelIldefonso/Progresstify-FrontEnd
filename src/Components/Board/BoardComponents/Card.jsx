@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs"; // Import Day.js
 import { Card as MuiCard, CardContent, IconButton, Typography, Checkbox, FormControlLabel, Menu, MenuItem, TextField, Button } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import { DatePicker } from "@mui/x-date-pickers"; // Import DatePicker
-import { removeCard, handleCheckboxChange, handleCardDragStart, handleDueDateChange, renameCard } from "../BoardFunctions/cardFunctions";
+import { removeCard, handleCheckboxChange, handleCardDragStart, handleDueDateChange, renameCard, getUpcomingTasks } from "../BoardFunctions/cardFunctions";
 import { handleMenu, handleClose, isValidText } from "../../Functions/eventHandlerFunctions";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
   const navigate = useNavigate();
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState(card.text);
+  
   const handleEditSave = () => {
     if (isValidText(editText)) {
       renameCard(card.id, editText, columns, setColumns, columnId);
@@ -206,7 +207,9 @@ const Card = ({ card, columnId, columns, setColumns, setDraggingCard, darkMode }
               Remove Card
             </MenuItem>
           </Menu>
+          
         </div>
+        
       </CardContent>
     </MuiCard>
   );

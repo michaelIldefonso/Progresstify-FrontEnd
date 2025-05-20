@@ -7,7 +7,8 @@ import { fetchUserData } from "./Components/Functions/fetchFunctions";
 import AppBarWithMenu from "./Components/AppBar/AppbarWithMenu";
 import ColumnList from "./Components/Board/BoardComponents/Columnlist";
 import CustomScrollbar from "./Components/Board/BoardComponents/CustomScrollbar";
-import { handleWheelScroll, useTimer } from "./Components/Functions/eventHandlerFunctions";
+import { handleWheelScroll, useTimer, handleClose } from "./Components/Functions/eventHandlerFunctions";
+import { getUpcomingTasks } from "./Components/Board/BoardFunctions/cardFunctions";
 
 const Board = () => { // Workspace board
   const { id } = useParams();
@@ -23,6 +24,8 @@ const Board = () => { // Workspace board
   const [user, setUser] = useState(null);
   const [draggingColumn, setDraggingColumn] = useState(null);
   const [draggingCard, setDraggingCard] = useState(null);
+  const [showNotification, setShowNotification] = useState(false);
+  const [dueTomorrow, setDueTomorrow] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const theme = createCustomTheme(darkMode);
@@ -40,10 +43,18 @@ const Board = () => { // Workspace board
     fetchUserData(location, navigate, (user) => {
       if (isMounted) setUser(user);
     });
+
+    getUpcomingTasks(1).then(tasks => {
+      if (tasks.length > 0) {
+        setDueTomorrow(tasks);
+        setShowNotification(true);
+      }
+    });
+
     return () => {
       isMounted = false;
     };
-  }, [location, navigate]);
+  }, [location, navigate, getUpcomingTasks]);
 
   // Use isMounted pattern for columns fetch
   useEffect(() => {
@@ -64,6 +75,7 @@ const Board = () => { // Workspace board
   useScrollBarEffect(columnsContainerRef, scrollbarRef);
 
   return (
+    
     <ThemeProvider theme={theme}>
       <div onWheel={(e) => handleWheelScroll(e, columnsContainerRef, scrollbarRef)}>
         <Box
@@ -78,6 +90,7 @@ const Board = () => { // Workspace board
             overflow: "hidden",
           }}
         >
+          
           {loading ? (
             // Skeleton Loader
             <Box
@@ -96,6 +109,55 @@ const Board = () => { // Workspace board
             </Box>
           ) : (
             <>
+            {showNotification && (
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: 24,
+                  right: 24,
+                  zIndex: 9999,
+                  background: "#fffbe6",
+                  border: "1px solid #ffe58f",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                  padding: "12px 18px",
+                  borderRadius: "8px",
+                  minWidth: "240px",
+                  maxWidth: "320px",
+                  fontSize: "15px",
+                  color: "#8d6c00"
+                }}
+              >
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>
+                  <strong>Reminder:</strong> Tasks due tomorrow!
+                </div>
+                <ul style={{ margin: 0, paddingLeft: 18, fontSize: "14px" }}>
+                  {dueTomorrow.map((task) => (
+                    <li key={task.id}>
+                      <b>{task.title || task.text}</b>{" "}
+                      <span style={{ color: "#b38f00", fontSize: "12px" }}>
+                        (Due: {new Date(task.due_date).toLocaleDateString()})
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={handleClose}
+                  style={{
+                    marginTop: 8,
+                    background: "#ffe58f",
+                    border: "none",
+                    borderRadius: "6px",
+                    padding: "3px 12px",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                    color: "#a07b00",
+                    float: "right"
+                  }}
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
               <AppBarWithMenu
                 darkMode={darkMode}
                 toggleDarkMode={() => setDarkMode((prevMode) => !prevMode)}

@@ -156,17 +156,26 @@ function Workspaces() {
                       <ListItemText
                         primary={
                           <Box component="span">
-                            <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
-                              {task.title}
+                              {'(Workspace: '}
+                              <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
+                                {task.workspace_name}
+                              </Box>
+                              {' | Board: '}
+                              <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
+                                {task.board_name}
+                              </Box>
+                              {' | Column: '}
+                              <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
+                                {task.title}
+                              </Box>
+                              {') Task: '}
+                              <Box component="span" sx={{ fontWeight: "bold", color: "#f9fafb" }}>
+                                {task.text}
+                              </Box>
+                              <Box component="span" sx={{ color: "#facc15", fontSize: "13px" }}>
+                                {" "} (Due: {new Date(task.due_date).toLocaleDateString()})
+                              </Box>
                             </Box>
-                            {': '}
-                            <Box component="span" sx={{ fontWeight: "bold", color: "#f9fafb" }}>
-                              {task.text}
-                            </Box>
-                            <Box component="span" sx={{ color: "#facc15", fontSize: "13px" }}>
-                              {" "} (Due: {new Date(task.due_date).toLocaleDateString()})
-                            </Box>
-                          </Box>
                         }
                         sx={{ m: 0 }}
                       />

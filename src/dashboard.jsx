@@ -188,10 +188,19 @@ const Dashboard = () => {
                         <ListItemText
                           primary={
                             <Box component="span">
+                              {'(Workspace: '}
+                              <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
+                                {task.workspace_name}
+                              </Box>
+                              {' | Board: '}
+                              <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
+                                {task.board_name}
+                              </Box>
+                              {' | Column: '}
                               <Box component="span" sx={{ color: "#3b82f6", fontWeight: "bold" }}>
                                 {task.title}
                               </Box>
-                              {': '}
+                              {') Task: '}
                               <Box component="span" sx={{ fontWeight: "bold", color: "#f9fafb" }}>
                                 {task.text}
                               </Box>

@@ -1,5 +1,5 @@
 import { Modal, Paper, Typography, TextField, Button } from "@mui/material";
-import { handleSubmit, handleDescriptionChange } from "../WorkspaceFunctions/createWorkspaceFunctions";
+import { handleSubmit, handleDescriptionChange } from "../WorkspaceFunctions/workspacesFunctions";
 import PropTypes from "prop-types"; 
 
 const WorkspaceModal = ({

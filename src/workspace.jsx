@@ -8,7 +8,7 @@ import WorkspaceModal from "./Components/Workspace/WorkspaceComponents/Workspace
 import WorkspaceList from "./Components/Workspace/WorkspaceComponents/workspaceList";
 import { fetchUserData, extractAndStoreTokens } from "./Components/Functions/fetchFunctions";
 import { useTimer, handleClose, handleMenu } from "./Components/Functions/eventHandlerFunctions";
-import { fetchWorkspaces } from "./Components/Workspace/WorkspaceFunctions/createWorkspaceFunctions";
+import { fetchWorkspaces } from "./Components/Workspace/WorkspaceFunctions/workspacesFunctions";
 import { handleLogout, navigateToAccountDetails } from "./Components/Functions/navigationFunctions";
 import { getUpcomingTasks } from "./Components/Board/BoardFunctions/cardFunctions";
 

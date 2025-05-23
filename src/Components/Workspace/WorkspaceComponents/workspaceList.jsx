@@ -1,6 +1,6 @@
 import { Grid, Card, CardContent, Typography, Box, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { handleDeleteWorkspace } from "../WorkspaceFunctions/createWorkspaceFunctions";
+import { handleDeleteWorkspace } from "../WorkspaceFunctions/workspacesFunctions";
 import PropTypes from "prop-types";
 
 const WorkspaceList = ({ workspaces, setWorkspaces, navigate }) => (
@@ -23,7 +23,13 @@ const WorkspaceList = ({ workspaces, setWorkspaces, navigate }) => (
                 <IconButton
                     onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteWorkspace(ws.id, setWorkspaces);
+                    const confirmation = window.prompt("Type 'Confirm' to delete this workspace. This action cannot be undone.");
+                    // Accept only exact 'Confirm' (case-sensitive, capital C)
+                    if (confirmation === "Confirm") {
+                        handleDeleteWorkspace(ws.id, setWorkspaces);
+                    } else if (confirmation !== null) {
+                        window.alert("Incorrect input. Workspace was not deleted. Please type 'Confirm' exactly to proceed.");
+                    }
                     }}
                     sx={{
                     color: "white",

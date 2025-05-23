@@ -30,7 +30,7 @@ export const showColumn = async (boardId, columns, setColumns) => {
   try {
     const response = await api.post(`/api/columns/${boardId}/columns`, {
       title: "",
-      order: columns.length,
+      position: columns.length, // changed from order to position
     });
 
     const newColumn = response.data;

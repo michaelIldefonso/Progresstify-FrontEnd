@@ -137,8 +137,8 @@ const Dashboard = () => {
                   onClick={() => setShowNotification(true)}
                   sx={{
                     position: "fixed",
-                    top: 84,
-                    right: 24,
+                    top: 55,
+                    right: 0,
                     zIndex: 9999,
                     bgcolor: "#1e3a8a",
                     color: "#fff",
@@ -153,7 +153,7 @@ const Dashboard = () => {
                   }}
                   variant="contained"
                 >
-                  Show Reminder
+                  🔔
                 </Button>
               )}
 

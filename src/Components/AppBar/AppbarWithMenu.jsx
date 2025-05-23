@@ -55,6 +55,13 @@ const AppBarWithMenu = ({ darkMode, toggleDarkMode, anchorEl, setAnchorEl, user 
             </Menu>
           </div>
         )}
+        <Button
+          variant="outlined"
+          onClick={() => navigate(-1)}
+          sx={{ color: darkMode ? "white" : "black", textTransform: "none" }}
+        >
+          Back
+        </Button>
         <IconButton onClick={toggleDarkMode} color="inherit">
           {darkMode ? <Brightness4 /> : <Brightness7 />}
         </IconButton>

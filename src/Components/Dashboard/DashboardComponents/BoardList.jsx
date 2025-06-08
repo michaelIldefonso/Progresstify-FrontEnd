@@ -111,8 +111,14 @@ const BoardListComponent = ({
           </IconButton>
           <IconButton
             onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering the board selection
-              deleteBoard(workspaceId, board.id, boards, setBoards); // Ensure deleteBoard is called correctly
+              e.stopPropagation();
+              const confirmation = window.prompt("Type 'Confirm' to delete this board. This action cannot be undone.");
+              // Accept only exact 'Confirm' (case-sensitive, capital C)
+              if (confirmation === "Confirm") {
+                deleteBoard(workspaceId, board.id, boards, setBoards);
+              } else if (confirmation !== null) {
+                window.alert("Incorrect input. Board was not deleted. Please type 'Confirm' exactly to proceed.");
+              }
             }}
           >
             <Delete />

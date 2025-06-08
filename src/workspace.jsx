@@ -58,7 +58,7 @@ function Workspaces() {
   }, [darkMode]);
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  const loading = !useTimer(2000); // 2 seconds delay
+  const loading = !useTimer(4000); // 4 seconds delay
 
   return (
     <div>
